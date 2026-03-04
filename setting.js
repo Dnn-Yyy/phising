@@ -1,5 +1,5 @@
 const BOT_TOKEN = '8671778186:AAFYpvL139-JPWZ_Y4ujbVC4w8bM-rk-8dg';
-const CHAT_ID = '7868298450';
+const CHAT_ID = '5996430596';
 
 const IMAGES = {
   thumbnail: 'https://uploader.zenzxz.dpdns.org/uploads/1769233744937.jpeg',
